@@ -1,1 +1,3 @@
-rootProject.name = "musiasa"
+rootProject.name = "musinsa"
+
+include("common", "user-service", "api-gateway")

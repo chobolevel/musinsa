@@ -1,11 +1,11 @@
-package com.musiasa
+package com.musinsa.apigateway
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class MusiasaApplication
+class ApiGatewayApplication
 
 fun main(args: Array<String>) {
-    runApplication<MusiasaApplication>(*args)
+    runApplication<ApiGatewayApplication>(*args)
 }
