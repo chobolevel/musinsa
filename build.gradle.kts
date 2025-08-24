@@ -6,6 +6,7 @@
 * */
 plugins {
     kotlin("jvm") version "1.9.25" // kotlin jvm 프로젝트 설정
+    kotlin("kapt") version "1.9.25" apply false
     kotlin("plugin.spring") version "1.9.25" apply false // spring 관련 kotlin 플로그인
     kotlin("plugin.jpa") version "1.9.25" apply false // kotlin jpa 플러그인
     id("org.springframework.boot") version "3.5.5" apply false // spring boot 실행/빌드
