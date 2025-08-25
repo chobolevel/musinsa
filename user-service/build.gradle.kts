@@ -14,6 +14,6 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
 
     // QueryDSL(SQL Injection issue)
-    implementation("com.querydsl:querydsl-jpa:${querydslVersion}")
-    kapt("com.querydsl:querydsl-apt:${querydslVersion}:jpa")
+    implementation("com.querydsl:querydsl-jpa:$querydslVersion")
+    kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
 }
