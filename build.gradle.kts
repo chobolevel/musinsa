@@ -5,10 +5,11 @@
 * 멀티 모듈 프로젝트에서 권장 방식(버전 충돌 방지, 하위 모듈별로 필요한 플러그인만 적용 가능
 * */
 plugins {
-    kotlin("jvm") version "1.9.25" // kotlin jvm 프로젝트 설정
-    kotlin("kapt") version "1.9.25" apply false
-    kotlin("plugin.spring") version "1.9.25" apply false // spring 관련 kotlin 플로그인
-    kotlin("plugin.jpa") version "1.9.25" apply false // kotlin jpa 플러그인
+    val kotlinVersion = "1.9.25"
+    kotlin("jvm") version kotlinVersion // kotlin jvm 프로젝트 설정
+    kotlin("kapt") version kotlinVersion apply false
+    kotlin("plugin.spring") version kotlinVersion apply false // spring 관련 kotlin 플로그인
+    kotlin("plugin.jpa") version kotlinVersion apply false // kotlin jpa 플러그인
     id("org.springframework.boot") version "3.5.5" apply false // spring boot 실행/빌드
     id("io.spring.dependency-management") version "1.1.7" apply false // BOM 기반 의존성 관리
     id("org.jlleitschuh.gradle.ktlint") version "11.3.1" apply false
