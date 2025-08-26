@@ -28,6 +28,13 @@ data class UnauthorizedException(
     override val throwable: Throwable? = null
 ) : MusinsaException(errorCode, errorStatus, message, throwable)
 
+data class ForbiddenException(
+    override val errorCode: ErrorCode,
+    override val errorStatus: ErrorStatus = ErrorStatus.FORBIDDEN,
+    override val message: String,
+    override val throwable: Throwable? = null
+) : MusinsaException(errorCode, errorStatus, message, throwable)
+
 data class DataNotFoundException(
     override val errorCode: ErrorCode,
     override val errorStatus: ErrorStatus = ErrorStatus.NOT_FOUND,
