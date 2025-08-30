@@ -17,8 +17,8 @@ create index users_email_index
 create table musinsa.users_histories
 (
   id            bigint       not null,
-  revision_id   int          not null,
-  revision_type bigint       not null,
+  revision_id   bigint       not null,
+  revision_type tinyint      not null,
   email         varchar(80)  not null,
   password      varchar(255) not null,
   nickname      varchar(80)  not null,
