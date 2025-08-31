@@ -4,6 +4,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.user.converter.UserConverter
 import com.musinsa.user.dto.CreateUserRequest
+import com.musinsa.user.dto.UserResponse
 import com.musinsa.user.entity.User
 import com.musinsa.user.entity.UserOrderType
 import com.musinsa.user.entity.UserQueryFilter
@@ -45,5 +46,10 @@ class UserServiceV1(
             data = converter.toResponseInBatch(users = users),
             totalCount = totalCount
         )
+    }
+
+    override fun getUser(id: Long): UserResponse {
+        val user: User = repository.findById(id = id)
+        return converter.toResponse(user = user)
     }
 }
