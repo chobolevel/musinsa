@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class UserCustomRepository : QuerydslRepositorySupport(User::class.java) {
 
-    fun search(
+    fun searchUsers(
         booleanExpressions: Array<BooleanExpression>,
         pagination: Pagination,
         orderSpecifiers: Array<OrderSpecifier<*>>
@@ -23,7 +23,7 @@ class UserCustomRepository : QuerydslRepositorySupport(User::class.java) {
             .fetch()
     }
 
-    fun searchCount(
+    fun searchUsersCount(
         booleanExpressions: Array<BooleanExpression>,
     ): Long {
         return from(user)

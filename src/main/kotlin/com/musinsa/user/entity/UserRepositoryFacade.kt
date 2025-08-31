@@ -17,20 +17,20 @@ class UserRepositoryFacade(
         return repository.save(user)
     }
 
-    fun search(
+    fun searchUsers(
         queryFilter: UserQueryFilter,
         pagination: Pagination,
         orderTypes: List<UserOrderType>
     ): List<User> {
-        return customRepository.search(
+        return customRepository.searchUsers(
             booleanExpressions = queryFilter.toBooleanExpressions(),
             pagination = pagination,
             orderSpecifiers = orderTypes.toOrderSpecifiers()
         )
     }
 
-    fun count(queryFilter: UserQueryFilter): Long {
-        return customRepository.searchCount(booleanExpressions = queryFilter.toBooleanExpressions())
+    fun searchUsersCount(queryFilter: UserQueryFilter): Long {
+        return customRepository.searchUsersCount(booleanExpressions = queryFilter.toBooleanExpressions())
     }
 
     @Throws(DataNotFoundException::class)

@@ -1,4 +1,4 @@
-package com.musinsa.user.controller
+package com.musinsa.user.controllerV1
 
 import com.musinsa.common.dto.CommonResponse
 import com.musinsa.user.dto.CreateUserRequest

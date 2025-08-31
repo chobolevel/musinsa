@@ -1,0 +1,47 @@
+package com.musinsa.user.controllerV1
+
+import com.musinsa.common.dto.CommonResponse
+import com.musinsa.common.dto.Pagination
+import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.user.entity.UserOrderType
+import com.musinsa.user.entity.UserQueryFilter
+import com.musinsa.user.serivce.UserService
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
+
+@RestController
+@RequestMapping("/api/v1/admin")
+class AdminUserController(
+    private val service: UserService
+) {
+
+    // @HasAuthorityAdmin
+    @GetMapping("/users")
+    fun getUsers(
+        @RequestParam(required = false) email: String?,
+        @RequestParam(required = false) nickname: String?,
+        @RequestParam(required = false) resigned: Boolean?,
+        @RequestParam(required = false) page: Long?,
+        @RequestParam(required = false) size: Long?,
+        @RequestParam(required = false) orderTypes: List<UserOrderType>?
+    ): ResponseEntity<CommonResponse> {
+        val queryFilter = UserQueryFilter(
+            email = email,
+            nickname = nickname,
+            resigned = resigned
+        )
+        val pagination = Pagination(
+            page = page ?: 1,
+            size = size ?: 10
+        )
+        val result: PaginationResponse = service.getUsers(
+            queryFilter = queryFilter,
+            pagination = pagination,
+            orderTypes = orderTypes ?: listOfNotNull(UserOrderType.CREATED_AT_DESC)
+        )
+        return ResponseEntity.ok(CommonResponse(result))
+    }
+}

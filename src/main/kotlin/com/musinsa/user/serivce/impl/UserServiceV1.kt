@@ -1,8 +1,12 @@
 package com.musinsa.user.serivce.impl
 
+import com.musinsa.common.dto.Pagination
+import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.user.converter.UserConverter
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.entity.User
+import com.musinsa.user.entity.UserOrderType
+import com.musinsa.user.entity.UserQueryFilter
 import com.musinsa.user.entity.UserRepositoryFacade
 import com.musinsa.user.serivce.UserService
 import com.musinsa.user.validator.UserBusinessValidator
@@ -22,5 +26,24 @@ class UserServiceV1(
         validator.validateNicknameExist(nickname = request.nickname)
         val user: User = converter.toEntity(request = request)
         return repository.save(user = user).id!!
+    }
+
+    override fun getUsers(
+        queryFilter: UserQueryFilter,
+        pagination: Pagination,
+        orderTypes: List<UserOrderType>
+    ): PaginationResponse {
+        val users: List<User> = repository.searchUsers(
+            queryFilter = queryFilter,
+            pagination = pagination,
+            orderTypes = orderTypes
+        )
+        val totalCount: Long = repository.searchUsersCount(queryFilter = queryFilter)
+        return PaginationResponse(
+            page = pagination.page,
+            size = pagination.size,
+            data = converter.toResponseInBatch(users = users),
+            totalCount = totalCount
+        )
     }
 }
