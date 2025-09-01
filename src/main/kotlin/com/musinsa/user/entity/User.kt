@@ -27,6 +27,10 @@ class User(
 
     @Column(nullable = false)
     var resigned: Boolean = false
+
+    fun resign() {
+        this.resigned = true
+    }
 }
 
 enum class UserOrderType {
