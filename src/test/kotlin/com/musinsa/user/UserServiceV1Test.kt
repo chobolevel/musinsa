@@ -1,0 +1,114 @@
+package com.musinsa.user
+
+import com.musinsa.common.dto.Pagination
+import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.user.converter.UserConverter
+import com.musinsa.user.dto.CreateUserRequest
+import com.musinsa.user.dto.UserResponse
+import com.musinsa.user.entity.User
+import com.musinsa.user.entity.UserOrderType
+import com.musinsa.user.entity.UserQueryFilter
+import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.serivce.impl.UserServiceV1
+import com.musinsa.user.validator.UserBusinessValidator
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito.`when`
+import org.mockito.junit.jupiter.MockitoExtension
+import kotlin.test.Test
+
+@ExtendWith(MockitoExtension::class)
+@DisplayName("user service v1 unit test")
+class UserServiceV1Test {
+
+    private val dummyUser: User = DummyUser.toEntity()
+
+    private val dummyUserResponse: UserResponse = DummyUser.toResponse()
+
+    @Mock
+    private lateinit var repository: UserRepositoryFacade
+
+    @Mock
+    private lateinit var converter: UserConverter
+
+    @Mock
+    private lateinit var validator: UserBusinessValidator
+
+    @InjectMocks
+    private lateinit var userService: UserServiceV1
+
+    @Test
+    fun createUserTest() {
+        // given
+        val createRequest: CreateUserRequest = DummyUser.toCreateRequest()
+        `when`(converter.toEntity(request = createRequest)).thenReturn(dummyUser)
+        `when`(repository.save(user = dummyUser)).thenReturn(dummyUser)
+
+        // when
+        val result: Long = userService.createUser(request = createRequest)
+
+        // then
+        assertThat(result).isEqualTo(dummyUser.id)
+    }
+
+    @Test
+    fun getUsersTest() {
+        // given
+        val dummyUsers: List<User> = listOfNotNull(dummyUser)
+        val dummyUserResponses: List<UserResponse> = listOfNotNull(dummyUserResponse)
+        val queryFilter = UserQueryFilter(
+            email = null,
+            nickname = null,
+            resigned = null
+        )
+        val pagination = Pagination(
+            page = 1,
+            size = 10
+        )
+        val orderTypes: List<UserOrderType> = emptyList()
+        `when`(
+            repository.searchUsers(
+                queryFilter = queryFilter,
+                pagination = pagination,
+                orderTypes = orderTypes
+            )
+        ).thenReturn(dummyUsers)
+        `when`(
+            repository.searchUsersCount(
+                queryFilter = queryFilter,
+            )
+        ).thenReturn(dummyUsers.size.toLong())
+        `when`(converter.toResponseInBatch(users = dummyUsers)).thenReturn(dummyUserResponses)
+
+        // when
+        val result: PaginationResponse = userService.getUsers(
+            queryFilter = queryFilter,
+            pagination = pagination,
+            orderTypes = orderTypes
+        )
+
+        // then
+        assertThat(result.page).isEqualTo(pagination.page)
+        assertThat(result.size).isEqualTo(pagination.size)
+        assertThat(result.data).isEqualTo(dummyUserResponses)
+        assertThat(result.totalCount).isEqualTo(dummyUserResponses.size.toLong())
+    }
+
+    @Test
+    fun getUserTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        `when`(repository.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(converter.toResponse(user = dummyUser)).thenReturn(dummyUserResponse)
+
+        // when
+        val result: UserResponse = userService.getUser(id = dummyUserId)
+
+        // then
+        assertThat(result.id).isEqualTo(dummyUserId)
+        assertThat(result.email).isEqualTo(dummyUserResponse.email)
+    }
+}

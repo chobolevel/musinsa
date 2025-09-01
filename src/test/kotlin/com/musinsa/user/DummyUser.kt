@@ -1,6 +1,7 @@
 package com.musinsa.user
 
 import com.musinsa.user.dto.CreateUserRequest
+import com.musinsa.user.dto.UserResponse
 import com.musinsa.user.entity.User
 
 object DummyUser {
@@ -22,6 +23,15 @@ object DummyUser {
         email = email,
         password = password,
         nickname = nickname
+    ).also { it.id = id }
+
+    private val dummyResponse: UserResponse = UserResponse(
+        id = id,
+        email = email,
+        nickname = nickname,
+        isResigned = resigned,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
     )
 
     fun toCreateRequest(): CreateUserRequest {
@@ -30,5 +40,9 @@ object DummyUser {
 
     fun toEntity(): User {
         return dummyEntity
+    }
+
+    fun toResponse(): UserResponse {
+        return dummyResponse
     }
 }

@@ -23,7 +23,7 @@ class User(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    var id: Long? = null
 
     @Column(nullable = false)
     var resigned: Boolean = false
