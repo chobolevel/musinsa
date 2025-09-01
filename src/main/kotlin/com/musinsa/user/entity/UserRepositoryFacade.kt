@@ -4,6 +4,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.exception.DataNotFoundException
 import com.musinsa.common.exception.ErrorCode
 import com.musinsa.common.extension.toOrderSpecifiers
+import com.musinsa.user.vo.UserOrderType
 import org.springframework.stereotype.Component
 import kotlin.jvm.Throws
 

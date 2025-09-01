@@ -3,13 +3,18 @@ package com.musinsa.user.controllerV1
 import com.musinsa.common.dto.CommonResponse
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
-import com.musinsa.user.entity.UserOrderType
 import com.musinsa.user.entity.UserQueryFilter
 import com.musinsa.user.serivce.UserService
+import com.musinsa.user.validator.UserParameterValidator
+import com.musinsa.user.vo.UserOrderType
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -17,7 +22,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/admin")
 class AdminUserController(
-    private val service: UserService
+    private val service: UserService,
+    private val validator: UserParameterValidator
 ) {
 
     // @HasAuthorityAdmin
@@ -48,8 +54,22 @@ class AdminUserController(
     }
 
     @GetMapping("/users/{id}")
-    fun getUser(@PathVariable id: Long): ResponseEntity<CommonResponse> {
-        val result: UserResponse = service.getUser(id = id)
+    fun getUser(@PathVariable("id") userId: Long): ResponseEntity<CommonResponse> {
+        val result: UserResponse = service.getUser(id = userId)
+        return ResponseEntity.ok(CommonResponse(result))
+    }
+
+    @PutMapping("/users/{id}")
+    fun updateUser(
+        @PathVariable("id") userId: Long,
+        @Valid @RequestBody
+        request: UpdateUserRequest
+    ): ResponseEntity<CommonResponse> {
+        validator.validate(request = request)
+        val result: Long = service.updateUser(
+            userId = userId,
+            request = request
+        )
         return ResponseEntity.ok(CommonResponse(result))
     }
 }

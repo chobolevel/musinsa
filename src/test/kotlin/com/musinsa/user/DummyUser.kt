@@ -1,8 +1,10 @@
 package com.musinsa.user
 
 import com.musinsa.user.dto.CreateUserRequest
+import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
 import com.musinsa.user.entity.User
+import com.musinsa.user.vo.UserUpdateMask
 
 object DummyUser {
     private val id: Long = 1L
@@ -34,6 +36,11 @@ object DummyUser {
         updatedAt = updatedAt,
     )
 
+    private val dummyUpdateRequest: UpdateUserRequest = UpdateUserRequest(
+        nickname = "왕감자",
+        updateMask = listOfNotNull(UserUpdateMask.NICKNAME)
+    )
+
     fun toCreateRequest(): CreateUserRequest {
         return dummyCreateRequest
     }
@@ -44,5 +51,9 @@ object DummyUser {
 
     fun toResponse(): UserResponse {
         return dummyResponse
+    }
+
+    fun toUpdateRequest(): UpdateUserRequest {
+        return dummyUpdateRequest
     }
 }

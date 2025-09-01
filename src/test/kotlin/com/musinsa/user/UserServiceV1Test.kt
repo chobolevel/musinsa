@@ -4,13 +4,15 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.user.converter.UserConverter
 import com.musinsa.user.dto.CreateUserRequest
+import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserOrderType
 import com.musinsa.user.entity.UserQueryFilter
 import com.musinsa.user.entity.UserRepositoryFacade
 import com.musinsa.user.serivce.impl.UserServiceV1
+import com.musinsa.user.updater.UserUpdater
 import com.musinsa.user.validator.UserBusinessValidator
+import com.musinsa.user.vo.UserOrderType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
@@ -36,6 +38,9 @@ class UserServiceV1Test {
 
     @Mock
     private lateinit var validator: UserBusinessValidator
+
+    @Mock
+    private lateinit var updater: UserUpdater
 
     @InjectMocks
     private lateinit var userService: UserServiceV1
@@ -110,5 +115,28 @@ class UserServiceV1Test {
         // then
         assertThat(result.id).isEqualTo(dummyUserId)
         assertThat(result.email).isEqualTo(dummyUserResponse.email)
+    }
+
+    @Test
+    fun updateUserTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val updateRequest: UpdateUserRequest = DummyUser.toUpdateRequest()
+        `when`(repository.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(
+            updater.markAsUpdate(
+                request = updateRequest,
+                user = dummyUser
+            )
+        ).thenReturn(dummyUser)
+
+        // when
+        val result: Long = userService.updateUser(
+            userId = dummyUserId,
+            request = updateRequest
+        )
+
+        // then
+        assertThat(result).isEqualTo(dummyUserId)
     }
 }

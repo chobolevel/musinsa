@@ -1,7 +1,7 @@
 package com.musinsa.common.extension
 
 import com.musinsa.user.entity.QUser.user
-import com.musinsa.user.entity.UserOrderType
+import com.musinsa.user.vo.UserOrderType
 import com.querydsl.core.types.OrderSpecifier
 
 fun List<UserOrderType>.toOrderSpecifiers(): Array<OrderSpecifier<*>> {
