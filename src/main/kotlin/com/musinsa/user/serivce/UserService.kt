@@ -21,4 +21,6 @@ interface UserService {
     fun getUser(id: Long): UserResponse
 
     fun updateUser(userId: Long, request: UpdateUserRequest): Long
+
+    fun resignUser(userId: Long): Boolean
 }

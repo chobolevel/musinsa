@@ -139,4 +139,17 @@ class UserServiceV1Test {
         // then
         assertThat(result).isEqualTo(dummyUserId)
     }
+
+    @Test
+    fun resignUserTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        `when`(repository.findById(id = dummyUserId)).thenReturn(dummyUser)
+
+        // when
+        val result: Boolean = userService.resignUser(userId = dummyUserId)
+
+        // then
+        assertThat(result).isTrue()
+    }
 }

@@ -65,4 +65,11 @@ class UserServiceV1(
         )
         return userId
     }
+
+    @Transactional
+    override fun resignUser(userId: Long): Boolean {
+        val user: User = repository.findById(userId)
+        user.resign()
+        return user.resigned
+    }
 }
