@@ -31,7 +31,13 @@ spring:
       ddl-auto: validate
   jackson:
     property-naming-strategy: SNAKE_CASE
+
+redis:
   musinsa:
     host: localhost
     port: 6374
     password:
+
+jwt:
+  issuer: chobolevel
+  secret: chobolevel-musinsa
