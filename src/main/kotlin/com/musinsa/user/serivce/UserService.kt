@@ -2,6 +2,7 @@ package com.musinsa.user.serivce
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.user.dto.ChangeUserPasswordRequest
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
@@ -23,4 +24,6 @@ interface UserService {
     fun updateUser(userId: Long, request: UpdateUserRequest): Long
 
     fun resignUser(userId: Long): Boolean
+
+    fun changePassword(userId: Long, request: ChangeUserPasswordRequest): Long
 }

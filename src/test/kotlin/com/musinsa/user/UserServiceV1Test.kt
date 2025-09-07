@@ -3,6 +3,7 @@ package com.musinsa.user
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.user.converter.UserConverter
+import com.musinsa.user.dto.ChangeUserPasswordRequest
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
@@ -20,6 +21,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import kotlin.test.Test
 
 @ExtendWith(MockitoExtension::class)
@@ -41,6 +43,9 @@ class UserServiceV1Test {
 
     @Mock
     private lateinit var updater: UserUpdater
+
+    @Mock
+    private lateinit var passwordEncoder: BCryptPasswordEncoder
 
     @InjectMocks
     private lateinit var userService: UserServiceV1
@@ -151,5 +156,19 @@ class UserServiceV1Test {
 
         // then
         assertThat(result).isTrue()
+    }
+
+    @Test
+    fun changePasswordTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val request: ChangeUserPasswordRequest = DummyUser.toChangePasswordRequest()
+        `when`(repository.findById(id = dummyUserId)).thenReturn(dummyUser)
+
+        // when
+        val result: Long = userService.changePassword(userId = dummyUserId, request = request)
+
+        // then
+        assertThat(result).isEqualTo(dummyUserId)
     }
 }

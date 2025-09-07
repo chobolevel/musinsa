@@ -1,5 +1,6 @@
 package com.musinsa.user
 
+import com.musinsa.user.dto.ChangeUserPasswordRequest
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
@@ -41,6 +42,11 @@ object DummyUser {
         updateMask = listOfNotNull(UserUpdateMask.NICKNAME)
     )
 
+    private val dummyChangePasswordRequest: ChangeUserPasswordRequest = ChangeUserPasswordRequest(
+        currentPassword = password,
+        newPassword = "newPassword"
+    )
+
     fun toCreateRequest(): CreateUserRequest {
         return dummyCreateRequest
     }
@@ -55,5 +61,9 @@ object DummyUser {
 
     fun toUpdateRequest(): UpdateUserRequest {
         return dummyUpdateRequest
+    }
+
+    fun toChangePasswordRequest(): ChangeUserPasswordRequest {
+        return dummyChangePasswordRequest
     }
 }

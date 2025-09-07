@@ -16,7 +16,7 @@ class User(
     @Column(nullable = false, length = 80)
     val email: String,
     @Column(nullable = false, length = 255)
-    val password: String,
+    var password: String,
     @Column(nullable = false, length = 80)
     var nickname: String
 ) : Audit() {

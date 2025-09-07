@@ -2,6 +2,7 @@ package com.musinsa.user.controllerV1
 
 import com.musinsa.common.dto.CommonResponse
 import com.musinsa.common.extension.getUserId
+import com.musinsa.user.dto.ChangeUserPasswordRequest
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
@@ -52,6 +53,16 @@ class UserControllerV1(
     @DeleteMapping("/user/resign")
     fun resign(principal: Principal): ResponseEntity<CommonResponse> {
         val result: Boolean = service.resignUser(userId = principal.getUserId())
+        return ResponseEntity.ok().body(CommonResponse(data = result))
+    }
+
+    @PostMapping("/user/change-password")
+    fun changePassword(
+        principal: Principal,
+        @Valid @RequestBody
+        request: ChangeUserPasswordRequest
+    ): ResponseEntity<CommonResponse> {
+        val result: Long = service.changePassword(userId = principal.getUserId(), request = request)
         return ResponseEntity.ok().body(CommonResponse(data = result))
     }
 }

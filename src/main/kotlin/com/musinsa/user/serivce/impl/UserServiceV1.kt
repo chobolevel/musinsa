@@ -3,6 +3,7 @@ package com.musinsa.user.serivce.impl
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.user.converter.UserConverter
+import com.musinsa.user.dto.ChangeUserPasswordRequest
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
@@ -13,6 +14,7 @@ import com.musinsa.user.serivce.UserService
 import com.musinsa.user.updater.UserUpdater
 import com.musinsa.user.validator.UserBusinessValidator
 import com.musinsa.user.vo.UserOrderType
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -21,7 +23,8 @@ class UserServiceV1(
     private val repository: UserRepositoryFacade,
     private val converter: UserConverter,
     private val validator: UserBusinessValidator,
-    private val updater: UserUpdater
+    private val updater: UserUpdater,
+    private val passwordEncoder: BCryptPasswordEncoder,
 ) : UserService {
 
     @Transactional
@@ -71,5 +74,18 @@ class UserServiceV1(
         val user: User = repository.findById(userId)
         user.resign()
         return user.resigned
+    }
+
+    override fun changePassword(
+        userId: Long,
+        request: ChangeUserPasswordRequest
+    ): Long {
+        val user: User = repository.findById(userId)
+        validator.validatePasswordMatch(
+            rawPassword = request.currentPassword,
+            encodedPassword = user.password
+        )
+        user.password = passwordEncoder.encode(request.newPassword)
+        return userId
     }
 }
