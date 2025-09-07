@@ -164,6 +164,7 @@ class UserServiceV1Test {
         val dummyUserId: Long = dummyUser.id!!
         val request: ChangeUserPasswordRequest = DummyUser.toChangePasswordRequest()
         `when`(repository.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(passwordEncoder.encode(request.newPassword)).thenReturn(request.newPassword)
 
         // when
         val result: Long = userService.changePassword(userId = dummyUserId, request = request)
