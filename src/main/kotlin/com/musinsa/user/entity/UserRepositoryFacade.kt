@@ -36,17 +36,25 @@ class UserRepositoryFacade(
 
     @Throws(DataNotFoundException::class)
     fun findById(id: Long): User {
-        return repository.findByIdAndResignedFalse(id = id) ?: throw DataNotFoundException(
+        return repository.findByIdAndIsDeletedFalse(id = id) ?: throw DataNotFoundException(
             errorCode = ErrorCode.USER_NOT_FOUND,
             message = ErrorCode.USER_NOT_FOUND.defaultMessage
         )
     }
 
-    fun existsByEmail(email: String): Boolean {
-        return repository.existsByEmail(email = email)
+    fun existsByUsername(username: String): Boolean {
+        return repository.existsByUsername(username)
     }
 
-    fun existsByNickname(nickname: String): Boolean {
-        return repository.existsByNickname(nickname = nickname)
+    fun existsByEmail(email: String): Boolean {
+        return repository.existsByEmail(email)
+    }
+
+    fun existsByName(name: String): Boolean {
+        return repository.existsByName(name)
+    }
+
+    fun existsByPhone(phone: String): Boolean {
+        return repository.existsByPhone(phone)
     }
 }

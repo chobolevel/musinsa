@@ -5,41 +5,85 @@ import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
 import com.musinsa.user.entity.User
+import com.musinsa.user.vo.UserGender
+import com.musinsa.user.vo.UserGrade
+import com.musinsa.user.vo.UserRole
+import com.musinsa.user.vo.UserSignUpType
+import com.musinsa.user.vo.UserStatus
 import com.musinsa.user.vo.UserUpdateMask
+import java.time.LocalDate
 
 object DummyUser {
     private val id: Long = 1L
+    private val username: String = "rodaka"
+    private val password: String = "jik584697@"
+    private val socialId: String? = null
+    private val signUpType: UserSignUpType = UserSignUpType.GENERAL
     private val email: String = "rodaka123@naver.com"
-    private val password: String = "rkddlswo218@"
-    private val nickname: String = "알감자"
-    private val resigned: Boolean = false
+    private val name: String = "오늘은블루시계"
+    private val phone: String = "01095657072"
+    private val gender: UserGender = UserGender.MALE
+    private val birthDate: LocalDate = LocalDate.of(2000, 2, 18)
+    private val status: UserStatus = UserStatus.ACTIVATE
+    private val grade: UserGrade = UserGrade.FAMILY
+    private val role: UserRole = UserRole.ROLE_USER
+    private val pointBalance: Int = 5913
+    private val isDeleted: Boolean = false
     private val createdAt: Long = 0L
     private val updatedAt: Long = 0L
 
     private val dummyCreateRequest: CreateUserRequest = CreateUserRequest(
-        email = email,
+        username = username,
         password = password,
-        nickname = nickname,
+        email = email,
+        name = name,
+        phone = phone,
+        gender = gender,
+        birthDate = birthDate,
     )
 
     private val dummyEntity: User = User(
-        email = email,
+        username = username,
         password = password,
-        nickname = nickname
+        socialId = socialId,
+        signUpType = signUpType,
+        email = email,
+        name = name,
+        phone = phone,
+        gender = gender,
+        birthDate = birthDate,
+        status = status,
+        grade = grade,
+        role = role,
+        pointBalance = pointBalance,
     ).also { it.id = id }
 
     private val dummyResponse: UserResponse = UserResponse(
         id = id,
+        signUpType = signUpType,
+        signUpTypeName = signUpType.desc,
         email = email,
-        nickname = nickname,
-        isResigned = resigned,
+        name = name,
+        phone = phone,
+        gender = gender,
+        genderName = gender.desc,
+        birthDate = birthDate,
+        status = status,
+        grade = grade,
+        role = role,
+        pointBalance = pointBalance,
+        isDeleted = isDeleted,
         createdAt = createdAt,
         updatedAt = updatedAt,
     )
 
     private val dummyUpdateRequest: UpdateUserRequest = UpdateUserRequest(
-        nickname = "왕감자",
-        updateMask = listOfNotNull(UserUpdateMask.NICKNAME)
+        email = null,
+        name = "왕감자",
+        phone = null,
+        gender = null,
+        birthDate = null,
+        updateMask = listOfNotNull(UserUpdateMask.NAME)
     )
 
     private val dummyChangePasswordRequest: ChangeUserPasswordRequest = ChangeUserPasswordRequest(

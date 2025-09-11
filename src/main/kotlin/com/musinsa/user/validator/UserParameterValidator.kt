@@ -12,11 +12,47 @@ class UserParameterValidator {
     fun validate(request: UpdateUserRequest) {
         request.updateMask.forEach {
             when (it) {
-                UserUpdateMask.NICKNAME -> {
-                    if (request.nickname.isNullOrEmpty()) {
+                UserUpdateMask.EMAIL -> {
+                    if (request.email.isNullOrEmpty()) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "변경할 닉네임은 필수 값입니다."
+                            message = "[email]은(는) 필수 값입니다."
+                        )
+                    }
+                }
+
+                UserUpdateMask.NAME -> {
+                    if (request.name.isNullOrEmpty()) {
+                        throw InvalidParameterException(
+                            errorCode = ErrorCode.INVALID_PARAMETER,
+                            message = "[name]은(는) 필수 값입니다."
+                        )
+                    }
+                }
+
+                UserUpdateMask.PHONE -> {
+                    if (request.phone.isNullOrEmpty()) {
+                        throw InvalidParameterException(
+                            errorCode = ErrorCode.PHONE_NUMBER_ALREADY_EXISTS,
+                            message = "[phone]은(는) 필수 값입니다."
+                        )
+                    }
+                }
+
+                UserUpdateMask.GENDER -> {
+                    if (request.gender == null) {
+                        throw InvalidParameterException(
+                            errorCode = ErrorCode.INVALID_PARAMETER,
+                            message = "[gender]은(는) 필수 값입니다."
+                        )
+                    }
+                }
+
+                UserUpdateMask.BIRTH_DATE -> {
+                    if (request.birthDate == null) {
+                        throw InvalidParameterException(
+                            errorCode = ErrorCode.INVALID_PARAMETER,
+                            message = "[birth_date]은(는) 필수 값입니다."
                         )
                     }
                 }

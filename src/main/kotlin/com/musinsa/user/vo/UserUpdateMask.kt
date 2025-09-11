@@ -1,5 +1,9 @@
 package com.musinsa.user.vo
 
 enum class UserUpdateMask {
-    NICKNAME
+    EMAIL,
+    NAME,
+    PHONE,
+    GENDER,
+    BIRTH_DATE,
 }

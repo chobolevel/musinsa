@@ -2,6 +2,8 @@ package com.musinsa.user.serivce.impl
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.common.exception.ErrorCode
+import com.musinsa.common.exception.PolicyViolationException
 import com.musinsa.user.converter.UserConverter
 import com.musinsa.user.dto.ChangeUserPasswordRequest
 import com.musinsa.user.dto.CreateUserRequest
@@ -14,6 +16,7 @@ import com.musinsa.user.serivce.UserService
 import com.musinsa.user.updater.UserUpdater
 import com.musinsa.user.validator.UserBusinessValidator
 import com.musinsa.user.vo.UserOrderType
+import com.musinsa.user.vo.UserSignUpType
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -30,7 +33,8 @@ class UserServiceV1(
     @Transactional
     override fun createUser(request: CreateUserRequest): Long {
         validator.validateEmailExist(email = request.email)
-        validator.validateNicknameExist(nickname = request.nickname)
+        validator.validateNameExists(name = request.name)
+        validator.validatePhoneExists(phone = request.phone)
         val user: User = converter.toEntity(request = request)
         return repository.save(user = user).id!!
     }
@@ -72,8 +76,8 @@ class UserServiceV1(
     @Transactional
     override fun resignUser(userId: Long): Boolean {
         val user: User = repository.findById(userId)
-        user.resign()
-        return user.resigned
+        user.delete()
+        return user.isDeleted
     }
 
     override fun changePassword(
@@ -81,9 +85,15 @@ class UserServiceV1(
         request: ChangeUserPasswordRequest
     ): Long {
         val user: User = repository.findById(userId)
+        if (user.signUpType != UserSignUpType.GENERAL) {
+            throw PolicyViolationException(
+                errorCode = ErrorCode.SOCIAL_USER_CAN_NOT_CHANGE_PASSWORD,
+                message = ErrorCode.SOCIAL_USER_CAN_NOT_CHANGE_PASSWORD.defaultMessage
+            )
+        }
         validator.validatePasswordMatch(
             rawPassword = request.currentPassword,
-            encodedPassword = user.password
+            encodedPassword = user.password!!
         )
         user.password = passwordEncoder.encode(request.newPassword)
         return userId

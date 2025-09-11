@@ -11,13 +11,13 @@ class UserEntityTest {
     private val dummyUser: User = DummyUser.toEntity()
 
     @Test
-    fun resignTest() {
+    fun deleteTest() {
         // given
 
         // when
-        dummyUser.resign()
+        dummyUser.delete()
 
         // then
-        Assertions.assertThat(dummyUser.resigned).isTrue()
+        Assertions.assertThat(dummyUser.isDeleted).isTrue()
     }
 }

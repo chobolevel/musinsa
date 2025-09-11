@@ -11,7 +11,11 @@ class UserUpdater {
     fun markAsUpdate(request: UpdateUserRequest, user: User): User {
         request.updateMask.forEach {
             when (it) {
-                UserUpdateMask.NICKNAME -> user.nickname = request.nickname!!
+                UserUpdateMask.EMAIL -> user.email = request.email!!
+                UserUpdateMask.NAME -> user.name = request.name!!
+                UserUpdateMask.PHONE -> user.phone = request.phone!!
+                UserUpdateMask.GENDER -> user.gender = request.gender!!
+                UserUpdateMask.BIRTH_DATE -> user.birthDate = request.birthDate!!
             }
         }
         return user

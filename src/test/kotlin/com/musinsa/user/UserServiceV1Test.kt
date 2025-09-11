@@ -70,9 +70,14 @@ class UserServiceV1Test {
         val dummyUsers: List<User> = listOfNotNull(dummyUser)
         val dummyUserResponses: List<UserResponse> = listOfNotNull(dummyUserResponse)
         val queryFilter = UserQueryFilter(
+            signUpType = null,
             email = null,
-            nickname = null,
-            resigned = null
+            name = null,
+            phone = null,
+            gender = null,
+            status = null,
+            grade = null,
+            role = null,
         )
         val pagination = Pagination(
             page = 1,

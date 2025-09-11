@@ -6,9 +6,13 @@ import org.springframework.stereotype.Repository
 @Repository
 interface UserRepository : JpaRepository<User, Long> {
 
-    fun findByIdAndResignedFalse(id: Long): User?
+    fun findByIdAndIsDeletedFalse(id: Long): User?
+
+    fun existsByUsername(username: String): Boolean
 
     fun existsByEmail(email: String): Boolean
 
-    fun existsByNickname(nickname: String): Boolean
+    fun existsByName(name: String): Boolean
+
+    fun existsByPhone(phone: String): Boolean
 }

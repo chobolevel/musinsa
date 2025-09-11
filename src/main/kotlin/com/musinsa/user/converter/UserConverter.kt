@@ -1,9 +1,12 @@
 package com.musinsa.user.converter
 
-import com.musinsa.common.extension.toTimeStamp
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UserResponse
 import com.musinsa.user.entity.User
+import com.musinsa.user.vo.UserGrade
+import com.musinsa.user.vo.UserRole
+import com.musinsa.user.vo.UserSignUpType
+import com.musinsa.user.vo.UserStatus
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 
@@ -14,20 +17,40 @@ class UserConverter(
 
     fun toEntity(request: CreateUserRequest): User {
         return User(
-            email = request.email,
+            username = request.username,
             password = passwordEncoder.encode(request.password),
-            nickname = request.nickname
+            socialId = null,
+            signUpType = UserSignUpType.GENERAL,
+            email = request.email,
+            name = request.name,
+            phone = request.phone,
+            gender = request.gender,
+            birthDate = request.birthDate,
+            status = UserStatus.ACTIVATE,
+            grade = UserGrade.WELCOME,
+            role = UserRole.ROLE_USER,
+            pointBalance = 0
         )
     }
 
     fun toResponse(user: User): UserResponse {
         return UserResponse(
             id = user.id!!,
+            signUpType = user.signUpType,
+            signUpTypeName = user.signUpType.desc,
             email = user.email,
-            nickname = user.nickname,
-            isResigned = user.resigned,
-            createdAt = user.createdAt!!.toTimeStamp(),
-            updatedAt = user.updatedAt!!.toTimeStamp()
+            name = user.name,
+            phone = user.phone,
+            gender = user.gender,
+            genderName = user.gender.desc,
+            birthDate = user.birthDate,
+            status = user.status,
+            grade = user.grade,
+            role = user.role,
+            pointBalance = user.pointBalance,
+            isDeleted = user.isDeleted,
+            createdAt = user.createdAt!!.toInstant().toEpochMilli(),
+            updatedAt = user.updatedAt!!.toInstant().toEpochMilli()
         )
     }
 

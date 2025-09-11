@@ -23,12 +23,22 @@ class UserBusinessValidator(
         }
     }
 
-    @kotlin.Throws(PolicyViolationException::class)
-    fun validateNicknameExist(nickname: String) {
-        if (repository.existsByNickname(nickname = nickname)) {
+    @Throws(PolicyViolationException::class)
+    fun validateNameExists(name: String) {
+        if (repository.existsByName(name = name)) {
             throw PolicyViolationException(
-                errorCode = ErrorCode.NICKNAME_ALREADY_EXISTS,
-                message = ErrorCode.NICKNAME_ALREADY_EXISTS.defaultMessage
+                errorCode = ErrorCode.NAME_ALREADY_EXISTS,
+                message = ErrorCode.NAME_ALREADY_EXISTS.defaultMessage
+            )
+        }
+    }
+
+    @Throws(PolicyViolationException::class)
+    fun validatePhoneExists(phone: String) {
+        if (repository.existsByPhone(phone = phone)) {
+            throw PolicyViolationException(
+                errorCode = ErrorCode.PHONE_NUMBER_ALREADY_EXISTS,
+                message = ErrorCode.PHONE_NUMBER_ALREADY_EXISTS.defaultMessage
             )
         }
     }

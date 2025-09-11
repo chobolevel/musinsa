@@ -8,7 +8,12 @@ import com.musinsa.user.dto.UserResponse
 import com.musinsa.user.entity.UserQueryFilter
 import com.musinsa.user.serivce.UserService
 import com.musinsa.user.validator.UserParameterValidator
+import com.musinsa.user.vo.UserGender
+import com.musinsa.user.vo.UserGrade
 import com.musinsa.user.vo.UserOrderType
+import com.musinsa.user.vo.UserRole
+import com.musinsa.user.vo.UserSignUpType
+import com.musinsa.user.vo.UserStatus
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -30,17 +35,27 @@ class AdminUserController(
     // @HasAuthorityAdmin
     @GetMapping("/users")
     fun getUsers(
+        @RequestParam(required = false) signUpType: UserSignUpType?,
         @RequestParam(required = false) email: String?,
-        @RequestParam(required = false) nickname: String?,
-        @RequestParam(required = false) resigned: Boolean?,
+        @RequestParam(required = false) name: String?,
+        @RequestParam(required = false) phone: String?,
+        @RequestParam(required = false) gender: UserGender?,
+        @RequestParam(required = false) status: UserStatus?,
+        @RequestParam(required = false) grade: UserGrade?,
+        @RequestParam(required = false) role: UserRole?,
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) size: Long?,
         @RequestParam(required = false) orderTypes: List<UserOrderType>?
     ): ResponseEntity<CommonResponse> {
         val queryFilter = UserQueryFilter(
+            signUpType = signUpType,
             email = email,
-            nickname = nickname,
-            resigned = resigned
+            name = name,
+            phone = phone,
+            gender = gender,
+            status = status,
+            grade = grade,
+            role = role
         )
         val pagination = Pagination(
             page = page ?: 1,
