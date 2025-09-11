@@ -14,6 +14,26 @@ class UserBusinessValidator(
 ) {
 
     @Throws(PolicyViolationException::class)
+    fun validateUsernameExists(username: String) {
+        if (repository.existsByUsername(username)) {
+            throw PolicyViolationException(
+                errorCode = ErrorCode.USERNAME_ALREADY_EXISTS,
+                message = ErrorCode.USERNAME_ALREADY_EXISTS.defaultMessage
+            )
+        }
+    }
+
+    @Throws(PolicyViolationException::class)
+    fun validateSocialIdExists(socialId: String) {
+        if (repository.existsBySocialId(socialId)) {
+            throw PolicyViolationException(
+                errorCode = ErrorCode.SOCIAL_ID_ALREADY_EXISTS,
+                message = ErrorCode.SOCIAL_ID_ALREADY_EXISTS.defaultMessage
+            )
+        }
+    }
+
+    @Throws(PolicyViolationException::class)
     fun validateEmailExist(email: String) {
         if (repository.existsByEmail(email = email)) {
             throw PolicyViolationException(

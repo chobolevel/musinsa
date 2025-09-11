@@ -46,6 +46,10 @@ class UserRepositoryFacade(
         return repository.existsByUsername(username)
     }
 
+    fun existsBySocialId(socialId: String): Boolean {
+        return repository.existsBySocialId(socialId)
+    }
+
     fun existsByEmail(email: String): Boolean {
         return repository.existsByEmail(email)
     }

@@ -10,6 +10,8 @@ interface UserRepository : JpaRepository<User, Long> {
 
     fun existsByUsername(username: String): Boolean
 
+    fun existsBySocialId(socialId: String): Boolean
+
     fun existsByEmail(email: String): Boolean
 
     fun existsByName(name: String): Boolean

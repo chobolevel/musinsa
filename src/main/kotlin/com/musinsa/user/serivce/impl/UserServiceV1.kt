@@ -33,6 +33,7 @@ class UserServiceV1(
 
     @Transactional
     override fun createUser(request: CreateUserRequest): Long {
+        validator.validateUsernameExists(username = request.username)
         validator.validateEmailExist(email = request.email)
         validator.validateNameExists(name = request.name)
         validator.validatePhoneExists(phone = request.phone)
@@ -42,6 +43,7 @@ class UserServiceV1(
 
     @Transactional
     override fun createSocialUser(request: CreateSocialUserRequest): Long {
+        validator.validateSocialIdExists(socialId = request.socialId)
         validator.validateEmailExist(email = request.email)
         validator.validateNameExists(name = request.name)
         validator.validatePhoneExists(phone = request.phone)

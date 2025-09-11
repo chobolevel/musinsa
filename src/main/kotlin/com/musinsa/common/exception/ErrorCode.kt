@@ -8,6 +8,8 @@ enum class ErrorCode(val defaultMessage: String) {
     INVALID_TOKEN("유효하지 않은 토큰입니다."),
 
     // USER
+    USERNAME_ALREADY_EXISTS("이미 존재하는 아이디입니다."),
+    SOCIAL_ID_ALREADY_EXISTS("이미 가입한 소셜 계정입니다."),
     EMAIL_ALREADY_EXIST("이미 존재하는 이메일입니다."),
     NAME_ALREADY_EXISTS("이미 존재하는 회원명입니다."),
     PHONE_NUMBER_ALREADY_EXISTS("이미 존재하는 핸드폰번호입니다."),
