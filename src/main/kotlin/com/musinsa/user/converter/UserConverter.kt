@@ -1,5 +1,6 @@
 package com.musinsa.user.converter
 
+import com.musinsa.user.dto.CreateSocialUserRequest
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UserResponse
 import com.musinsa.user.entity.User
@@ -21,6 +22,24 @@ class UserConverter(
             password = passwordEncoder.encode(request.password),
             socialId = null,
             signUpType = UserSignUpType.GENERAL,
+            email = request.email,
+            name = request.name,
+            phone = request.phone,
+            gender = request.gender,
+            birthDate = request.birthDate,
+            status = UserStatus.ACTIVATE,
+            grade = UserGrade.WELCOME,
+            role = UserRole.ROLE_USER,
+            pointBalance = 0
+        )
+    }
+
+    fun toEntity(request: CreateSocialUserRequest): User {
+        return User(
+            username = null,
+            password = null,
+            socialId = request.socialId,
+            signUpType = request.signUpType,
             email = request.email,
             name = request.name,
             phone = request.phone,

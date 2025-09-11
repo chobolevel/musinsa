@@ -1,6 +1,7 @@
 package com.musinsa.user
 
 import com.musinsa.user.dto.ChangeUserPasswordRequest
+import com.musinsa.user.dto.CreateSocialUserRequest
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
@@ -17,7 +18,7 @@ object DummyUser {
     private val id: Long = 1L
     private val username: String = "rodaka"
     private val password: String = "jik584697@"
-    private val socialId: String? = null
+    private val socialId: String = "1234567890"
     private val signUpType: UserSignUpType = UserSignUpType.GENERAL
     private val email: String = "rodaka123@naver.com"
     private val name: String = "오늘은블루시계"
@@ -42,9 +43,35 @@ object DummyUser {
         birthDate = birthDate,
     )
 
+    private val dummyCreateSocialUserRequest: CreateSocialUserRequest = CreateSocialUserRequest(
+        signUpType = UserSignUpType.KAKAO,
+        socialId = socialId,
+        email = email,
+        name = name,
+        phone = phone,
+        gender = gender,
+        birthDate = birthDate,
+    )
+
     private val dummyEntity: User = User(
         username = username,
         password = password,
+        socialId = null,
+        signUpType = signUpType,
+        email = email,
+        name = name,
+        phone = phone,
+        gender = gender,
+        birthDate = birthDate,
+        status = status,
+        grade = grade,
+        role = role,
+        pointBalance = pointBalance,
+    ).also { it.id = id }
+
+    private val dummySocialUserEntity: User = User(
+        username = null,
+        password = null,
         socialId = socialId,
         signUpType = signUpType,
         email = email,
@@ -95,8 +122,16 @@ object DummyUser {
         return dummyCreateRequest
     }
 
+    fun toCreateSocialUserRequest(): CreateSocialUserRequest {
+        return dummyCreateSocialUserRequest
+    }
+
     fun toEntity(): User {
         return dummyEntity
+    }
+
+    fun toSocialUserEntity(): User {
+        return dummySocialUserEntity
     }
 
     fun toResponse(): UserResponse {
