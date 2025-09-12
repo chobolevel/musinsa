@@ -40,6 +40,10 @@ dependencies {
     // jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+    // template engine(thymeleaf)
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
+
     // query dsl
     val queryDslVersion = "5.0.0"
     implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
