@@ -6,6 +6,7 @@ enum class ErrorCode(val defaultMessage: String) {
     // AUTH
     EXPIRED_TOKEN("만료된 토큰입니다."),
     INVALID_TOKEN("유효하지 않은 토큰입니다."),
+    AUTHORIZE_CODE_NOT_FOUND("인가 코드를 찾을 수 없습니다."),
 
     // USER
     USERNAME_ALREADY_EXISTS("이미 존재하는 아이디입니다."),
