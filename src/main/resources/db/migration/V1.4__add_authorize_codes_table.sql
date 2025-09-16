@@ -4,7 +4,9 @@ create table musinsa.authorize_codes
         primary key,
   code       varchar(255) not null comment '코드',
   created_at datetime     not null comment '생성 일자',
-  updated_at datetime     not null comment '수정 일자'
+  updated_at datetime     not null comment '수정 일자',
+  constraint authorize_codes_pk
+    unique (code)
 )
   comment '인가 코드 테이블';
 
