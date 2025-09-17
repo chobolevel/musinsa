@@ -55,6 +55,7 @@ class User(
 ) : Audit() {
 
     @Id
+    @Column(nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
