@@ -1,4 +1,4 @@
-package com.musinsa.user.controllerV1
+package com.musinsa.user.controller.v1
 
 import com.musinsa.common.dto.CommonResponse
 import com.musinsa.common.extension.getUserId
@@ -22,7 +22,7 @@ import java.security.Principal
 
 @RestController
 @RequestMapping("/api/v1")
-class UserControllerV1(
+class UserController(
     private val service: UserService
 ) {
 

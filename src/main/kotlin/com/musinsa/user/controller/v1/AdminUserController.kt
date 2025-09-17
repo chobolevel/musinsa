@@ -1,4 +1,4 @@
-package com.musinsa.user.controllerV1
+package com.musinsa.user.controller.v1
 
 import com.musinsa.common.dto.CommonResponse
 import com.musinsa.common.dto.Pagination
