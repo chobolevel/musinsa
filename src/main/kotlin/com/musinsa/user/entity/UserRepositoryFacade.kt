@@ -3,8 +3,9 @@ package com.musinsa.user.entity
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.exception.DataNotFoundException
 import com.musinsa.common.exception.ErrorCode
-import com.musinsa.common.extension.toOrderSpecifiers
+import com.musinsa.user.entity.QUser.user
 import com.musinsa.user.vo.UserOrderType
+import com.querydsl.core.types.OrderSpecifier
 import org.springframework.stereotype.Component
 import kotlin.jvm.Throws
 
@@ -60,5 +61,16 @@ class UserRepositoryFacade(
 
     fun existsByPhone(phone: String): Boolean {
         return repository.existsByPhone(phone)
+    }
+
+    private fun List<UserOrderType>.toOrderSpecifiers(): Array<OrderSpecifier<*>> {
+        return this.map { userOrderType ->
+            when (userOrderType) {
+                UserOrderType.CREATED_AT_ASC -> user.createdAt.asc()
+                UserOrderType.CREATED_AT_DESC -> user.createdAt.desc()
+                UserOrderType.UPDATED_AT_ASC -> user.updatedAt.asc()
+                UserOrderType.UPDATED_AT_DESC -> user.updatedAt.desc()
+            }
+        }.toTypedArray()
     }
 }
