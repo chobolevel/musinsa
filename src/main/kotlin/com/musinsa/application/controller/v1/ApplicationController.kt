@@ -1,14 +1,22 @@
 package com.musinsa.application.controller.v1
 
 import com.musinsa.application.dto.CreateApplicationRequest
+import com.musinsa.application.entity.ApplicationQueryFilter
 import com.musinsa.application.service.ApplicationService
+import com.musinsa.application.vo.ApplicationOrderType
+import com.musinsa.common.annotation.HasAuthorityUser
 import com.musinsa.common.dto.CommonResponse
+import com.musinsa.common.dto.Pagination
+import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.extension.getUserId
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
@@ -18,6 +26,7 @@ class ApplicationController(
     private val service: ApplicationService
 ) {
 
+    @HasAuthorityUser
     @PostMapping("/applications")
     fun createApplication(
         principal: Principal,
@@ -27,6 +36,29 @@ class ApplicationController(
         val result: Long = service.createApplication(
             userId = principal.getUserId(),
             request = request
+        )
+        return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse(data = result))
+    }
+
+    @HasAuthorityUser
+    @GetMapping("/applications")
+    fun getApplications(
+        @RequestParam(required = false) name: String?,
+        @RequestParam(required = false) page: Long?,
+        @RequestParam(required = false) size: Long?,
+        @RequestParam(required = false) orderTypes: List<ApplicationOrderType>?
+    ): ResponseEntity<CommonResponse> {
+        val queryFilter = ApplicationQueryFilter(
+            name = name
+        )
+        val pagination = Pagination(
+            page = page ?: 1,
+            size = size ?: 20,
+        )
+        val result: PaginationResponse = service.getApplications(
+            queryFilter = queryFilter,
+            pagination = pagination,
+            orderTypes = orderTypes ?: emptyList()
         )
         return ResponseEntity.ok(CommonResponse(data = result))
     }

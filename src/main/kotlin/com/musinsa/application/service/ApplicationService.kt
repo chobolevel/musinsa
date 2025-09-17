@@ -1,8 +1,18 @@
 package com.musinsa.application.service
 
 import com.musinsa.application.dto.CreateApplicationRequest
+import com.musinsa.application.entity.ApplicationQueryFilter
+import com.musinsa.application.vo.ApplicationOrderType
+import com.musinsa.common.dto.Pagination
+import com.musinsa.common.dto.PaginationResponse
 
 interface ApplicationService {
 
     fun createApplication(userId: Long, request: CreateApplicationRequest): Long
+
+    fun getApplications(
+        queryFilter: ApplicationQueryFilter,
+        pagination: Pagination,
+        orderTypes: List<ApplicationOrderType>
+    ): PaginationResponse
 }

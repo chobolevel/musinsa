@@ -1,5 +1,6 @@
 package com.musinsa.application
 
+import com.musinsa.application.dto.ApplicationResponse
 import com.musinsa.application.dto.CreateApplicationRequest
 import com.musinsa.application.entity.Application
 
@@ -19,12 +20,25 @@ object DummyApplication {
         it.id = id
     }
 
+    private val dummyApplicationResponse: ApplicationResponse = ApplicationResponse(
+        id = id,
+        name = name,
+        key = key,
+        secretKey = secretKey,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
+    )
+
     private val dummyCreateRequest: CreateApplicationRequest = CreateApplicationRequest(
         name = name
     )
 
     fun toEntity(): Application {
         return dummyApplication
+    }
+
+    fun toResponse(): ApplicationResponse {
+        return dummyApplicationResponse
     }
 
     fun toCreateRequest(): CreateApplicationRequest {

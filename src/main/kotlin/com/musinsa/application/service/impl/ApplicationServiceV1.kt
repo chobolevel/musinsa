@@ -3,8 +3,12 @@ package com.musinsa.application.service.impl
 import com.musinsa.application.converter.ApplicationConverter
 import com.musinsa.application.dto.CreateApplicationRequest
 import com.musinsa.application.entity.Application
+import com.musinsa.application.entity.ApplicationQueryFilter
 import com.musinsa.application.entity.ApplicationRepositoryFacade
 import com.musinsa.application.service.ApplicationService
+import com.musinsa.application.vo.ApplicationOrderType
+import com.musinsa.common.dto.Pagination
+import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.user.entity.User
 import com.musinsa.user.entity.UserRepositoryFacade
 import org.springframework.stereotype.Service
@@ -23,5 +27,27 @@ class ApplicationServiceV1(
         val application: Application = converter.toEntity(request = request)
         // 사용자 매핑하는 로직 추가 예정
         return repository.save(application).id!!
+    }
+
+    @Transactional(readOnly = true)
+    override fun getApplications(
+        queryFilter: ApplicationQueryFilter,
+        pagination: Pagination,
+        orderTypes: List<ApplicationOrderType>
+    ): PaginationResponse {
+        val applications: List<Application> = repository.searchApplications(
+            queryFilter = queryFilter,
+            pagination = pagination,
+            orderTypes = orderTypes
+        )
+        val totalCount: Long = repository.searchApplicationsCount(
+            queryFilter = queryFilter,
+        )
+        return PaginationResponse(
+            page = pagination.page,
+            size = pagination.size,
+            data = converter.toResponseInBatch(entities = applications),
+            totalCount = totalCount
+        )
     }
 }

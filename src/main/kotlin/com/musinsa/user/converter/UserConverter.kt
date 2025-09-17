@@ -1,5 +1,6 @@
 package com.musinsa.user.converter
 
+import com.musinsa.common.extension.toMillis
 import com.musinsa.user.dto.CreateSocialUserRequest
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UserResponse
@@ -68,8 +69,8 @@ class UserConverter(
             role = user.role,
             pointBalance = user.pointBalance,
             isDeleted = user.isDeleted,
-            createdAt = user.createdAt!!.toInstant().toEpochMilli(),
-            updatedAt = user.updatedAt!!.toInstant().toEpochMilli()
+            createdAt = user.createdAt!!.toMillis(),
+            updatedAt = user.updatedAt!!.toMillis()
         )
     }
 

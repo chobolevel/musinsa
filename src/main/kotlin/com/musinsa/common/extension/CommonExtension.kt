@@ -10,3 +10,7 @@ fun OffsetDateTime.toTimeStamp(): Long {
 fun Principal.getUserId(): Long {
     return this.name.toLong()
 }
+
+fun OffsetDateTime.toMillis(): Long {
+    return this.toInstant().toEpochMilli()
+}
