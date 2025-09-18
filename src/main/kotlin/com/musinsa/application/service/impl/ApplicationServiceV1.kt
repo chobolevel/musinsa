@@ -74,4 +74,11 @@ class ApplicationServiceV1(
         updater.markAsUpdate(entity = application, request = request)
         return applicationId
     }
+
+    @Transactional
+    override fun deleteApplication(userId: Long, applicationId: Long): Boolean {
+        val application: Application = repository.findById(id = applicationId)
+        application.delete()
+        return application.isDeleted
+    }
 }

@@ -21,4 +21,6 @@ interface ApplicationService {
     fun getApplication(userId: Long, applicationId: Long): ApplicationResponse
 
     fun updateApplication(userId: Long, applicationId: Long, request: UpdateApplicationRequest): Long
+
+    fun deleteApplication(userId: Long, applicationId: Long): Boolean
 }
