@@ -3,10 +3,12 @@ package com.musinsa.application.service.impl
 import com.musinsa.application.converter.ApplicationConverter
 import com.musinsa.application.dto.ApplicationResponse
 import com.musinsa.application.dto.CreateApplicationRequest
+import com.musinsa.application.dto.UpdateApplicationRequest
 import com.musinsa.application.entity.Application
 import com.musinsa.application.entity.ApplicationQueryFilter
 import com.musinsa.application.entity.ApplicationRepositoryFacade
 import com.musinsa.application.service.ApplicationService
+import com.musinsa.application.updater.ApplicationUpdater
 import com.musinsa.application.vo.ApplicationOrderType
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
@@ -19,7 +21,8 @@ import org.springframework.transaction.annotation.Transactional
 class ApplicationServiceV1(
     private val repository: ApplicationRepositoryFacade,
     private val userRepository: UserRepositoryFacade,
-    private val converter: ApplicationConverter
+    private val converter: ApplicationConverter,
+    private val updater: ApplicationUpdater
 ) : ApplicationService {
 
     @Transactional
@@ -59,5 +62,15 @@ class ApplicationServiceV1(
     ): ApplicationResponse {
         val application: Application = repository.findById(id = applicationId)
         return converter.toResponse(entity = application)
+    }
+
+    override fun updateApplication(
+        userId: Long,
+        applicationId: Long,
+        request: UpdateApplicationRequest
+    ): Long {
+        val application: Application = repository.findById(id = applicationId)
+        updater.markAsUpdate(entity = application, request = request)
+        return applicationId
     }
 }

@@ -2,7 +2,9 @@ package com.musinsa.application
 
 import com.musinsa.application.dto.ApplicationResponse
 import com.musinsa.application.dto.CreateApplicationRequest
+import com.musinsa.application.dto.UpdateApplicationRequest
 import com.musinsa.application.entity.Application
+import com.musinsa.application.vo.ApplicationUpdateMask
 
 object DummyApplication {
     private val id: Long = 1L
@@ -33,6 +35,11 @@ object DummyApplication {
         name = name
     )
 
+    private val dummyUpdateRequest: UpdateApplicationRequest = UpdateApplicationRequest(
+        name = "새로운 이름",
+        updateMask = listOf(ApplicationUpdateMask.NAME),
+    )
+
     fun toEntity(): Application {
         return dummyApplication
     }
@@ -43,5 +50,9 @@ object DummyApplication {
 
     fun toCreateRequest(): CreateApplicationRequest {
         return dummyCreateRequest
+    }
+
+    fun toUpdateRequest(): UpdateApplicationRequest {
+        return dummyUpdateRequest
     }
 }

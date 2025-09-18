@@ -3,10 +3,12 @@ package com.musinsa.application
 import com.musinsa.application.converter.ApplicationConverter
 import com.musinsa.application.dto.ApplicationResponse
 import com.musinsa.application.dto.CreateApplicationRequest
+import com.musinsa.application.dto.UpdateApplicationRequest
 import com.musinsa.application.entity.Application
 import com.musinsa.application.entity.ApplicationQueryFilter
 import com.musinsa.application.entity.ApplicationRepositoryFacade
 import com.musinsa.application.service.impl.ApplicationServiceV1
+import com.musinsa.application.updater.ApplicationUpdater
 import com.musinsa.application.vo.ApplicationOrderType
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
@@ -39,6 +41,9 @@ class ApplicationServiceV1Test {
 
     @Mock
     private lateinit var converter: ApplicationConverter
+
+    @Mock
+    private lateinit var updater: ApplicationUpdater
 
     @InjectMocks
     private lateinit var service: ApplicationServiceV1
@@ -113,5 +118,21 @@ class ApplicationServiceV1Test {
 
         // then
         assertThat(result.id).isEqualTo(dummyApplication.id)
+    }
+
+    @Test
+    fun updateApplicationTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummyApplicationId: Long = dummyApplication.id!!
+        val request: UpdateApplicationRequest = DummyApplication.toUpdateRequest()
+        `when`(repository.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
+        `when`(updater.markAsUpdate(entity = dummyApplication, request = request)).thenReturn(dummyApplication)
+
+        // when
+        val result: Long = service.updateApplication(userId = dummyUserId, applicationId = dummyApplicationId, request = request)
+
+        // then
+        assertThat(result).isEqualTo(dummyApplication.id)
     }
 }

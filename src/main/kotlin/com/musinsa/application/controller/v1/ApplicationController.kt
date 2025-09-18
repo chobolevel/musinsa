@@ -2,8 +2,10 @@ package com.musinsa.application.controller.v1
 
 import com.musinsa.application.dto.ApplicationResponse
 import com.musinsa.application.dto.CreateApplicationRequest
+import com.musinsa.application.dto.UpdateApplicationRequest
 import com.musinsa.application.entity.ApplicationQueryFilter
 import com.musinsa.application.service.ApplicationService
+import com.musinsa.application.validator.ApplicationParameterValidator
 import com.musinsa.application.vo.ApplicationOrderType
 import com.musinsa.common.annotation.HasAuthorityUser
 import com.musinsa.common.dto.CommonResponse
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -25,7 +28,8 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api/v1")
 class ApplicationController(
-    private val service: ApplicationService
+    private val service: ApplicationService,
+    private val validator: ApplicationParameterValidator
 ) {
 
     @HasAuthorityUser
@@ -71,6 +75,23 @@ class ApplicationController(
         val result: ApplicationResponse = service.getApplication(
             userId = principal.getUserId(),
             applicationId = applicationId
+        )
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
+
+    @HasAuthorityUser
+    @PutMapping("/applications/{applicationId}")
+    fun updateApplication(
+        principal: Principal,
+        @PathVariable applicationId: Long,
+        @Valid @RequestBody
+        request: UpdateApplicationRequest
+    ): ResponseEntity<CommonResponse> {
+        validator.validate(request = request)
+        val result: Long = service.updateApplication(
+            userId = principal.getUserId(),
+            applicationId = applicationId,
+            request = request
         )
         return ResponseEntity.ok(CommonResponse(data = result))
     }
