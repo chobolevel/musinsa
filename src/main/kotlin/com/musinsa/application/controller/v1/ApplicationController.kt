@@ -1,5 +1,6 @@
 package com.musinsa.application.controller.v1
 
+import com.musinsa.application.dto.ApplicationResponse
 import com.musinsa.application.dto.CreateApplicationRequest
 import com.musinsa.application.entity.ApplicationQueryFilter
 import com.musinsa.application.service.ApplicationService
@@ -13,6 +14,7 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -59,6 +61,16 @@ class ApplicationController(
             queryFilter = queryFilter,
             pagination = pagination,
             orderTypes = orderTypes ?: emptyList()
+        )
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
+
+    @HasAuthorityUser
+    @GetMapping("/applications/{applicationId}")
+    fun getApplication(principal: Principal, @PathVariable applicationId: Long): ResponseEntity<CommonResponse> {
+        val result: ApplicationResponse = service.getApplication(
+            userId = principal.getUserId(),
+            applicationId = applicationId
         )
         return ResponseEntity.ok(CommonResponse(data = result))
     }

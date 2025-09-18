@@ -1,5 +1,6 @@
 package com.musinsa.application.service
 
+import com.musinsa.application.dto.ApplicationResponse
 import com.musinsa.application.dto.CreateApplicationRequest
 import com.musinsa.application.entity.ApplicationQueryFilter
 import com.musinsa.application.vo.ApplicationOrderType
@@ -15,4 +16,6 @@ interface ApplicationService {
         pagination: Pagination,
         orderTypes: List<ApplicationOrderType>
     ): PaginationResponse
+
+    fun getApplication(userId: Long, applicationId: Long): ApplicationResponse
 }

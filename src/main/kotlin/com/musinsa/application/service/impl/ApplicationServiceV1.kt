@@ -1,6 +1,7 @@
 package com.musinsa.application.service.impl
 
 import com.musinsa.application.converter.ApplicationConverter
+import com.musinsa.application.dto.ApplicationResponse
 import com.musinsa.application.dto.CreateApplicationRequest
 import com.musinsa.application.entity.Application
 import com.musinsa.application.entity.ApplicationQueryFilter
@@ -49,5 +50,14 @@ class ApplicationServiceV1(
             data = converter.toResponseInBatch(entities = applications),
             totalCount = totalCount
         )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getApplication(
+        userId: Long,
+        applicationId: Long
+    ): ApplicationResponse {
+        val application: Application = repository.findById(id = applicationId)
+        return converter.toResponse(entity = application)
     }
 }

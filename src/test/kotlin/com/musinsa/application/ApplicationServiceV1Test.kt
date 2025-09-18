@@ -99,4 +99,19 @@ class ApplicationServiceV1Test {
         assertThat(result.data).isEqualTo(dummyApplicationResponses)
         assertThat(result.totalCount).isEqualTo(dummyApplicationResponses.size.toLong())
     }
+
+    @Test
+    fun getApplicationTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummyApplicationId: Long = dummyApplication.id!!
+        `when`(repository.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
+        `when`(converter.toResponse(entity = dummyApplication)).thenReturn(dummyApplicationResponse)
+
+        // when
+        val result: ApplicationResponse = service.getApplication(userId = dummyUserId, applicationId = dummyApplicationId)
+
+        // then
+        assertThat(result.id).isEqualTo(dummyApplication.id)
+    }
 }
