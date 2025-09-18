@@ -64,6 +64,7 @@ class ApplicationServiceV1(
         return converter.toResponse(entity = application)
     }
 
+    @Transactional
     override fun updateApplication(
         userId: Long,
         applicationId: Long,

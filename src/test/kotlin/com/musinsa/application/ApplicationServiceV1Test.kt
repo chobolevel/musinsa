@@ -135,4 +135,18 @@ class ApplicationServiceV1Test {
         // then
         assertThat(result).isEqualTo(dummyApplication.id)
     }
+
+    @Test
+    fun deleteApplicationTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummyApplicationId: Long = dummyApplication.id!!
+        `when`(repository.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
+
+        // when
+        val result: Boolean = service.deleteApplication(userId = dummyUserId, applicationId = dummyApplicationId)
+
+        // then
+        assertThat(result).isTrue()
+    }
 }
