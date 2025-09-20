@@ -26,4 +26,6 @@ interface ApplicationService {
     fun deleteApplication(userId: Long, applicationId: Long): Boolean
 
     fun addMember(userId: Long, applicationId: Long, request: AddApplicationMemberRequest): Boolean
+
+    fun removeMember(userId: Long, applicationId: Long, applicationMemberId: Long): Boolean
 }

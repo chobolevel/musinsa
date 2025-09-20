@@ -1,7 +1,7 @@
 package com.musinsa.application.dto
 
 import com.musinsa.application.vo.member.ApplicationMemberType
-import org.jetbrains.annotations.NotNull
+import jakarta.validation.constraints.NotNull
 
 data class AddApplicationMemberRequest(
     @field:NotNull

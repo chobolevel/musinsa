@@ -54,4 +54,9 @@ class Application(
         this.applicationMembers.add(applicationMember)
         user.applicationMembers.add(applicationMember)
     }
+
+    fun removeMember(user: User) {
+        this.applicationMembers.removeIf { it.user!!.id == user.id }
+        user.applicationMembers.removeIf { it.user!!.id == user.id }
+    }
 }

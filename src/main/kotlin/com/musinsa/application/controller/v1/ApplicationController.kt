@@ -126,4 +126,19 @@ class ApplicationController(
         )
         return ResponseEntity.ok(CommonResponse(data = result))
     }
+
+    @HasAuthorityUser
+    @DeleteMapping("/applications/{applicationId}/members/{applicationMemberId}")
+    fun removeMember(
+        principal: Principal,
+        @PathVariable applicationId: Long,
+        @PathVariable applicationMemberId: Long
+    ): ResponseEntity<CommonResponse> {
+        val result: Boolean = service.removeMember(
+            userId = principal.getUserId(),
+            applicationId = applicationId,
+            applicationMemberId = applicationMemberId
+        )
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
 }

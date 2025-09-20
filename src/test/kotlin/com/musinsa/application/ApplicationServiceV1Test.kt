@@ -179,4 +179,28 @@ class ApplicationServiceV1Test {
         // then
         assertThat(result).isTrue()
     }
+
+    @Test
+    fun removeMemberTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummyApplicationId: Long = dummyApplication.id!!
+        val dummyApplicationMemberId: Long = dummySocialUser.id!!
+        dummyApplication.addMember(
+            user = dummyUser,
+            memberType = ApplicationMemberType.OWNER,
+        )
+        `when`(repository.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
+        `when`(userRepository.findById(id = dummyApplicationMemberId)).thenReturn(dummySocialUser)
+
+        // when
+        val result: Boolean = service.removeMember(
+            userId = dummyUserId,
+            applicationId = dummyApplicationId,
+            applicationMemberId = dummyApplicationMemberId
+        )
+
+        // then
+        assertThat(result).isTrue()
+    }
 }

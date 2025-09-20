@@ -109,4 +109,24 @@ class ApplicationServiceV1(
         )
         return true
     }
+
+    @Transactional
+    override fun removeMember(
+        userId: Long,
+        applicationId: Long,
+        applicationMemberId: Long
+    ): Boolean {
+        val application: Application = repository.findById(id = applicationId)
+        if (!application.isOwnerMember(memberId = userId)) {
+            throw PolicyViolationException(
+                errorCode = ErrorCode.ACCESSIBLE_ONLY_OWNER_MEMBER_ON_APPLICATION,
+                message = ErrorCode.ACCESSIBLE_ONLY_OWNER_MEMBER_ON_APPLICATION.defaultMessage
+            )
+        }
+        val userToRemove: User = userRepository.findById(id = applicationMemberId)
+        application.removeMember(
+            user = userToRemove
+        )
+        return true
+    }
 }
