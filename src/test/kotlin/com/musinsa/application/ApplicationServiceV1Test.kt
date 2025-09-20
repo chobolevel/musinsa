@@ -31,6 +31,7 @@ import kotlin.test.Test
 class ApplicationServiceV1Test {
 
     private val dummyUser: User = DummyUser.toEntity()
+    private val dummySocialUser: User = DummyUser.toSocialUserEntity()
 
     private val dummyApplication: Application = DummyApplication.toEntity()
     private val dummyApplicationResponse: ApplicationResponse = DummyApplication.toResponse()
@@ -158,7 +159,7 @@ class ApplicationServiceV1Test {
         val dummyUserId: Long = dummyUser.id!!
         val dummyApplicationId: Long = dummyApplication.id!!
         val dummyRequest = AddApplicationMemberRequest(
-            memberId = 1L,
+            memberId = dummySocialUser.id!!,
             memberType = ApplicationMemberType.MEMBER,
         )
         dummyApplication.addMember(
@@ -166,7 +167,7 @@ class ApplicationServiceV1Test {
             memberType = ApplicationMemberType.OWNER,
         )
         `when`(repository.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
-        `when`(userRepository.findById(id = dummyRequest.memberId)).thenReturn(dummyUser)
+        `when`(userRepository.findById(id = dummyRequest.memberId)).thenReturn(dummySocialUser)
 
         // when
         val result: Boolean = service.addMember(

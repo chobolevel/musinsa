@@ -18,7 +18,6 @@ object DummyUser {
     private val id: Long = 1L
     private val username: String = "rodaka"
     private val password: String = "jik584697@"
-    private val socialId: String = "1234567890"
     private val signUpType: UserSignUpType = UserSignUpType.GENERAL
     private val email: String = "rodaka123@naver.com"
     private val name: String = "오늘은블루시계"
@@ -33,6 +32,22 @@ object DummyUser {
     private val createdAt: Long = 0L
     private val updatedAt: Long = 0L
 
+    private val socialUserId: Long = 2L
+    private val socialId: String = "1234567890"
+    private val socialUserSignUpType: UserSignUpType = UserSignUpType.KAKAO
+    private val socialUserEmail: String = "dami@naver.com"
+    private val socialUserName: String = "김다미"
+    private val socialUserPhone: String = "01012345678"
+    private val socialUserGender: UserGender = UserGender.FEMALE
+    private val socialUserBirthDate: LocalDate = LocalDate.of(1995, 4, 9)
+    private val socialUserStatue: UserStatus = UserStatus.ACTIVATE
+    private val socialUserGrade: UserGrade = UserGrade.DIAMOND
+    private val socialUserRole: UserRole = UserRole.ROLE_USER
+    private val socialUserPointBalance: Int = 10000
+    private val socialUserIsDeleted: Boolean = false
+    private val socialUserCreatedAt: Long = 0L
+    private val socialUserUpdatedAt: Long = 0L
+
     private val dummyCreateRequest: CreateUserRequest = CreateUserRequest(
         username = username,
         password = password,
@@ -44,13 +59,13 @@ object DummyUser {
     )
 
     private val dummyCreateSocialUserRequest: CreateSocialUserRequest = CreateSocialUserRequest(
-        signUpType = UserSignUpType.KAKAO,
+        signUpType = socialUserSignUpType,
         socialId = socialId,
-        email = email,
-        name = name,
-        phone = phone,
-        gender = gender,
-        birthDate = birthDate,
+        email = socialUserEmail,
+        name = socialUserName,
+        phone = socialUserPhone,
+        gender = socialUserGender,
+        birthDate = socialUserBirthDate,
     )
 
     private val dummyEntity: User = User(
@@ -73,17 +88,17 @@ object DummyUser {
         username = null,
         password = null,
         socialId = socialId,
-        signUpType = signUpType,
-        email = email,
-        name = name,
-        phone = phone,
-        gender = gender,
-        birthDate = birthDate,
-        status = status,
-        grade = grade,
-        role = role,
-        pointBalance = pointBalance,
-    ).also { it.id = id }
+        signUpType = socialUserSignUpType,
+        email = socialUserEmail,
+        name = socialUserName,
+        phone = socialUserPhone,
+        gender = socialUserGender,
+        birthDate = socialUserBirthDate,
+        status = socialUserStatue,
+        grade = socialUserGrade,
+        role = socialUserRole,
+        pointBalance = socialUserPointBalance
+    ).also { it.id = socialUserId }
 
     private val dummyResponse: UserResponse = UserResponse(
         id = id,
