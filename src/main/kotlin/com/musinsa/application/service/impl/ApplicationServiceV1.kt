@@ -10,6 +10,7 @@ import com.musinsa.application.entity.ApplicationRepositoryFacade
 import com.musinsa.application.service.ApplicationService
 import com.musinsa.application.updater.ApplicationUpdater
 import com.musinsa.application.vo.ApplicationOrderType
+import com.musinsa.application.vo.member.ApplicationMemberType
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.user.entity.User
@@ -29,7 +30,10 @@ class ApplicationServiceV1(
     override fun createApplication(userId: Long, request: CreateApplicationRequest): Long {
         val user: User = userRepository.findById(id = userId)
         val application: Application = converter.toEntity(request = request)
-        // 사용자 매핑하는 로직 추가 예정
+        application.addMember(
+            user = user,
+            memberType = ApplicationMemberType.OWNER
+        )
         return repository.save(application).id!!
     }
 

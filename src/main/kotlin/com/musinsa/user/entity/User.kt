@@ -1,11 +1,13 @@
 package com.musinsa.user.entity
 
+import com.musinsa.application.entity.member.ApplicationMember
 import com.musinsa.common.entity.Audit
 import com.musinsa.user.vo.UserGender
 import com.musinsa.user.vo.UserGrade
 import com.musinsa.user.vo.UserRole
 import com.musinsa.user.vo.UserSignUpType
 import com.musinsa.user.vo.UserStatus
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -13,7 +15,9 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import org.hibernate.annotations.SQLRestriction
 import org.hibernate.envers.Audited
 import java.time.LocalDate
 
@@ -61,6 +65,10 @@ class User(
 
     @Column(nullable = false)
     var isDeleted: Boolean = false
+
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @SQLRestriction("is_deleted = false")
+    val applicationMembers: MutableList<ApplicationMember> = mutableListOf()
 
     fun delete() {
         this.isDeleted = true

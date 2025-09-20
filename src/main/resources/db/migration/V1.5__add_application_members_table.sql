@@ -4,7 +4,7 @@ create table musinsa.application_members
         primary key,
   application_id bigint      not null comment '애플리케이션 아이디',
   user_id        bigint      not null comment '회원 아이디',
-  type           varchar(20) not null comment '맴버 유형',
+  type           varchar(20) not null comment '맴버 유형(OWNER, MEMBER)',
   is_deleted     bit         not null comment '삭제 여부',
   created_at     datetime    not null comment '생성일자',
   updated_at     datetime    not null comment '수정일자'
