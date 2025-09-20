@@ -51,6 +51,7 @@ class UserServiceV1(
         return repository.save(user = user).id!!
     }
 
+    @Transactional(readOnly = true)
     override fun getUsers(
         queryFilter: UserQueryFilter,
         pagination: Pagination,
@@ -70,6 +71,7 @@ class UserServiceV1(
         )
     }
 
+    @Transactional(readOnly = true)
     override fun getUser(id: Long): UserResponse {
         val user: User = repository.findById(id = id)
         return converter.toResponse(user = user)
@@ -92,6 +94,7 @@ class UserServiceV1(
         return user.isDeleted
     }
 
+    @Transactional
     override fun changePassword(
         userId: Long,
         request: ChangeUserPasswordRequest
