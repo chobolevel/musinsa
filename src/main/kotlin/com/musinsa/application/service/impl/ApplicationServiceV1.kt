@@ -1,6 +1,7 @@
 package com.musinsa.application.service.impl
 
 import com.musinsa.application.converter.ApplicationConverter
+import com.musinsa.application.dto.AddApplicationMemberRequest
 import com.musinsa.application.dto.ApplicationResponse
 import com.musinsa.application.dto.CreateApplicationRequest
 import com.musinsa.application.dto.UpdateApplicationRequest
@@ -13,6 +14,8 @@ import com.musinsa.application.vo.ApplicationOrderType
 import com.musinsa.application.vo.member.ApplicationMemberType
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.common.exception.ErrorCode
+import com.musinsa.common.exception.PolicyViolationException
 import com.musinsa.user.entity.User
 import com.musinsa.user.entity.UserRepositoryFacade
 import org.springframework.stereotype.Service
@@ -84,5 +87,26 @@ class ApplicationServiceV1(
         val application: Application = repository.findById(id = applicationId)
         application.delete()
         return application.isDeleted
+    }
+
+    @Transactional
+    override fun addMember(
+        userId: Long,
+        applicationId: Long,
+        request: AddApplicationMemberRequest
+    ): Boolean {
+        val application = repository.findById(id = applicationId)
+        if (!application.isOwnerMember(memberId = userId)) {
+            throw PolicyViolationException(
+                errorCode = ErrorCode.ACCESSIBLE_ONLY_OWNER_MEMBER_ON_APPLICATION,
+                message = ErrorCode.ACCESSIBLE_ONLY_OWNER_MEMBER_ON_APPLICATION.defaultMessage
+            )
+        }
+        val userToAdd: User = userRepository.findById(id = request.memberId)
+        application.addMember(
+            user = userToAdd,
+            memberType = request.memberType
+        )
+        return true
     }
 }

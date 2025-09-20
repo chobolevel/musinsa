@@ -1,5 +1,6 @@
 package com.musinsa.application.controller.v1
 
+import com.musinsa.application.dto.AddApplicationMemberRequest
 import com.musinsa.application.dto.ApplicationResponse
 import com.musinsa.application.dto.CreateApplicationRequest
 import com.musinsa.application.dto.UpdateApplicationRequest
@@ -106,6 +107,22 @@ class ApplicationController(
         val result: Boolean = service.deleteApplication(
             userId = principal.getUserId(),
             applicationId = applicationId
+        )
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
+
+    @HasAuthorityUser
+    @PostMapping("/applications/{applicationId}/members")
+    fun addMember(
+        principal: Principal,
+        @PathVariable applicationId: Long,
+        @Valid @RequestBody
+        request: AddApplicationMemberRequest
+    ): ResponseEntity<CommonResponse> {
+        val result: Boolean = service.addMember(
+            userId = principal.getUserId(),
+            applicationId = applicationId,
+            request = request
         )
         return ResponseEntity.ok(CommonResponse(data = result))
     }

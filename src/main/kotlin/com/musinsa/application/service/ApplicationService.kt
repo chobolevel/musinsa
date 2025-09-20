@@ -1,5 +1,6 @@
 package com.musinsa.application.service
 
+import com.musinsa.application.dto.AddApplicationMemberRequest
 import com.musinsa.application.dto.ApplicationResponse
 import com.musinsa.application.dto.CreateApplicationRequest
 import com.musinsa.application.dto.UpdateApplicationRequest
@@ -23,4 +24,6 @@ interface ApplicationService {
     fun updateApplication(userId: Long, applicationId: Long, request: UpdateApplicationRequest): Long
 
     fun deleteApplication(userId: Long, applicationId: Long): Boolean
+
+    fun addMember(userId: Long, applicationId: Long, request: AddApplicationMemberRequest): Boolean
 }

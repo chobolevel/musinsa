@@ -40,6 +40,10 @@ class Application(
         this.isDeleted = true
     }
 
+    fun isOwnerMember(memberId: Long): Boolean {
+        return this.applicationMembers.any { it.user!!.id == memberId && it.type == ApplicationMemberType.OWNER }
+    }
+
     fun addMember(user: User, memberType: ApplicationMemberType) {
         // 주인 객체에서 매핑 관리를 유지하면서 도메인 흐름에 맞는 편의 메서드 정의
         val applicationMember: ApplicationMember = ApplicationMember.create(

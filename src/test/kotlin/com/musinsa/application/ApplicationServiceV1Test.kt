@@ -1,6 +1,7 @@
 package com.musinsa.application
 
 import com.musinsa.application.converter.ApplicationConverter
+import com.musinsa.application.dto.AddApplicationMemberRequest
 import com.musinsa.application.dto.ApplicationResponse
 import com.musinsa.application.dto.CreateApplicationRequest
 import com.musinsa.application.dto.UpdateApplicationRequest
@@ -10,6 +11,7 @@ import com.musinsa.application.entity.ApplicationRepositoryFacade
 import com.musinsa.application.service.impl.ApplicationServiceV1
 import com.musinsa.application.updater.ApplicationUpdater
 import com.musinsa.application.vo.ApplicationOrderType
+import com.musinsa.application.vo.member.ApplicationMemberType
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.user.DummyUser
@@ -145,6 +147,33 @@ class ApplicationServiceV1Test {
 
         // when
         val result: Boolean = service.deleteApplication(userId = dummyUserId, applicationId = dummyApplicationId)
+
+        // then
+        assertThat(result).isTrue()
+    }
+
+    @Test
+    fun addMemberTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummyApplicationId: Long = dummyApplication.id!!
+        val dummyRequest = AddApplicationMemberRequest(
+            memberId = 1L,
+            memberType = ApplicationMemberType.MEMBER,
+        )
+        dummyApplication.addMember(
+            user = dummyUser,
+            memberType = ApplicationMemberType.OWNER,
+        )
+        `when`(repository.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
+        `when`(userRepository.findById(id = dummyRequest.memberId)).thenReturn(dummyUser)
+
+        // when
+        val result: Boolean = service.addMember(
+            userId = dummyUserId,
+            applicationId = dummyApplicationId,
+            request = dummyRequest
+        )
 
         // then
         assertThat(result).isTrue()

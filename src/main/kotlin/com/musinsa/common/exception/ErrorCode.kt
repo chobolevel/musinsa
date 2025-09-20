@@ -19,5 +19,6 @@ enum class ErrorCode(val defaultMessage: String) {
     SOCIAL_USER_CAN_NOT_CHANGE_PASSWORD("소셜 회원은 비밀번호를 변경할 수 없습니다."),
 
     // APPLICATION
-    APPLICATION_NOT_FOUND("애플리케이션을 찾을 수 없습니다.")
+    APPLICATION_NOT_FOUND("애플리케이션을 찾을 수 없습니다."),
+    ACCESSIBLE_ONLY_OWNER_MEMBER_ON_APPLICATION("애플리케이션의 소유자만 접근할 수 있습니다.")
 }
