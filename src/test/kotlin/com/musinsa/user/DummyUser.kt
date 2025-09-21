@@ -1,7 +1,6 @@
 package com.musinsa.user
 
 import com.musinsa.user.dto.ChangeUserPasswordRequest
-import com.musinsa.user.dto.CreateSocialUserRequest
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
@@ -51,21 +50,13 @@ object DummyUser {
     private val dummyCreateRequest: CreateUserRequest = CreateUserRequest(
         username = username,
         password = password,
+        socialId = null,
+        signUpType = signUpType,
         email = email,
         name = name,
         phone = phone,
         gender = gender,
         birthDate = birthDate,
-    )
-
-    private val dummyCreateSocialUserRequest: CreateSocialUserRequest = CreateSocialUserRequest(
-        signUpType = socialUserSignUpType,
-        socialId = socialId,
-        email = socialUserEmail,
-        name = socialUserName,
-        phone = socialUserPhone,
-        gender = socialUserGender,
-        birthDate = socialUserBirthDate,
     )
 
     private val dummyEntity: User = User(
@@ -135,10 +126,6 @@ object DummyUser {
 
     fun toCreateRequest(): CreateUserRequest {
         return dummyCreateRequest
-    }
-
-    fun toCreateSocialUserRequest(): CreateSocialUserRequest {
-        return dummyCreateSocialUserRequest
     }
 
     fun toEntity(): User {

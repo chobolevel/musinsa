@@ -3,7 +3,6 @@ package com.musinsa.user.serivce
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.user.dto.ChangeUserPasswordRequest
-import com.musinsa.user.dto.CreateSocialUserRequest
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
@@ -13,8 +12,6 @@ import com.musinsa.user.vo.UserOrderType
 interface UserService {
 
     fun createUser(request: CreateUserRequest): Long
-
-    fun createSocialUser(request: CreateSocialUserRequest): Long
 
     fun getUsers(
         queryFilter: UserQueryFilter,

@@ -2,12 +2,42 @@ package com.musinsa.user.validator
 
 import com.musinsa.common.exception.ErrorCode
 import com.musinsa.common.exception.InvalidParameterException
+import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
+import com.musinsa.user.vo.UserSignUpType
 import com.musinsa.user.vo.UserUpdateMask
 import org.springframework.stereotype.Component
 
 @Component
 class UserParameterValidator {
+
+    fun validate(request: CreateUserRequest) {
+        when (request.signUpType) {
+            UserSignUpType.GENERAL -> {
+                if (request.username.isNullOrEmpty()) {
+                    throw InvalidParameterException(
+                        errorCode = ErrorCode.INVALID_PARAMETER,
+                        message = "[username]은(는) 필수 값입니다ㅑ."
+                    )
+                }
+                if (request.password.isNullOrEmpty()) {
+                    throw InvalidParameterException(
+                        errorCode = ErrorCode.INVALID_PARAMETER,
+                        message = "[password]은(는) 필수 값입니다."
+                    )
+                }
+            }
+
+            else -> {
+                if (request.socialId.isNullOrEmpty()) {
+                    throw InvalidParameterException(
+                        errorCode = ErrorCode.INVALID_PARAMETER,
+                        message = "[social_id]은(는) 필수 값입니다."
+                    )
+                }
+            }
+        }
+    }
 
     fun validate(request: UpdateUserRequest) {
         request.updateMask.forEach {

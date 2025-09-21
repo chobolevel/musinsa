@@ -1,6 +1,7 @@
 package com.musinsa.user.dto
 
 import com.musinsa.user.vo.UserGender
+import com.musinsa.user.vo.UserSignUpType
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
@@ -8,10 +9,11 @@ import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate
 
 data class CreateUserRequest(
-    @field:NotEmpty
-    val username: String,
-    @field:NotEmpty
-    val password: String,
+    val username: String?,
+    val password: String?,
+    val socialId: String?,
+    @field:NotNull
+    val signUpType: UserSignUpType,
     @field:Email
     val email: String,
     @field:NotEmpty

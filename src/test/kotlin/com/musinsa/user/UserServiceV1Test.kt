@@ -4,7 +4,6 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.user.converter.UserConverter
 import com.musinsa.user.dto.ChangeUserPasswordRequest
-import com.musinsa.user.dto.CreateSocialUserRequest
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
@@ -64,20 +63,6 @@ class UserServiceV1Test {
 
         // then
         assertThat(result).isEqualTo(dummyUser.id)
-    }
-
-    @Test
-    fun createSocialUserTest() {
-        // given
-        val request: CreateSocialUserRequest = DummyUser.toCreateSocialUserRequest()
-        `when`(converter.toEntity(request = request)).thenReturn(dummySocialUser)
-        `when`(repository.save(dummySocialUser)).thenReturn(dummySocialUser)
-
-        // when
-        val result: Long = userService.createSocialUser(request = request)
-
-        // then
-        assertThat(result).isEqualTo(dummySocialUser.id)
     }
 
     @Test

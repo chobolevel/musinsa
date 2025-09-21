@@ -6,7 +6,6 @@ import com.musinsa.common.exception.ErrorCode
 import com.musinsa.common.exception.PolicyViolationException
 import com.musinsa.user.converter.UserConverter
 import com.musinsa.user.dto.ChangeUserPasswordRequest
-import com.musinsa.user.dto.CreateSocialUserRequest
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
@@ -33,17 +32,15 @@ class UserServiceV1(
 
     @Transactional
     override fun createUser(request: CreateUserRequest): Long {
-        validator.validateUsernameExists(username = request.username)
-        validator.validateEmailExist(email = request.email)
-        validator.validateNameExists(name = request.name)
-        validator.validatePhoneExists(phone = request.phone)
-        val user: User = converter.toEntity(request = request)
-        return repository.save(user = user).id!!
-    }
+        when (request.signUpType) {
+            UserSignUpType.GENERAL -> {
+                validator.validateUsernameExists(username = request.username!!)
+            }
 
-    @Transactional
-    override fun createSocialUser(request: CreateSocialUserRequest): Long {
-        validator.validateSocialIdExists(socialId = request.socialId)
+            else -> {
+                validator.validateSocialIdExists(socialId = request.socialId!!)
+            }
+        }
         validator.validateEmailExist(email = request.email)
         validator.validateNameExists(name = request.name)
         validator.validatePhoneExists(phone = request.phone)

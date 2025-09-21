@@ -3,11 +3,11 @@ package com.musinsa.user.controller.v1
 import com.musinsa.common.dto.CommonResponse
 import com.musinsa.common.extension.getUserId
 import com.musinsa.user.dto.ChangeUserPasswordRequest
-import com.musinsa.user.dto.CreateSocialUserRequest
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
 import com.musinsa.user.serivce.UserService
+import com.musinsa.user.validator.UserParameterValidator
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -23,7 +23,8 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api/v1")
 class UserController(
-    private val service: UserService
+    private val service: UserService,
+    private val validator: UserParameterValidator
 ) {
 
     @PostMapping("/users")
@@ -31,16 +32,8 @@ class UserController(
         @Valid @RequestBody
         request: CreateUserRequest
     ): ResponseEntity<CommonResponse> {
+        validator.validate(request = request)
         val result: Long = service.createUser(request = request)
-        return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse(data = result))
-    }
-
-    @PostMapping("/social-users")
-    fun createSocialUser(
-        @Valid @RequestBody
-        request: CreateSocialUserRequest
-    ): ResponseEntity<CommonResponse> {
-        val result: Long = service.createSocialUser(request = request)
         return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse(data = result))
     }
 
