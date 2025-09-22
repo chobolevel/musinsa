@@ -1,6 +1,6 @@
-package com.musinsa.common.util
+package com.musinsa.auth.util
 
-import com.musinsa.common.dto.JwtResponse
+import com.musinsa.auth.dto.JwtResponse
 import com.musinsa.common.exception.ErrorCode
 import com.musinsa.common.exception.UnauthorizedException
 import com.musinsa.common.properties.JwtProperties
@@ -14,11 +14,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Component
-import java.util.*
+import java.util.Date
 import java.util.concurrent.TimeUnit
 
 @Component
-class TokenUtil(
+class TokenProvider(
     private val jwtProperties: JwtProperties,
     private val userDetailService: UserDetailsService
 ) {
@@ -52,7 +52,6 @@ class TokenUtil(
             .setIssuedAt(issuedAt)
             .setExpiration(expiration)
             .setSubject(authentication.name)
-            .claim("authorities", authentication.authorities)
             .signWith(SignatureAlgorithm.HS256, jwtProperties.secret)
             .compact()
     }
@@ -64,7 +63,6 @@ class TokenUtil(
             .setIssuedAt(issuedAt)
             .setExpiration(expiration)
             .setSubject(authentication.name)
-            .claim("authorities", authentication.authorities)
             .signWith(SignatureAlgorithm.HS256, jwtProperties.secret)
             .compact()
     }

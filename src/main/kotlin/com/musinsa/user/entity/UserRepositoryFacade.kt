@@ -43,6 +43,22 @@ class UserRepositoryFacade(
         )
     }
 
+    @Throws(DataNotFoundException::class)
+    fun findByUsername(username: String): User {
+        return repository.findByUsernameAndIsDeletedFalse(username = username) ?: throw DataNotFoundException(
+            errorCode = ErrorCode.USER_NOT_FOUND,
+            message = ErrorCode.USER_NOT_FOUND.defaultMessage
+        )
+    }
+
+    @Throws(DataNotFoundException::class)
+    fun findBySocialId(socialId: String): User {
+        return repository.findBySocialIdAndIsDeletedFalse(socialId = socialId) ?: throw DataNotFoundException(
+            errorCode = ErrorCode.USER_NOT_FOUND,
+            message = ErrorCode.USER_NOT_FOUND.defaultMessage
+        )
+    }
+
     fun existsByUsername(username: String): Boolean {
         return repository.existsByUsername(username)
     }

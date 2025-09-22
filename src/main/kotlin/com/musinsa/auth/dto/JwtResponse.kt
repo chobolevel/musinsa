@@ -1,4 +1,4 @@
-package com.musinsa.common.dto
+package com.musinsa.auth.dto
 
 data class JwtResponse(
     val accessToken: String,

@@ -6,6 +6,10 @@ interface UserRepository : JpaRepository<User, Long> {
 
     fun findByIdAndIsDeletedFalse(id: Long): User?
 
+    fun findByUsernameAndIsDeletedFalse(username: String): User?
+
+    fun findBySocialIdAndIsDeletedFalse(socialId: String): User?
+
     fun existsByUsername(username: String): Boolean
 
     fun existsBySocialId(socialId: String): Boolean
