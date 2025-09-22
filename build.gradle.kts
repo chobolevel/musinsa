@@ -36,6 +36,7 @@ dependencies {
 
     // jwt
     implementation("io.jsonwebtoken:jjwt:0.9.1")
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
 
     // jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
