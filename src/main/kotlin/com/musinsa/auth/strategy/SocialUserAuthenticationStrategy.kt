@@ -1,27 +1,26 @@
 package com.musinsa.auth.strategy
 
-import com.musinsa.auth.dto.JwtResponse
 import com.musinsa.auth.dto.LoginRequest
-import com.musinsa.auth.util.TokenProvider
 import com.musinsa.user.entity.User
 import com.musinsa.user.entity.UserRepositoryFacade
 import com.musinsa.user.vo.UserSignUpType
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 
 @Component
 class SocialUserAuthenticationStrategy(
     private val repository: UserRepositoryFacade,
-    private val tokenProvider: TokenProvider
 ) : UserAuthenticationStrategy {
-    override fun authenticate(request: LoginRequest): JwtResponse {
+    override fun authenticate(request: LoginRequest): Authentication {
         val user: User = repository.findBySocialId(socialId = request.socialId!!)
-        val token = UsernamePasswordAuthenticationToken(
+        return UsernamePasswordAuthenticationToken(
             user.id,
             null,
             null
-        )
-        return tokenProvider.generateToken(authentication = token)
+        ).also {
+            it.details = user
+        }
     }
 
     override fun supports(signUpType: UserSignUpType): Boolean {

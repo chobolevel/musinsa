@@ -35,9 +35,10 @@ spring:
 redis:
   musinsa:
     host: localhost
-    port: 6374
+    port: 6379
     password:
 
 jwt:
   issuer: chobolevel
   secret: chobolevel-musinsa
+  cache-key: "user-refresh-token:v1"
