@@ -19,6 +19,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.data.redis.core.HashOperations
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.authority.AuthorityUtils
 import kotlin.test.Test
 
 @ExtendWith(MockitoExtension::class)
@@ -63,18 +64,18 @@ class LoginServiceV1Test {
         ).also {
             it.details = dummyUser
         }
-        val jwtResponse = JwtResponse(
+        val dummyJwtResponse = JwtResponse(
             accessToken = "accessToken",
             refreshToken = "refreshToken",
         )
         `when`(userAuthenticationProcessor.authenticate(request = request)).thenReturn(dummyToken)
-        `when`(tokenProvider.generateToken(authentication = dummyToken)).thenReturn(jwtResponse)
+        `when`(tokenProvider.generateToken(authentication = dummyToken)).thenReturn(dummyJwtResponse)
 
         // when
         val result: JwtResponse = service.login(request = request)
 
         // then
-        assertThat(result.accessToken).isEqualTo(jwtResponse.accessToken)
-        assertThat(result.refreshToken).isEqualTo(jwtResponse.refreshToken)
+        assertThat(result.accessToken).isEqualTo(dummyJwtResponse.accessToken)
+        assertThat(result.refreshToken).isEqualTo(dummyJwtResponse.refreshToken)
     }
 }
