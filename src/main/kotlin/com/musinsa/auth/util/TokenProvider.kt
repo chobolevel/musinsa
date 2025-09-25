@@ -20,8 +20,6 @@ class TokenProvider(
 
     private final val now = Date()
 
-    // TODO Authentication으로 왔다 갔다 하지 않는 방법으로 해보기(단일 책임 원칙 구현)
-    // 단일 책임 원칙에 따르면 이 로직이 수정되기 위해서는 반드시 하나의 사유에 의해서만 가능하도록 설계되어야 함
     fun generateAccessToken(id: Long): String {
         val expiredAt = Date(now.time + TimeUnit.MINUTES.toMillis(30))
         return Jwts.builder()
