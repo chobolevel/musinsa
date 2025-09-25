@@ -2,8 +2,11 @@ package com.musinsa.auth.service.impl
 
 import com.musinsa.auth.dto.JwtResponse
 import com.musinsa.auth.dto.LoginRequest
+import com.musinsa.auth.dto.ReissueResponse
 import com.musinsa.auth.service.AuthService
 import com.musinsa.auth.util.TokenProvider
+import com.musinsa.common.exception.ErrorCode
+import com.musinsa.common.exception.UnauthorizedException
 import com.musinsa.common.properties.JwtProperties
 import com.musinsa.user.entity.User
 import com.musinsa.user.entity.UserRepositoryFacade
@@ -44,5 +47,24 @@ class AuthServiceV1(
         return tokenProvider.generateToken(id = userId).also {
             opsForHash.put(jwtProperties.cacheKey, it.refreshToken, userId.toString())
         }
+    }
+
+    override fun reissue(refreshToken: String): ReissueResponse {
+        val cachedUserId: Long = opsForHash.get(jwtProperties.cacheKey, refreshToken)?.toLong() ?: throw UnauthorizedException(
+            errorCode = ErrorCode.INVALID_TOKEN,
+            message = ErrorCode.INVALID_TOKEN.defaultMessage
+        )
+        val tokenUserId: Long = tokenProvider.getId(token = refreshToken)
+        if (cachedUserId != tokenUserId) {
+            throw UnauthorizedException(
+                errorCode = ErrorCode.INVALID_TOKEN,
+                message = ErrorCode.INVALID_TOKEN.defaultMessage
+            )
+        }
+        val jwtResponse: JwtResponse = tokenProvider.generateToken(id = tokenUserId)
+        return ReissueResponse(
+            accessToken = jwtResponse.accessToken,
+            accessTokenExpiredAt = jwtResponse.accessTokenExpiredAt,
+        )
     }
 }

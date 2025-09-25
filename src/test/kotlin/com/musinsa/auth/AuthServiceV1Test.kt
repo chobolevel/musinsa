@@ -2,6 +2,7 @@ package com.musinsa.auth
 
 import com.musinsa.auth.dto.JwtResponse
 import com.musinsa.auth.dto.LoginRequest
+import com.musinsa.auth.dto.ReissueResponse
 import com.musinsa.auth.service.impl.AuthServiceV1
 import com.musinsa.auth.util.TokenProvider
 import com.musinsa.common.properties.JwtProperties
@@ -77,5 +78,28 @@ class AuthServiceV1Test {
         assertThat(result.accessTokenExpiredAt).isEqualTo(dummyJwtResponse.accessTokenExpiredAt)
         assertThat(result.refreshToken).isEqualTo(dummyJwtResponse.refreshToken)
         assertThat(result.refreshTokenExpiredAt).isEqualTo(dummyJwtResponse.refreshTokenExpiredAt)
+    }
+
+    @Test
+    fun reissueTest() {
+        // given
+        val dummyRefreshToken = "refreshToken"
+        val dummyUserId: Long = dummyUser.id!!
+        val dummyJwtResponse = JwtResponse(
+            accessToken = "accessToken",
+            accessTokenExpiredAt = 0L,
+            refreshToken = "refreshToken",
+            refreshTokenExpiredAt = 0L
+        )
+        `when`(opsForHash.get(jwtProperties.cacheKey, dummyRefreshToken)).thenReturn(dummyUserId.toString())
+        `when`(tokenProvider.getId(token = dummyRefreshToken)).thenReturn(dummyUserId)
+        `when`(tokenProvider.generateToken(id = dummyUserId)).thenReturn(dummyJwtResponse)
+
+        // when
+        val result: ReissueResponse = service.reissue(refreshToken = dummyRefreshToken)
+
+        // then
+        assertThat(result.accessToken).isEqualTo(dummyJwtResponse.accessToken)
+        assertThat(result.accessTokenExpiredAt).isEqualTo(dummyJwtResponse.accessTokenExpiredAt)
     }
 }
