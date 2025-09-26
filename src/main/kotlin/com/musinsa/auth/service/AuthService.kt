@@ -9,4 +9,6 @@ interface AuthService {
     fun login(request: LoginRequest): JwtResponse
 
     fun reissue(refreshToken: String): ReissueResponse
+
+    fun logout(refreshToken: String): Boolean
 }

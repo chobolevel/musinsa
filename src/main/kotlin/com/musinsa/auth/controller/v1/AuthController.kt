@@ -39,4 +39,14 @@ class AuthController(
         val result: ReissueResponse = service.reissue(refreshToken = refreshToken)
         return ResponseEntity.ok(CommonResponse(data = result))
     }
+
+    @PostMapping("/logout")
+    fun logout(request: HttpServletRequest): ResponseEntity<CommonResponse> {
+        val refreshToken: String = request.getHeader("X-Refresh-Token") ?: throw InvalidParameterException(
+            errorCode = ErrorCode.INVALID_PARAMETER,
+            message = "refresh token not set on head"
+        )
+        val result: Boolean = service.logout(refreshToken = refreshToken)
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
 }

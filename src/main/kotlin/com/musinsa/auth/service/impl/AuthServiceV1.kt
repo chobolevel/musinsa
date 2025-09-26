@@ -67,4 +67,9 @@ class AuthServiceV1(
             accessTokenExpiredAt = jwtResponse.accessTokenExpiredAt,
         )
     }
+
+    override fun logout(refreshToken: String): Boolean {
+        opsForHash.delete(jwtProperties.cacheKey, refreshToken)
+        return true
+    }
 }

@@ -102,4 +102,16 @@ class AuthServiceV1Test {
         assertThat(result.accessToken).isEqualTo(dummyJwtResponse.accessToken)
         assertThat(result.accessTokenExpiredAt).isEqualTo(dummyJwtResponse.accessTokenExpiredAt)
     }
+
+    @Test
+    fun logoutTest() {
+        // given
+        val dummyRefreshToken = "refreshToken"
+
+        // when
+        val result: Boolean = service.logout(refreshToken = dummyRefreshToken)
+
+        // then
+        assertThat(result).isTrue()
+    }
 }
