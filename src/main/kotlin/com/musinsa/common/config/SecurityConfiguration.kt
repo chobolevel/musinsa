@@ -1,5 +1,8 @@
 package com.musinsa.common.config
 
+import com.musinsa.auth.util.TokenProvider
+import com.musinsa.common.filter.OnceAuthorizationFilter
+import com.musinsa.user.entity.UserRepositoryFacade
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
@@ -8,13 +11,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
-class SecurityConfiguration {
+class SecurityConfiguration(
+    private val tokenProvider: TokenProvider,
+    private val userRepository: UserRepositoryFacade
+) {
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -62,10 +69,13 @@ class SecurityConfiguration {
                 authorizeRequests
                     .anyRequest().permitAll()
             }
-//            .addFilterBefore(
-//                OnceJwtAuthorizationFilter(accessTokenKey = accessTokenKey, tokenProvider = tokenProvider),
-//                UsernamePasswordAuthenticationFilter::class.java
-//            )
+            .addFilterBefore(
+                OnceAuthorizationFilter(
+                    tokenProvider = tokenProvider,
+                    userRepository = userRepository
+                ),
+                UsernamePasswordAuthenticationFilter::class.java
+            )
             .build()
     }
 
