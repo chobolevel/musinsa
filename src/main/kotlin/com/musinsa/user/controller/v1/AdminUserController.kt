@@ -1,5 +1,6 @@
 package com.musinsa.user.controller.v1
 
+import com.musinsa.common.annotation.HasAuthorityAdmin
 import com.musinsa.common.dto.CommonResponse
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
@@ -32,7 +33,7 @@ class AdminUserController(
     private val validator: UserParameterValidator
 ) {
 
-    // @HasAuthorityAdmin
+    @HasAuthorityAdmin
     @GetMapping("/users")
     fun getUsers(
         @RequestParam(required = false) signUpType: UserSignUpType?,
@@ -69,12 +70,14 @@ class AdminUserController(
         return ResponseEntity.ok(CommonResponse(result))
     }
 
+    @HasAuthorityAdmin
     @GetMapping("/users/{id}")
     fun getUser(@PathVariable("id") userId: Long): ResponseEntity<CommonResponse> {
         val result: UserResponse = service.getUser(id = userId)
         return ResponseEntity.ok(CommonResponse(result))
     }
 
+    @HasAuthorityAdmin
     @PutMapping("/users/{id}")
     fun updateUser(
         @PathVariable("id") userId: Long,
@@ -89,6 +92,7 @@ class AdminUserController(
         return ResponseEntity.ok(CommonResponse(result))
     }
 
+    @HasAuthorityAdmin
     @DeleteMapping("/users/{id}")
     fun resignUser(@PathVariable("id") userId: Long): ResponseEntity<CommonResponse> {
         val result: Boolean = service.resignUser(userId = userId)
