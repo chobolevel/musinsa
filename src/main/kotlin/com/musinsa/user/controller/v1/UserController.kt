@@ -1,5 +1,6 @@
 package com.musinsa.user.controller.v1
 
+import com.musinsa.common.annotation.HasAuthorityUser
 import com.musinsa.common.dto.CommonResponse
 import com.musinsa.common.extension.getUserId
 import com.musinsa.user.dto.ChangeUserPasswordRequest
@@ -37,12 +38,14 @@ class UserController(
         return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse(data = result))
     }
 
+    @HasAuthorityUser
     @GetMapping("/user/me")
     fun getMe(principal: Principal): ResponseEntity<CommonResponse> {
         val result: UserResponse = service.getUser(principal.getUserId())
         return ResponseEntity.ok().body(CommonResponse(data = result))
     }
 
+    @HasAuthorityUser
     @PutMapping("/user/me")
     fun updateMe(
         principal: Principal,
@@ -53,12 +56,14 @@ class UserController(
         return ResponseEntity.ok().body(CommonResponse(data = result))
     }
 
+    @HasAuthorityUser
     @DeleteMapping("/user/resign")
     fun resign(principal: Principal): ResponseEntity<CommonResponse> {
         val result: Boolean = service.resignUser(userId = principal.getUserId())
         return ResponseEntity.ok().body(CommonResponse(data = result))
     }
 
+    @HasAuthorityUser
     @PostMapping("/user/change-password")
     fun changePassword(
         principal: Principal,
