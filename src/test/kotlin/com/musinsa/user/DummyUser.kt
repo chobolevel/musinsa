@@ -103,6 +103,7 @@ object DummyUser {
         birthDate = birthDate,
         status = status,
         grade = grade,
+        gradeName = grade.desc,
         role = role,
         pointBalance = pointBalance,
         isDeleted = isDeleted,

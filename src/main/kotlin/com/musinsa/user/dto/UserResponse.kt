@@ -19,6 +19,7 @@ data class UserResponse(
     val birthDate: LocalDate,
     val status: UserStatus,
     val grade: UserGrade,
+    val gradeName: String,
     val role: UserRole,
     val pointBalance: Int,
     val isDeleted: Boolean,

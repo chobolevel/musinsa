@@ -69,6 +69,7 @@ class UserConverter(
             birthDate = user.birthDate,
             status = user.status,
             grade = user.grade,
+            gradeName = user.grade.desc,
             role = user.role,
             pointBalance = user.pointBalance,
             isDeleted = user.isDeleted,
