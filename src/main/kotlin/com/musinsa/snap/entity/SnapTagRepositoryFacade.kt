@@ -19,7 +19,7 @@ class SnapTagRepositoryFacade(
         return repository.save(snapTag)
     }
 
-    fun getSnapTags(
+    fun searchSnapTags(
         queryFilter: SnapTagQueryFilter,
         pagination: Pagination,
         orderTypes: List<SnapTagOrderType>
@@ -31,7 +31,7 @@ class SnapTagRepositoryFacade(
         )
     }
 
-    fun getSnapTagsCount(queryFilter: SnapTagQueryFilter): Long {
+    fun searchSnapTagsCount(queryFilter: SnapTagQueryFilter): Long {
         return customRepository.searchSnapTagsCount(booleanExpressions = queryFilter.toBooleanExpressions())
     }
 
