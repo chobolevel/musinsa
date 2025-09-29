@@ -1,5 +1,6 @@
 package com.musinsa.snap
 
+import com.musinsa.snap.dto.CreateSnapTagRequest
 import com.musinsa.snap.entity.SnapTag
 import com.musinsa.snap.vo.SnapTagType
 
@@ -17,7 +18,16 @@ object DummySnapTag {
         it.id = id
     }
 
+    private val dummyCreateRequest: CreateSnapTagRequest = CreateSnapTagRequest(
+        type = type,
+        name = name
+    )
+
     fun toEntity(): SnapTag {
         return dummySnapTag
+    }
+
+    fun toCreateRequest(): CreateSnapTagRequest {
+        return dummyCreateRequest
     }
 }
