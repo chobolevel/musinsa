@@ -4,6 +4,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.dto.CreateSnapTagRequest
 import com.musinsa.snap.dto.SnapTagResponse
+import com.musinsa.snap.dto.UpdateSnapTagRequest
 import com.musinsa.snap.repository.SnapTagQueryFilter
 import com.musinsa.snap.vo.SnapTagOrderType
 
@@ -18,4 +19,6 @@ interface SnapTagService {
     ): PaginationResponse
 
     fun getSnapTag(id: Long): SnapTagResponse
+
+    fun updateSnapTag(snapTagId: Long, request: UpdateSnapTagRequest): Long
 }

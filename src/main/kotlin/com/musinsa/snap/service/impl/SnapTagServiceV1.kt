@@ -5,10 +5,12 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.converter.SnapTagConverter
 import com.musinsa.snap.dto.CreateSnapTagRequest
 import com.musinsa.snap.dto.SnapTagResponse
+import com.musinsa.snap.dto.UpdateSnapTagRequest
 import com.musinsa.snap.entity.SnapTag
 import com.musinsa.snap.repository.SnapTagQueryFilter
 import com.musinsa.snap.repository.SnapTagRepositoryFacade
 import com.musinsa.snap.service.SnapTagService
+import com.musinsa.snap.updater.SnapTagUpdater
 import com.musinsa.snap.vo.SnapTagOrderType
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class SnapTagServiceV1(
     private val repository: SnapTagRepositoryFacade,
-    private val converter: SnapTagConverter
+    private val converter: SnapTagConverter,
+    private val updater: SnapTagUpdater
 ) : SnapTagService {
 
     @Transactional
@@ -49,5 +52,15 @@ class SnapTagServiceV1(
     override fun getSnapTag(id: Long): SnapTagResponse {
         val snapTag: SnapTag = repository.findById(id = id)
         return converter.toResponse(snapTag)
+    }
+
+    @Transactional
+    override fun updateSnapTag(
+        snapTagId: Long,
+        request: UpdateSnapTagRequest
+    ): Long {
+        val snapTag: SnapTag = repository.findById(id = snapTagId)
+        updater.markAsUpdate(request = request, entity = snapTag)
+        return snapTagId
     }
 }

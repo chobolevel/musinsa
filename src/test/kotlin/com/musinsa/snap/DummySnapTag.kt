@@ -2,8 +2,10 @@ package com.musinsa.snap
 
 import com.musinsa.snap.dto.CreateSnapTagRequest
 import com.musinsa.snap.dto.SnapTagResponse
+import com.musinsa.snap.dto.UpdateSnapTagRequest
 import com.musinsa.snap.entity.SnapTag
 import com.musinsa.snap.vo.SnapTagType
+import com.musinsa.snap.vo.SnapTagUpdateMask
 
 object DummySnapTag {
     private val id: Long = 1L
@@ -38,6 +40,14 @@ object DummySnapTag {
         )
     }
 
+    private val dummyUpdateRequest: UpdateSnapTagRequest by lazy {
+        UpdateSnapTagRequest(
+            type = null,
+            name = "변경",
+            updateMask = listOf(SnapTagUpdateMask.NAME)
+        )
+    }
+
     fun toEntity(): SnapTag {
         return dummySnapTag
     }
@@ -48,5 +58,9 @@ object DummySnapTag {
 
     fun toCreateRequest(): CreateSnapTagRequest {
         return dummyCreateRequest
+    }
+
+    fun toUpdateRequest(): UpdateSnapTagRequest {
+        return dummyUpdateRequest
     }
 }

@@ -7,6 +7,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.dto.CreateSnapTagRequest
 import com.musinsa.snap.dto.SnapTagResponse
+import com.musinsa.snap.dto.UpdateSnapTagRequest
 import com.musinsa.snap.repository.SnapTagQueryFilter
 import com.musinsa.snap.service.SnapTagService
 import com.musinsa.snap.vo.SnapTagOrderType
@@ -23,6 +24,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -98,6 +100,20 @@ class AdminSnapTagController(
     @GetMapping("/snap-tags/{snapTagId}")
     fun getSnapTag(@PathVariable snapTagId: Long): ResponseEntity<CommonResponse> {
         val result: SnapTagResponse = service.getSnapTag(id = snapTagId)
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
+
+    @HasAuthorityAdmin
+    @PutMapping("/snap-tags/{snapTagId}")
+    fun updateSnapTag(
+        @PathVariable snapTagId: Long,
+        @Valid @RequestBody
+        request: UpdateSnapTagRequest
+    ): ResponseEntity<CommonResponse> {
+        val result: Long = service.updateSnapTag(
+            snapTagId = snapTagId,
+            request = request
+        )
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 }

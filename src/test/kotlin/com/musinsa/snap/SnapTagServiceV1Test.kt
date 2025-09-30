@@ -5,10 +5,12 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.converter.SnapTagConverter
 import com.musinsa.snap.dto.CreateSnapTagRequest
 import com.musinsa.snap.dto.SnapTagResponse
+import com.musinsa.snap.dto.UpdateSnapTagRequest
 import com.musinsa.snap.entity.SnapTag
-import com.musinsa.snap.entity.SnapTagQueryFilter
-import com.musinsa.snap.entity.SnapTagRepositoryFacade
+import com.musinsa.snap.repository.SnapTagQueryFilter
+import com.musinsa.snap.repository.SnapTagRepositoryFacade
 import com.musinsa.snap.service.impl.SnapTagServiceV1
+import com.musinsa.snap.updater.SnapTagUpdater
 import com.musinsa.snap.vo.SnapTagOrderType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -32,6 +34,9 @@ class SnapTagServiceV1Test {
 
     @Mock
     private lateinit var converter: SnapTagConverter
+
+    @Mock
+    private lateinit var updater: SnapTagUpdater
 
     @InjectMocks
     private lateinit var service: SnapTagServiceV1
@@ -103,5 +108,20 @@ class SnapTagServiceV1Test {
 
         // then
         assertThat(result.id).isEqualTo(dummySnapTagId)
+    }
+
+    @Test
+    fun updateSnapTagTest() {
+        // given
+        val dummySnapTagId: Long = dummySnapTag.id!!
+        val request: UpdateSnapTagRequest = DummySnapTag.toUpdateRequest()
+        `when`(repository.findById(id = dummySnapTagId)).thenReturn(dummySnapTag)
+        `when`(updater.markAsUpdate(request = request, entity = dummySnapTag)).thenReturn(dummySnapTag)
+
+        // when
+        val result: Long = service.updateSnapTag(snapTagId = dummySnapTagId, request = request)
+
+        // then
+        assertThat(result).isEqualTo(dummySnapTagId)
     }
 }
