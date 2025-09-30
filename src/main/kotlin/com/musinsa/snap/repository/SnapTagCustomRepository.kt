@@ -1,7 +1,8 @@
-package com.musinsa.snap.entity
+package com.musinsa.snap.repository
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.snap.entity.QSnapTag.snapTag
+import com.musinsa.snap.entity.SnapTag
 import com.querydsl.core.types.OrderSpecifier
 import com.querydsl.core.types.dsl.BooleanExpression
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport

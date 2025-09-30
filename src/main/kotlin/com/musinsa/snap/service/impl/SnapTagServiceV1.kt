@@ -6,8 +6,8 @@ import com.musinsa.snap.converter.SnapTagConverter
 import com.musinsa.snap.dto.CreateSnapTagRequest
 import com.musinsa.snap.dto.SnapTagResponse
 import com.musinsa.snap.entity.SnapTag
-import com.musinsa.snap.entity.SnapTagQueryFilter
-import com.musinsa.snap.entity.SnapTagRepositoryFacade
+import com.musinsa.snap.repository.SnapTagQueryFilter
+import com.musinsa.snap.repository.SnapTagRepositoryFacade
 import com.musinsa.snap.service.SnapTagService
 import com.musinsa.snap.vo.SnapTagOrderType
 import org.springframework.stereotype.Service

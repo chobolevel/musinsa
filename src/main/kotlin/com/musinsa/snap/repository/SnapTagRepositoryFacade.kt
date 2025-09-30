@@ -1,9 +1,10 @@
-package com.musinsa.snap.entity
+package com.musinsa.snap.repository
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.exception.DataNotFoundException
 import com.musinsa.common.exception.ErrorCode
 import com.musinsa.snap.entity.QSnapTag.snapTag
+import com.musinsa.snap.entity.SnapTag
 import com.musinsa.snap.vo.SnapTagOrderType
 import com.querydsl.core.types.OrderSpecifier
 import org.springframework.stereotype.Component

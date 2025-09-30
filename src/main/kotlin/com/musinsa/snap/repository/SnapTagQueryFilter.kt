@@ -1,4 +1,4 @@
-package com.musinsa.snap.entity
+package com.musinsa.snap.repository
 
 import com.musinsa.snap.entity.QSnapTag.snapTag
 import com.musinsa.snap.vo.SnapTagType

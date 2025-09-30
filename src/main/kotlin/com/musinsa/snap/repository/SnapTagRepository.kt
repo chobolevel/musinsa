@@ -1,4 +1,4 @@
-package com.musinsa.snap.entity
+package com.musinsa.snap.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 

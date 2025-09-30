@@ -7,7 +7,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.dto.CreateSnapTagRequest
 import com.musinsa.snap.dto.SnapTagResponse
-import com.musinsa.snap.entity.SnapTagQueryFilter
+import com.musinsa.snap.repository.SnapTagQueryFilter
 import com.musinsa.snap.service.SnapTagService
 import com.musinsa.snap.vo.SnapTagOrderType
 import com.musinsa.snap.vo.SnapTagType
