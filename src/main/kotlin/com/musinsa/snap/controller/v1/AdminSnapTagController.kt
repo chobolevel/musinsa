@@ -21,6 +21,7 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -114,6 +115,13 @@ class AdminSnapTagController(
             snapTagId = snapTagId,
             request = request
         )
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
+
+    @HasAuthorityAdmin
+    @DeleteMapping("/snap-tags/{snapTagId}")
+    fun deleteSnapTag(@PathVariable snapTagId: Long): ResponseEntity<CommonResponse> {
+        val result: Boolean = service.deleteSnapTag(snapTagId = snapTagId)
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 }

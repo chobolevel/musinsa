@@ -21,4 +21,6 @@ interface SnapTagService {
     fun getSnapTag(id: Long): SnapTagResponse
 
     fun updateSnapTag(snapTagId: Long, request: UpdateSnapTagRequest): Long
+
+    fun deleteSnapTag(snapTagId: Long): Boolean
 }

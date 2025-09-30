@@ -63,4 +63,11 @@ class SnapTagServiceV1(
         updater.markAsUpdate(request = request, entity = snapTag)
         return snapTagId
     }
+
+    @Transactional
+    override fun deleteSnapTag(snapTagId: Long): Boolean {
+        val snapTag: SnapTag = repository.findById(id = snapTagId)
+        snapTag.delete()
+        return snapTag.isDeleted
+    }
 }

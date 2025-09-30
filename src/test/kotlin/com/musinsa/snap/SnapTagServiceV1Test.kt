@@ -124,4 +124,17 @@ class SnapTagServiceV1Test {
         // then
         assertThat(result).isEqualTo(dummySnapTagId)
     }
+
+    @Test
+    fun deleteSnapTagTest() {
+        // given
+        val dummySnapTagId: Long = dummySnapTag.id!!
+        `when`(repository.findById(id = dummySnapTagId)).thenReturn(dummySnapTag)
+
+        // when
+        val result: Boolean = service.deleteSnapTag(snapTagId = dummySnapTagId)
+
+        // then
+        assertThat(result).isTrue()
+    }
 }
