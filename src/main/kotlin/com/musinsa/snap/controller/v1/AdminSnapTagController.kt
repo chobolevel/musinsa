@@ -6,6 +6,7 @@ import com.musinsa.common.dto.ErrorResponse
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.dto.CreateSnapTagRequest
+import com.musinsa.snap.dto.SnapTagResponse
 import com.musinsa.snap.entity.SnapTagQueryFilter
 import com.musinsa.snap.service.SnapTagService
 import com.musinsa.snap.vo.SnapTagOrderType
@@ -20,6 +21,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -90,5 +92,12 @@ class AdminSnapTagController(
             orderTypes = orderTypes ?: emptyList()
         )
         return ResponseEntity.ok(result)
+    }
+
+    @HasAuthorityAdmin
+    @GetMapping("/snap-tags/{snapTagId}")
+    fun getSnapTag(@PathVariable snapTagId: Long): ResponseEntity<CommonResponse> {
+        val result: SnapTagResponse = service.getSnapTag(id = snapTagId)
+        return ResponseEntity.ok(CommonResponse(data = result))
     }
 }

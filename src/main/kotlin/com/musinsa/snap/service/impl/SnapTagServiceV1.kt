@@ -4,6 +4,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.converter.SnapTagConverter
 import com.musinsa.snap.dto.CreateSnapTagRequest
+import com.musinsa.snap.dto.SnapTagResponse
 import com.musinsa.snap.entity.SnapTag
 import com.musinsa.snap.entity.SnapTagQueryFilter
 import com.musinsa.snap.entity.SnapTagRepositoryFacade
@@ -43,5 +44,10 @@ class SnapTagServiceV1(
             data = converter.toResponseInBatch(entities = snapTags),
             totalCount = totalCount
         )
+    }
+
+    override fun getSnapTag(id: Long): SnapTagResponse {
+        val snapTag: SnapTag = repository.findById(id = id)
+        return converter.toResponse(snapTag)
     }
 }
