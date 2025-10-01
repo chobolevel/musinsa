@@ -38,7 +38,19 @@ redis:
     port: 6379
     password:
 
+# JWT
 jwt:
   issuer: chobolevel
   secret: chobolevel-musinsa
   cache-key: "user-refresh-token:v1"
+
+# AWS
+cloud:
+  aws:
+    s3:
+      bucket: "chobolevel"
+    stack.auto: false
+    region.static: "ap-northeast-2"
+    credentials:
+      accessKey: ENC(jR2RYmcq2FhwP7tVkLdyhooGQahw+OlAUY/g+z6ND+5rZsSF0R54QeuRd0ccSbLAuo2n1wvJ75cs66OB9HqA4w==)
+      secretKey: ENC(BcNoHMLs+C2HVX/sMO1HOdvcta+jywXQHKg9Wn0G/zGDwfyI/xWKwhcllpxuW6jr9Y0sSguQtmqtpunkhaBhXsX+31sfKBc1UdxcaZyHP+w=)
