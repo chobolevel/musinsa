@@ -126,7 +126,7 @@ class SnapServiceV1Test {
         val dummyUserId: Long = dummyUser.id!!
         val dummySnapId: Long = dummySnap.id!!
         val dummyRequest: UpdateSnapRequest = DummySnap.toUpdateRequest()
-        dummySnap.mapWriter(user = dummyUser)
+        dummySnap.assignWriter(user = dummyUser)
         `when`(snapRepository.findById(id = dummySnapId)).thenReturn(dummySnap)
         `when`(
             updater.markAsUpdate(
@@ -151,7 +151,7 @@ class SnapServiceV1Test {
         // given
         val dummyUserId: Long = dummyUser.id!!
         val dummySnapId: Long = dummySnap.id!!
-        dummySnap.mapWriter(user = dummyUser)
+        dummySnap.assignWriter(user = dummyUser)
         `when`(snapRepository.findById(id = dummySnapId)).thenReturn(dummySnap)
 
         // when
