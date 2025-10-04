@@ -33,7 +33,7 @@ class Snap(
     @Column(nullable = false)
     var isDeleted: Boolean = false
 
-    fun mapWriter(user: User) {
+    fun assignWriter(user: User) {
         if (this.writer != user) {
             this.writer = user
         }

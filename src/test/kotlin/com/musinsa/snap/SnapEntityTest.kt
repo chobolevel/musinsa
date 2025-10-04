@@ -18,7 +18,7 @@ class SnapEntityTest {
         val dummyUser: User = DummyUser.toEntity()
 
         // when
-        dummySnap.mapWriter(user = dummyUser)
+        dummySnap.assignWriter(user = dummyUser)
 
         // then
         assertThat(dummySnap.writer).isEqualTo(dummyUser)

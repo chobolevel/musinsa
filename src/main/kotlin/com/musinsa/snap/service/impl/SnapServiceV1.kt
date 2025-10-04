@@ -30,7 +30,7 @@ class SnapServiceV1(
     @Transactional
     override fun createSnap(userId: Long, request: CreateSnapRequest): Long {
         val snap: Snap = converter.toEntity(request = request).also {
-            it.mapWriter(user = userRepository.findById(id = userId))
+            it.assignWriter(user = userRepository.findById(id = userId))
         }
         return snapRepository.save(snap = snap).id!!
     }
