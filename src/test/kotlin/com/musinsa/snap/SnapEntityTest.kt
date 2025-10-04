@@ -34,4 +34,21 @@ class SnapEntityTest {
         // then
         assertThat(dummySnap.isDeleted).isTrue()
     }
+
+    @Test
+    fun addSnapImageTest() {
+        // given
+        val dummySnapImageUrl = "dummyUrl"
+
+        // when
+        dummySnap.addSnapImage(
+            url = dummySnapImageUrl,
+            width = 0,
+            height = 0,
+            order = 0
+        )
+
+        // then
+        assertThat(dummySnap.snapImages[0].url).isEqualTo(dummySnapImageUrl)
+    }
 }

@@ -14,6 +14,7 @@ import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.service.SnapService
 import com.musinsa.snap.updater.SnapUpdater
 import com.musinsa.snap.vo.SnapOrderType
+import com.musinsa.user.entity.User
 import com.musinsa.user.entity.UserRepositoryFacade
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -29,8 +30,18 @@ class SnapServiceV1(
 
     @Transactional
     override fun createSnap(userId: Long, request: CreateSnapRequest): Long {
-        val snap: Snap = converter.toEntity(request = request).also {
-            it.assignWriter(user = userRepository.findById(id = userId))
+        val snap: Snap = converter.toEntity(request = request).also { snap ->
+            val user: User = userRepository.findById(id = userId)
+
+            snap.assignWriter(user = user)
+            request.snapImages.forEach { createSnapImageRequest ->
+                snap.addSnapImage(
+                    url = createSnapImageRequest.url,
+                    width = createSnapImageRequest.width,
+                    height = createSnapImageRequest.height,
+                    order = createSnapImageRequest.order,
+                )
+            }
         }
         return snapRepository.save(snap = snap).id!!
     }

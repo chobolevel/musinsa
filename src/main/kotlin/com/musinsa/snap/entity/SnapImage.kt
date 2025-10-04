@@ -19,11 +19,11 @@ class SnapImage(
     @Column(nullable = false, length = 255)
     var url: String,
     @Column(nullable = false)
-    var width: Int = 0,
+    var width: Int,
     @Column(nullable = false)
-    var height: Int = 0,
+    var height: Int,
     @Column(nullable = false)
-    var order: Int = 0,
+    var order: Int,
 ) : Audit() {
 
     @Id
