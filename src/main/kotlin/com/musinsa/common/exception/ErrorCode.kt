@@ -23,5 +23,6 @@ enum class ErrorCode(val defaultMessage: String) {
     ACCESSIBLE_ONLY_OWNER_MEMBER_ON_APPLICATION("애플리케이션의 소유자만 접근할 수 있습니다."),
 
     // SNAP
+    SNAP_NOT_FOUND("스냅을 찾을 수 없습니다."),
     SNAP_TAG_NOT_FOUND("스냅 태그를 찾을 수 없습니다.")
 }

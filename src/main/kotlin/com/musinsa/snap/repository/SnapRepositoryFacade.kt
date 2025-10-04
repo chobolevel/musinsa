@@ -1,11 +1,14 @@
 package com.musinsa.snap.repository
 
 import com.musinsa.common.dto.Pagination
+import com.musinsa.common.exception.DataNotFoundException
+import com.musinsa.common.exception.ErrorCode
 import com.musinsa.snap.entity.QSnap.snap
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.vo.SnapOrderType
 import com.querydsl.core.types.OrderSpecifier
 import org.springframework.stereotype.Component
+import kotlin.jvm.Throws
 
 @Component
 class SnapRepositoryFacade(
@@ -33,6 +36,14 @@ class SnapRepositoryFacade(
         queryFilter: SnapQueryFilter,
     ): Long {
         return customRepository.searchSnapsCount(booleanExpressions = queryFilter.toBooleanExpressions())
+    }
+
+    @Throws(DataNotFoundException::class)
+    fun findById(id: Long): Snap {
+        return repository.findByIdAndIsDeletedFalse(id = id) ?: throw DataNotFoundException(
+            errorCode = ErrorCode.SNAP_NOT_FOUND,
+            message = ErrorCode.SNAP_NOT_FOUND.defaultMessage
+        )
     }
 
     private fun List<SnapOrderType>.toOrderSpecifiers(): Array<OrderSpecifier<*>> {

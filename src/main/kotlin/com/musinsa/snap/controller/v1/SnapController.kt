@@ -6,6 +6,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.extension.getUserId
 import com.musinsa.snap.dto.CreateSnapRequest
+import com.musinsa.snap.dto.SnapResponse
 import com.musinsa.snap.repository.SnapQueryFilter
 import com.musinsa.snap.service.SnapService
 import com.musinsa.snap.vo.SnapOrderType
@@ -13,6 +14,7 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -59,6 +61,12 @@ class SnapController(
             pagination = pagination,
             orderTypes = orderTypes ?: emptyList()
         )
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
+
+    @GetMapping("/snaps/{snapId}")
+    fun getSnap(@PathVariable("snapId") snapId: Long): ResponseEntity<CommonResponse> {
+        val result: SnapResponse = service.getSnap(id = snapId)
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 }

@@ -100,4 +100,18 @@ class SnapServiceV1Test {
         assertThat(result.data).isEqualTo(dummySnapResponses)
         assertThat(result.totalCount).isEqualTo(dummySnapResponses.size.toLong())
     }
+
+    @Test
+    fun getSnapTest() {
+        // given
+        val dummySnapId: Long = dummySnap.id!!
+        `when`(snapRepository.findById(id = dummySnapId)).thenReturn(dummySnap)
+        `when`(converter.toResponse(snap = dummySnap)).thenReturn(dummySnapResponse)
+
+        // when
+        val result: SnapResponse = service.getSnap(id = dummySnapId)
+
+        // then
+        assertThat(result.id).isEqualTo(dummySnapResponse.id)
+    }
 }

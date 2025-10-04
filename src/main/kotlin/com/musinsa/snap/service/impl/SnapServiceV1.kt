@@ -4,6 +4,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.converter.SnapConverter
 import com.musinsa.snap.dto.CreateSnapRequest
+import com.musinsa.snap.dto.SnapResponse
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.repository.SnapQueryFilter
 import com.musinsa.snap.repository.SnapRepositoryFacade
@@ -46,5 +47,11 @@ class SnapServiceV1(
             data = converter.toResponseInBatch(snaps = snaps),
             totalCount = totalCount
         )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getSnap(id: Long): SnapResponse {
+        val snap: Snap = snapRepository.findById(id = id)
+        return converter.toResponse(snap = snap)
     }
 }
