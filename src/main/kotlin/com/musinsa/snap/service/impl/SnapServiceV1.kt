@@ -75,6 +75,14 @@ class SnapServiceV1(
         return snapId
     }
 
+    @Transactional
+    override fun deleteSnap(userId: Long, snapId: Long): Boolean {
+        val snap: Snap = snapRepository.findById(id = snapId)
+        validateWriterMatching(userId = userId, snapWriterId = snap.writer!!.id!!)
+        snap.delete()
+        return snap.isDeleted
+    }
+
     @Throws(PolicyViolationException::class)
     private fun validateWriterMatching(userId: Long, snapWriterId: Long) {
         if (userId != snapWriterId) {

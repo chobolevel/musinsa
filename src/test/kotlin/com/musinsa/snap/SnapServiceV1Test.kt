@@ -145,4 +145,22 @@ class SnapServiceV1Test {
         // then
         assertThat(result).isEqualTo(dummySnap.id)
     }
+
+    @Test
+    fun deleteSnapTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummySnapId: Long = dummySnap.id!!
+        dummySnap.mapWriter(user = dummyUser)
+        `when`(snapRepository.findById(id = dummySnapId)).thenReturn(dummySnap)
+
+        // when
+        val result: Boolean = service.deleteSnap(
+            userId = dummyUserId,
+            snapId = dummySnapId
+        )
+
+        // then
+        assertThat(result).isTrue()
+    }
 }

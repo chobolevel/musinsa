@@ -21,4 +21,6 @@ interface SnapService {
     fun getSnap(id: Long): SnapResponse
 
     fun updateSnap(userId: Long, snapId: Long, request: UpdateSnapRequest): Long
+
+    fun deleteSnap(userId: Long, snapId: Long): Boolean
 }
