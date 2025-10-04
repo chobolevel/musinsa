@@ -1,10 +1,15 @@
 package com.musinsa.snap
 
+import com.musinsa.common.dto.Pagination
+import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.converter.SnapConverter
 import com.musinsa.snap.dto.CreateSnapRequest
+import com.musinsa.snap.dto.SnapResponse
 import com.musinsa.snap.entity.Snap
+import com.musinsa.snap.repository.SnapQueryFilter
 import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.service.impl.SnapServiceV1
+import com.musinsa.snap.vo.SnapOrderType
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
 import com.musinsa.user.entity.UserRepositoryFacade
@@ -24,6 +29,8 @@ class SnapServiceV1Test {
     private val dummyUser: User = DummyUser.toEntity()
 
     private val dummySnap: Snap = DummySnap.toEntity()
+
+    private val dummySnapResponse: SnapResponse = DummySnap.toResponse()
 
     @Mock
     private lateinit var converter: SnapConverter
@@ -51,5 +58,46 @@ class SnapServiceV1Test {
 
         // then
         assertThat(result).isEqualTo(dummySnap.id)
+    }
+
+    @Test
+    fun getSnapsTest() {
+        // given
+        val dummyQueryFilter = SnapQueryFilter(
+            writerId = null
+        )
+        val dummyPagination = Pagination(
+            page = 1,
+            size = 10
+        )
+        val dummyOrderTypes: List<SnapOrderType> = emptyList()
+        val dummySnaps: List<Snap> = listOf(dummySnap)
+        val dummySnapResponses: List<SnapResponse> = listOf(dummySnapResponse)
+        `when`(
+            snapRepository.searchSnaps(
+                queryFilter = dummyQueryFilter,
+                pagination = dummyPagination,
+                orderTypes = dummyOrderTypes
+            )
+        ).thenReturn(dummySnaps)
+        `when`(
+            snapRepository.searchSnapsCount(
+                queryFilter = dummyQueryFilter,
+            )
+        ).thenReturn(dummySnaps.size.toLong())
+        `when`(converter.toResponseInBatch(snaps = dummySnaps)).thenReturn(dummySnapResponses)
+
+        // when
+        val result: PaginationResponse = service.getSnaps(
+            queryFilter = dummyQueryFilter,
+            pagination = dummyPagination,
+            orderTypes = dummyOrderTypes
+        )
+
+        // then
+        assertThat(result.page).isEqualTo(dummyPagination.page)
+        assertThat(result.size).isEqualTo(dummyPagination.size)
+        assertThat(result.data).isEqualTo(dummySnapResponses)
+        assertThat(result.totalCount).isEqualTo(dummySnapResponses.size.toLong())
     }
 }
