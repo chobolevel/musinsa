@@ -18,7 +18,7 @@ import org.hibernate.envers.Audited
 @Audited
 class Snap(
     @Column(nullable = true)
-    var content: String
+    var content: String?
 ) : Audit() {
 
     @Id
