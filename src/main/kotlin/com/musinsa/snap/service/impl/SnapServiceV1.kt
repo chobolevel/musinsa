@@ -2,23 +2,29 @@ package com.musinsa.snap.service.impl
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.common.exception.ErrorCode
+import com.musinsa.common.exception.PolicyViolationException
 import com.musinsa.snap.converter.SnapConverter
 import com.musinsa.snap.dto.CreateSnapRequest
 import com.musinsa.snap.dto.SnapResponse
+import com.musinsa.snap.dto.UpdateSnapRequest
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.repository.SnapQueryFilter
 import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.service.SnapService
+import com.musinsa.snap.updater.SnapUpdater
 import com.musinsa.snap.vo.SnapOrderType
 import com.musinsa.user.entity.UserRepositoryFacade
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import kotlin.jvm.Throws
 
 @Service
 class SnapServiceV1(
     private val converter: SnapConverter,
     private val userRepository: UserRepositoryFacade,
-    private val snapRepository: SnapRepositoryFacade
+    private val snapRepository: SnapRepositoryFacade,
+    private val updater: SnapUpdater
 ) : SnapService {
 
     @Transactional
@@ -53,5 +59,29 @@ class SnapServiceV1(
     override fun getSnap(id: Long): SnapResponse {
         val snap: Snap = snapRepository.findById(id = id)
         return converter.toResponse(snap = snap)
+    }
+
+    @Transactional
+    override fun updateSnap(userId: Long, snapId: Long, request: UpdateSnapRequest): Long {
+        val snap: Snap = snapRepository.findById(id = snapId)
+        validateWriterMatching(
+            userId = userId,
+            snapWriterId = snap.writer!!.id!!
+        )
+        updater.markAsUpdate(
+            request = request,
+            snap = snap
+        )
+        return snapId
+    }
+
+    @Throws(PolicyViolationException::class)
+    private fun validateWriterMatching(userId: Long, snapWriterId: Long) {
+        if (userId != snapWriterId) {
+            throw PolicyViolationException(
+                errorCode = ErrorCode.ACCESSIBLE_ONLY_WRITER_ON_SNAP,
+                message = ErrorCode.ACCESSIBLE_ONLY_WRITER_ON_SNAP.defaultMessage
+            )
+        }
     }
 }

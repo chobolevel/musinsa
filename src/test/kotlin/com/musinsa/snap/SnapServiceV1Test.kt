@@ -5,10 +5,12 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.converter.SnapConverter
 import com.musinsa.snap.dto.CreateSnapRequest
 import com.musinsa.snap.dto.SnapResponse
+import com.musinsa.snap.dto.UpdateSnapRequest
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.repository.SnapQueryFilter
 import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.service.impl.SnapServiceV1
+import com.musinsa.snap.updater.SnapUpdater
 import com.musinsa.snap.vo.SnapOrderType
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
@@ -40,6 +42,9 @@ class SnapServiceV1Test {
 
     @Mock
     private lateinit var snapRepository: SnapRepositoryFacade
+
+    @Mock
+    private lateinit var updater: SnapUpdater
 
     @InjectMocks
     private lateinit var service: SnapServiceV1
@@ -113,5 +118,31 @@ class SnapServiceV1Test {
 
         // then
         assertThat(result.id).isEqualTo(dummySnapResponse.id)
+    }
+
+    @Test
+    fun updateSnapTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummySnapId: Long = dummySnap.id!!
+        val dummyRequest: UpdateSnapRequest = DummySnap.toUpdateRequest()
+        dummySnap.mapWriter(user = dummyUser)
+        `when`(snapRepository.findById(id = dummySnapId)).thenReturn(dummySnap)
+        `when`(
+            updater.markAsUpdate(
+                request = dummyRequest,
+                snap = dummySnap
+            )
+        ).thenReturn(dummySnap)
+
+        // when
+        val result: Long = service.updateSnap(
+            userId = dummyUserId,
+            snapId = dummySnapId,
+            request = dummyRequest
+        )
+
+        // then
+        assertThat(result).isEqualTo(dummySnap.id)
     }
 }

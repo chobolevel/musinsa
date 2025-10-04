@@ -7,6 +7,7 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.extension.getUserId
 import com.musinsa.snap.dto.CreateSnapRequest
 import com.musinsa.snap.dto.SnapResponse
+import com.musinsa.snap.dto.UpdateSnapRequest
 import com.musinsa.snap.repository.SnapQueryFilter
 import com.musinsa.snap.service.SnapService
 import com.musinsa.snap.vo.SnapOrderType
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -48,7 +50,7 @@ class SnapController(
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) size: Long?,
         @RequestParam(required = false) orderTypes: List<SnapOrderType>?
-    ): ResponseEntity<CommonResponse> {
+    ): ResponseEntity<PaginationResponse> {
         val queryFilter = SnapQueryFilter(
             writerId = writerId,
         )
@@ -61,12 +63,28 @@ class SnapController(
             pagination = pagination,
             orderTypes = orderTypes ?: emptyList()
         )
-        return ResponseEntity.ok(CommonResponse(data = result))
+        return ResponseEntity.ok(result)
     }
 
     @GetMapping("/snaps/{snapId}")
     fun getSnap(@PathVariable("snapId") snapId: Long): ResponseEntity<CommonResponse> {
         val result: SnapResponse = service.getSnap(id = snapId)
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
+
+    @HasAuthorityUser
+    @PutMapping("/snaps/{snapId}")
+    fun updateSnap(
+        principal: Principal,
+        @PathVariable("snapId") snapId: Long,
+        @Valid @RequestBody
+        request: UpdateSnapRequest
+    ): ResponseEntity<CommonResponse> {
+        val result: Long = service.updateSnap(
+            userId = principal.getUserId(),
+            snapId = snapId,
+            request = request
+        )
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 }

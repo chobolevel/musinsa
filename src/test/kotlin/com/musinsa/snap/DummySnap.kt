@@ -2,7 +2,9 @@ package com.musinsa.snap
 
 import com.musinsa.snap.dto.CreateSnapRequest
 import com.musinsa.snap.dto.SnapResponse
+import com.musinsa.snap.dto.UpdateSnapRequest
 import com.musinsa.snap.entity.Snap
+import com.musinsa.snap.vo.SnapUpdateMask
 import com.musinsa.user.DummyUser
 
 object DummySnap {
@@ -33,6 +35,13 @@ object DummySnap {
         CreateSnapRequest(content = content)
     }
 
+    private val dummyUpdateRequest: UpdateSnapRequest by lazy {
+        UpdateSnapRequest(
+            content = null,
+            updateMasks = listOfNotNull(SnapUpdateMask.CONTENT)
+        )
+    }
+
     fun toEntity(): Snap {
         return dummySnap
     }
@@ -43,5 +52,9 @@ object DummySnap {
 
     fun toCreateRequest(): CreateSnapRequest {
         return dummyCreateRequest
+    }
+
+    fun toUpdateRequest(): UpdateSnapRequest {
+        return dummyUpdateRequest
     }
 }

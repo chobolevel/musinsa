@@ -24,5 +24,6 @@ enum class ErrorCode(val defaultMessage: String) {
 
     // SNAP
     SNAP_NOT_FOUND("스냅을 찾을 수 없습니다."),
+    ACCESSIBLE_ONLY_WRITER_ON_SNAP("스냅 작성자만 접근할 수 있습니다."),
     SNAP_TAG_NOT_FOUND("스냅 태그를 찾을 수 없습니다.")
 }
