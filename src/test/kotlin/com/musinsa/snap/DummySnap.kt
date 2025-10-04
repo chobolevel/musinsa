@@ -1,5 +1,6 @@
 package com.musinsa.snap
 
+import com.musinsa.snap.dto.CreateSnapRequest
 import com.musinsa.snap.entity.Snap
 
 object DummySnap {
@@ -16,7 +17,15 @@ object DummySnap {
         }
     }
 
+    private val dummyCreateRequest: CreateSnapRequest by lazy {
+        CreateSnapRequest(content = content)
+    }
+
     fun toEntity(): Snap {
         return dummySnap
+    }
+
+    fun toCreateRequest(): CreateSnapRequest {
+        return dummyCreateRequest
     }
 }
