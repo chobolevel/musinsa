@@ -32,12 +32,16 @@ object DummySnap {
     }
 
     private val dummyCreateRequest: CreateSnapRequest by lazy {
-        CreateSnapRequest(content = content)
+        CreateSnapRequest(
+            content = content,
+            snapImages = emptyList()
+        )
     }
 
     private val dummyUpdateRequest: UpdateSnapRequest by lazy {
         UpdateSnapRequest(
             content = null,
+            snapImages = null,
             updateMasks = listOfNotNull(SnapUpdateMask.CONTENT)
         )
     }

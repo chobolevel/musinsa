@@ -34,12 +34,12 @@ class SnapServiceV1(
             val user: User = userRepository.findById(id = userId)
 
             snap.assignWriter(user = user)
-            request.snapImages.forEach { createSnapImageRequest ->
+            request.snapImages.forEach { snapImageRequest ->
                 snap.addSnapImage(
-                    url = createSnapImageRequest.url,
-                    width = createSnapImageRequest.width,
-                    height = createSnapImageRequest.height,
-                    order = createSnapImageRequest.order,
+                    url = snapImageRequest.url,
+                    width = snapImageRequest.width,
+                    height = snapImageRequest.height,
+                    order = snapImageRequest.order,
                 )
             }
         }

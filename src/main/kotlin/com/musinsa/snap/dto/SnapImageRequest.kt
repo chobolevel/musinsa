@@ -2,7 +2,7 @@ package com.musinsa.snap.dto
 
 import jakarta.validation.constraints.NotEmpty
 
-data class CreateSnapImageRequest(
+data class SnapImageRequest(
     @field:NotEmpty
     val url: String,
     val width: Int = 0,

@@ -68,4 +68,9 @@ class Snap(
             }
         }
     }
+
+    fun deleteSnapImageInBatch() {
+        this.snapImages.forEach { it.delete() }
+        this.snapImages.clear()
+    }
 }
