@@ -24,7 +24,7 @@ class SnapLikeCustomRepository : QuerydslRepositorySupport(SnapLike::class.java)
             .fetch()
     }
 
-    fun searchCountSnapLikes(
+    fun searchSnapLikesCount(
         booleanExpressions: Array<BooleanExpression>
     ): Long {
         return from(snapLike)
