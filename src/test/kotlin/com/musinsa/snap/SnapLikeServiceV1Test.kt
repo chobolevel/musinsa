@@ -4,11 +4,16 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.converter.SnapLikeConverter
 import com.musinsa.snap.dto.SnapLikeResponse
+import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapLike
 import com.musinsa.snap.repository.SnapLikeQueryFilter
 import com.musinsa.snap.repository.SnapLikeRepositoryFacade
+import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.service.impl.SnapLikeServiceV1
 import com.musinsa.snap.vo.SnapLikeOrderType
+import com.musinsa.user.DummyUser
+import com.musinsa.user.entity.User
+import com.musinsa.user.entity.UserRepositoryFacade
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
@@ -22,6 +27,10 @@ import kotlin.test.Test
 @ExtendWith(MockitoExtension::class)
 class SnapLikeServiceV1Test {
 
+    private val dummyUser: User = DummyUser.toEntity()
+
+    private val dummySnap: Snap = DummySnap.toEntity()
+
     private val dummySnapLike: SnapLike = DummySnapLike.toEntity()
 
     private val dummySnapLikeResponse: SnapLikeResponse = DummySnapLike.toResponse()
@@ -31,6 +40,12 @@ class SnapLikeServiceV1Test {
 
     @Mock
     private lateinit var converter: SnapLikeConverter
+
+    @Mock
+    private lateinit var userRepository: UserRepositoryFacade
+
+    @Mock
+    private lateinit var snapRepository: SnapRepositoryFacade
 
     @InjectMocks
     private lateinit var service: SnapLikeServiceV1
@@ -75,5 +90,24 @@ class SnapLikeServiceV1Test {
         assertThat(result.size).isEqualTo(dummyPagination.size)
         assertThat(result.data).isEqualTo(dummySnapLikeResponses)
         assertThat(result.totalCount).isEqualTo(dummySnapLikeResponses.size.toLong())
+    }
+
+    @Test
+    fun likeTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummySnapId: Long = dummySnap.id!!
+        `when`(userRepository.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(snapRepository.findById(id = dummySnapId)).thenReturn(dummySnap)
+        `when`(repository.save(dummySnapLike)).thenReturn(dummySnapLike)
+
+        // when
+        val result: Long = service.likeSnap(
+            userId = dummyUserId,
+            snapId = dummySnapId
+        )
+
+        // then
+        assertThat(result).isEqualTo(dummySnapLike.id)
     }
 }

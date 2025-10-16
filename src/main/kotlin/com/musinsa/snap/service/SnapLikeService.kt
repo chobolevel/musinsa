@@ -12,4 +12,6 @@ interface SnapLikeService {
         pagination: Pagination,
         orderTypes: List<SnapLikeOrderType>
     ): PaginationResponse
+
+    fun likeSnap(userId: Long, snapId: Long): Long
 }

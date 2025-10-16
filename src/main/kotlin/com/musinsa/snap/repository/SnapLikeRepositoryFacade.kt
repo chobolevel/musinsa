@@ -13,6 +13,10 @@ class SnapLikeRepositoryFacade(
     private val customRepository: SnapLikeCustomRepository
 ) {
 
+    fun save(snapLike: SnapLike): SnapLike {
+        return repository.save(snapLike)
+    }
+
     fun searchSnapLikes(
         queryFilter: SnapLikeQueryFilter,
         pagination: Pagination,
