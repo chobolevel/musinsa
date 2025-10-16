@@ -37,6 +37,10 @@ class SnapLikeRepositoryFacade(
         )
     }
 
+    fun existsBySnapIdAndUserId(snapId: Long, userId: Long): Boolean {
+        return repository.existsBySnapIdAndUserId(snapId = snapId, userId = userId)
+    }
+
     fun deleteById(id: Long) {
         repository.deleteById(id)
     }

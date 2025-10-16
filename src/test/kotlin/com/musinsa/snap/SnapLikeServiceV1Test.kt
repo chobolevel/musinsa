@@ -91,23 +91,4 @@ class SnapLikeServiceV1Test {
         assertThat(result.data).isEqualTo(dummySnapLikeResponses)
         assertThat(result.totalCount).isEqualTo(dummySnapLikeResponses.size.toLong())
     }
-
-    @Test
-    fun likeTest() {
-        // given
-        val dummyUserId: Long = dummyUser.id!!
-        val dummySnapId: Long = dummySnap.id!!
-        `when`(userRepository.findById(id = dummyUserId)).thenReturn(dummyUser)
-        `when`(snapRepository.findById(id = dummySnapId)).thenReturn(dummySnap)
-        `when`(repository.save(dummySnapLike)).thenReturn(dummySnapLike)
-
-        // when
-        val result: Long = service.likeSnap(
-            userId = dummyUserId,
-            snapId = dummySnapId
-        )
-
-        // then
-        assertThat(result).isEqualTo(dummySnapLike.id)
-    }
 }

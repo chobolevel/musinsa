@@ -2,6 +2,8 @@ package com.musinsa.snap.service.impl
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.common.exception.ErrorCode
+import com.musinsa.common.exception.PolicyViolationException
 import com.musinsa.snap.converter.SnapLikeConverter
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapLike
@@ -49,6 +51,16 @@ class SnapLikeServiceV1(
     override fun likeSnap(userId: Long, snapId: Long): Long {
         val user: User = userRepository.findById(id = userId)
         val snap: Snap = snapRepository.findById(id = snapId)
+        val isExists = repository.existsBySnapIdAndUserId(
+            snapId = snapId,
+            userId = userId
+        )
+        if (isExists) {
+            throw PolicyViolationException(
+                errorCode = ErrorCode.ALREADY_LIKED_SNAP,
+                message = ErrorCode.ALREADY_LIKED_SNAP.defaultMessage
+            )
+        }
         val snapLike = SnapLike().also { snapLike ->
             snapLike.assignUser(user = user)
             snapLike.assignSnap(snap = snap)
