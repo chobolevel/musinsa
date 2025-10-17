@@ -59,4 +59,17 @@ class SnapLikeControllerV1(
         )
         return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse(data = result))
     }
+
+    @PostMapping("/snaps/{snapId}/dislike")
+    @HasAuthorityUser
+    fun dislikeSnap(
+        principal: Principal,
+        @PathVariable snapId: Long,
+    ): ResponseEntity<CommonResponse> {
+        val result: Boolean = service.dislikeSnap(
+            userId = principal.getUserId(),
+            snapId = snapId,
+        )
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
 }

@@ -41,8 +41,11 @@ class SnapLikeRepositoryFacade(
         return repository.existsBySnapIdAndUserId(snapId = snapId, userId = userId)
     }
 
-    fun deleteById(id: Long) {
-        repository.deleteById(id)
+    fun deleteBySnapIdAndUserId(snapId: Long, userId: Long) {
+        repository.deleteBySnapIdAndUserId(
+            snapId = snapId,
+            userId = userId
+        )
     }
 
     private fun List<SnapLikeOrderType>.toOrderSpecifiers(): Array<OrderSpecifier<*>> {

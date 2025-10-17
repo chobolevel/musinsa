@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface SnapLikeRepository : JpaRepository<SnapLike, Long> {
 
     fun existsBySnapIdAndUserId(snapId: Long, userId: Long): Boolean
+
+    fun deleteBySnapIdAndUserId(snapId: Long, userId: Long)
 }

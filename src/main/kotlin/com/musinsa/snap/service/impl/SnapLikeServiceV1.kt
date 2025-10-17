@@ -67,4 +67,23 @@ class SnapLikeServiceV1(
         }
         return repository.save(snapLike).id!!
     }
+
+    @Transactional
+    override fun dislikeSnap(userId: Long, snapId: Long): Boolean {
+        val isExists = repository.existsBySnapIdAndUserId(
+            snapId = snapId,
+            userId = userId
+        )
+        if (!isExists) {
+            throw PolicyViolationException(
+                errorCode = ErrorCode.NOT_LIKED_SNAP,
+                message = ErrorCode.NOT_LIKED_SNAP.defaultMessage
+            )
+        }
+        repository.deleteBySnapIdAndUserId(
+            snapId = snapId,
+            userId = userId
+        )
+        return true
+    }
 }

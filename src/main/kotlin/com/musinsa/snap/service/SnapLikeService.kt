@@ -14,4 +14,6 @@ interface SnapLikeService {
     ): PaginationResponse
 
     fun likeSnap(userId: Long, snapId: Long): Long
+
+    fun dislikeSnap(userId: Long, snapId: Long): Boolean
 }
