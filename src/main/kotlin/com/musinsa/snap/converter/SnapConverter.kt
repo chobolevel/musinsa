@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class SnapConverter(
-    private val userConverter: UserConverter
+    private val userConverter: UserConverter,
+    private val snapImageConverter: SnapImageConverter,
 ) {
 
     fun toEntity(request: CreateSnapRequest): Snap {
@@ -23,6 +24,9 @@ class SnapConverter(
             id = snap.id!!,
             writer = userConverter.toResponse(user = snap.writer!!),
             content = snap.content,
+            thumbnailImage = snapImageConverter.toResponse(snapImage = snap.snapImages[0]),
+            images = snapImageConverter.toResponseInBatch(snapImages = snap.snapImages),
+            likeCount = snap.snapLikes.size.toLong(),
             createdAt = snap.createdAt!!.toMillis(),
             updatedAt = snap.updatedAt!!.toMillis()
         )

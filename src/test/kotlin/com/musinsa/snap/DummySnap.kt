@@ -26,6 +26,9 @@ object DummySnap {
             id = id,
             writer = DummyUser.toResponse(),
             content = content,
+            thumbnailImage = DummySnapImage.toResponse(),
+            images = listOf(DummySnapImage.toResponse()),
+            likeCount = 0,
             createdAt = createdAt,
             updatedAt = updatedAt,
         )

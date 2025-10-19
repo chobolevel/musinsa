@@ -1,5 +1,6 @@
 package com.musinsa.snap
 
+import com.musinsa.snap.dto.SnapImageResponse
 import com.musinsa.snap.entity.SnapImage
 
 object DummySnapImage {
@@ -22,7 +23,19 @@ object DummySnapImage {
         }
     }
 
-    fun toEntity(): SnapImage {
-        return dummySnapImage
+    private val dummySnapImageResponse: SnapImageResponse by lazy {
+        SnapImageResponse(
+            id = id,
+            url = url,
+            width = width,
+            height = height,
+            order = order,
+            createdAt = createdAt,
+            updatedAt = updatedAt,
+        )
     }
+
+    fun toEntity(): SnapImage = dummySnapImage
+
+    fun toResponse(): SnapImageResponse = dummySnapImageResponse
 }
