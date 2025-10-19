@@ -1,12 +1,16 @@
 package com.musinsa.snap.service.impl
 
+import com.musinsa.common.dto.Pagination
+import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.converter.SnapCommentConverter
 import com.musinsa.snap.dto.CreateSnapCommentRequest
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapComment
+import com.musinsa.snap.repository.SnapCommentQueryFilter
 import com.musinsa.snap.repository.SnapCommentRepositoryFacade
 import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.service.SnapCommentService
+import com.musinsa.snap.vo.SnapCommentOrderType
 import com.musinsa.user.entity.User
 import com.musinsa.user.entity.UserRepositoryFacade
 import org.springframework.stereotype.Service
@@ -33,5 +37,25 @@ class SnapCommentServiceV1(
             snapComment.assignUser(user = user)
         }
         return repository.save(snapComment = snapComment).id!!
+    }
+
+    @Transactional(readOnly = true)
+    override fun getSnapComments(
+        queryFilter: SnapCommentQueryFilter,
+        pagination: Pagination,
+        orderTypes: List<SnapCommentOrderType>
+    ): PaginationResponse {
+        val snapComments: List<SnapComment> = repository.searchSnapComments(
+            queryFilter = queryFilter,
+            pagination = pagination,
+            orderTypes = orderTypes
+        )
+        val totalCount: Long = repository.searchSnapCommentsCount(queryFilter = queryFilter)
+        return PaginationResponse(
+            page = pagination.page,
+            size = pagination.size,
+            data = converter.toResponseInBatch(snapComments = snapComments),
+            totalCount = totalCount
+        )
     }
 }
