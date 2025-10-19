@@ -2,27 +2,33 @@ package com.musinsa.snap.service.impl
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.common.exception.ErrorCode
+import com.musinsa.common.exception.PolicyViolationException
 import com.musinsa.snap.converter.SnapCommentConverter
 import com.musinsa.snap.dto.CreateSnapCommentRequest
 import com.musinsa.snap.dto.SnapCommentResponse
+import com.musinsa.snap.dto.UpdateSnapCommentRequest
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapComment
 import com.musinsa.snap.repository.SnapCommentQueryFilter
 import com.musinsa.snap.repository.SnapCommentRepositoryFacade
 import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.service.SnapCommentService
+import com.musinsa.snap.updater.SnapCommentUpdater
 import com.musinsa.snap.vo.SnapCommentOrderType
 import com.musinsa.user.entity.User
 import com.musinsa.user.entity.UserRepositoryFacade
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import kotlin.jvm.Throws
 
 @Service
 class SnapCommentServiceV1(
     private val repository: SnapCommentRepositoryFacade,
     private val userRepository: UserRepositoryFacade,
     private val snapRepository: SnapRepositoryFacade,
-    private val converter: SnapCommentConverter
+    private val converter: SnapCommentConverter,
+    private val updater: SnapCommentUpdater
 ) : SnapCommentService {
 
     @Transactional
@@ -64,5 +70,33 @@ class SnapCommentServiceV1(
     override fun getSnapComment(snapCommentId: Long): SnapCommentResponse {
         val snapComment: SnapComment = repository.findById(id = snapCommentId)
         return converter.toResponse(snapComment = snapComment)
+    }
+
+    @Transactional
+    override fun updateSnapComment(
+        userId: Long,
+        snapCommentId: Long,
+        request: UpdateSnapCommentRequest
+    ): Long {
+        val snapComment: SnapComment = repository.findById(id = snapCommentId)
+        validateWriter(
+            userId = userId,
+            snapComment = snapComment,
+        )
+        updater.markAsUpdate(
+            request = request,
+            snapComment = snapComment
+        )
+        return snapCommentId
+    }
+
+    @Throws(PolicyViolationException::class)
+    private fun validateWriter(userId: Long, snapComment: SnapComment) {
+        if (userId != snapComment.user!!.id) {
+            throw PolicyViolationException(
+                errorCode = ErrorCode.ACCESSIBLE_ONLY_SNAP_COMMENT_WRITER,
+                message = ErrorCode.ACCESSIBLE_ONLY_SNAP_COMMENT_WRITER.defaultMessage
+            )
+        }
     }
 }

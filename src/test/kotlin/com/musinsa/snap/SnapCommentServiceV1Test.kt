@@ -5,12 +5,14 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.converter.SnapCommentConverter
 import com.musinsa.snap.dto.CreateSnapCommentRequest
 import com.musinsa.snap.dto.SnapCommentResponse
+import com.musinsa.snap.dto.UpdateSnapCommentRequest
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapComment
 import com.musinsa.snap.repository.SnapCommentQueryFilter
 import com.musinsa.snap.repository.SnapCommentRepositoryFacade
 import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.service.impl.SnapCommentServiceV1
+import com.musinsa.snap.updater.SnapCommentUpdater
 import com.musinsa.snap.vo.SnapCommentOrderType
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
@@ -47,6 +49,9 @@ class SnapCommentServiceV1Test {
 
     @Mock
     private lateinit var converter: SnapCommentConverter
+
+    @Mock
+    private lateinit var updater: SnapCommentUpdater
 
     @InjectMocks
     private lateinit var service: SnapCommentServiceV1
@@ -127,5 +132,31 @@ class SnapCommentServiceV1Test {
 
         // then
         assertThat(result).isEqualTo(dummySnapCommentResponse)
+    }
+
+    @Test
+    fun updateSnapCommentTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummySnapCommentId: Long = dummySnapComment.id!!
+        val dummyRequest: UpdateSnapCommentRequest = DummySnapComment.toUpdateRequest()
+        dummySnapComment.assignUser(user = dummyUser)
+        `when`(repository.findById(id = dummySnapCommentId)).thenReturn(dummySnapComment)
+        `when`(
+            updater.markAsUpdate(
+                request = dummyRequest,
+                snapComment = dummySnapComment
+            )
+        ).thenReturn(dummySnapComment)
+
+        // when
+        val result: Long = service.updateSnapComment(
+            userId = dummyUserId,
+            snapCommentId = dummySnapCommentId,
+            request = dummyRequest
+        )
+
+        // then
+        assertThat(result).isEqualTo(dummySnapCommentId)
     }
 }

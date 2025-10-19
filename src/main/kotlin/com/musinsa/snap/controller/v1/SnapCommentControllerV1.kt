@@ -7,8 +7,10 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.extension.getUserId
 import com.musinsa.snap.dto.CreateSnapCommentRequest
 import com.musinsa.snap.dto.SnapCommentResponse
+import com.musinsa.snap.dto.UpdateSnapCommentRequest
 import com.musinsa.snap.repository.SnapCommentQueryFilter
 import com.musinsa.snap.service.SnapCommentService
+import com.musinsa.snap.validator.SnapCommentParameterValidator
 import com.musinsa.snap.vo.SnapCommentOrderType
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -25,7 +28,8 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api/v1")
 class SnapCommentControllerV1(
-    private val service: SnapCommentService
+    private val service: SnapCommentService,
+    private val validator: SnapCommentParameterValidator
 ) {
 
     @PostMapping("/snaps/{snapId}/comments")
@@ -71,6 +75,22 @@ class SnapCommentControllerV1(
     @GetMapping("/snaps/comments/{snapCommentId}")
     fun getSnapComment(@PathVariable snapCommentId: Long): ResponseEntity<CommonResponse> {
         val result: SnapCommentResponse = service.getSnapComment(snapCommentId = snapCommentId)
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
+
+    @PutMapping("/snaps/comments/{snapCommentId}")
+    @HasAuthorityUser
+    fun updateSnapComment(
+        principal: Principal,
+        @PathVariable snapCommentId: Long,
+        @Valid @RequestBody
+        request: UpdateSnapCommentRequest
+    ): ResponseEntity<CommonResponse> {
+        val result: Long = service.updateSnapComment(
+            userId = principal.getUserId(),
+            snapCommentId = snapCommentId,
+            request = request
+        )
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 }

@@ -2,7 +2,9 @@ package com.musinsa.snap
 
 import com.musinsa.snap.dto.CreateSnapCommentRequest
 import com.musinsa.snap.dto.SnapCommentResponse
+import com.musinsa.snap.dto.UpdateSnapCommentRequest
 import com.musinsa.snap.entity.SnapComment
+import com.musinsa.snap.vo.SnapCommentUpdateMask
 import com.musinsa.user.DummyUser
 
 object DummySnapComment {
@@ -36,9 +38,18 @@ object DummySnapComment {
         )
     }
 
+    private val dummyUpdateRequest: UpdateSnapCommentRequest by lazy {
+        UpdateSnapCommentRequest(
+            comment = "사이즈는 어때요?",
+            updateMasks = listOf(SnapCommentUpdateMask.COMMENT)
+        )
+    }
+
     fun toEntity(): SnapComment = dummySnapComment
 
     fun toResponse(): SnapCommentResponse = dummySnapCommentResponse
 
     fun toCreateRequest(): CreateSnapCommentRequest = dummyCreateRequest
+
+    fun toUpdateRequest(): UpdateSnapCommentRequest = dummyUpdateRequest
 }
