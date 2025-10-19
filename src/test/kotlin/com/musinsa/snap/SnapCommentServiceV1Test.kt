@@ -13,6 +13,7 @@ import com.musinsa.snap.repository.SnapCommentRepositoryFacade
 import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.service.impl.SnapCommentServiceV1
 import com.musinsa.snap.updater.SnapCommentUpdater
+import com.musinsa.snap.validator.SnapCommentBusinessValidator
 import com.musinsa.snap.vo.SnapCommentOrderType
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
@@ -52,6 +53,9 @@ class SnapCommentServiceV1Test {
 
     @Mock
     private lateinit var updater: SnapCommentUpdater
+
+    @Mock
+    private lateinit var validator: SnapCommentBusinessValidator
 
     @InjectMocks
     private lateinit var service: SnapCommentServiceV1

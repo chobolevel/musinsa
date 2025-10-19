@@ -11,6 +11,7 @@ import com.musinsa.snap.repository.SnapQueryFilter
 import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.service.impl.SnapServiceV1
 import com.musinsa.snap.updater.SnapUpdater
+import com.musinsa.snap.validator.SnapBusinessValidator
 import com.musinsa.snap.vo.SnapOrderType
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
@@ -45,6 +46,9 @@ class SnapServiceV1Test {
 
     @Mock
     private lateinit var updater: SnapUpdater
+
+    @Mock
+    private lateinit var validator: SnapBusinessValidator
 
     @InjectMocks
     private lateinit var service: SnapServiceV1
