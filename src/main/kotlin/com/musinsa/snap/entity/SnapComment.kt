@@ -19,7 +19,7 @@ import org.hibernate.envers.Audited
 class SnapComment(
     @Column(nullable = false, length = 255)
     var comment: String
-): Audit() {
+) : Audit() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,13 +38,13 @@ class SnapComment(
     var isDeleted: Boolean = false
 
     fun assignSnap(snap: Snap) {
-        if(this.snap != snap) {
+        if (this.snap != snap) {
             this.snap = snap
         }
     }
 
     fun assignUser(user: User) {
-        if(this.user != user) {
+        if (this.user != user) {
             this.user = user
         }
     }

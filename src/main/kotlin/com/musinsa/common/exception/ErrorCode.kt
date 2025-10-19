@@ -30,4 +30,7 @@ enum class ErrorCode(val defaultMessage: String) {
     // SNAP LIKE
     ALREADY_LIKED_SNAP("이미 좋아요한 스냅입니다."),
     NOT_LIKED_SNAP("좋아요하지 않는 스냅입니다."),
+
+    // SNAP COMMENT
+    SNAP_COMMENT_NOT_FOUND("스냅 코멘트를 찾을 수 없습니다.")
 }

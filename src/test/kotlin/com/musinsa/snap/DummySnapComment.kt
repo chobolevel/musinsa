@@ -1,5 +1,6 @@
 package com.musinsa.snap
 
+import com.musinsa.snap.dto.CreateSnapCommentRequest
 import com.musinsa.snap.entity.SnapComment
 
 object DummySnapComment {
@@ -16,5 +17,13 @@ object DummySnapComment {
         }
     }
 
+    private val dummyCreateRequest: CreateSnapCommentRequest by lazy {
+        CreateSnapCommentRequest(
+            comment = comment
+        )
+    }
+
     fun toEntity(): SnapComment = dummySnapComment
+
+    fun toCreateRequest(): CreateSnapCommentRequest = dummyCreateRequest
 }
