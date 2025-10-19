@@ -86,6 +86,7 @@ class SnapCommentControllerV1(
         @Valid @RequestBody
         request: UpdateSnapCommentRequest
     ): ResponseEntity<CommonResponse> {
+        validator.validate(request = request)
         val result: Long = service.updateSnapComment(
             userId = principal.getUserId(),
             snapCommentId = snapCommentId,
