@@ -90,6 +90,17 @@ class SnapCommentServiceV1(
         return snapCommentId
     }
 
+    @Transactional
+    override fun deleteSnapComment(userId: Long, snapCommentId: Long): Boolean {
+        val snapComment: SnapComment = repository.findById(id = snapCommentId)
+        validateWriter(
+            userId = userId,
+            snapComment = snapComment,
+        )
+        snapComment.delete()
+        return snapComment.isDeleted
+    }
+
     @Throws(PolicyViolationException::class)
     private fun validateWriter(userId: Long, snapComment: SnapComment) {
         if (userId != snapComment.user!!.id) {

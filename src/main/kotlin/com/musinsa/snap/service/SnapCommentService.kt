@@ -29,4 +29,9 @@ interface SnapCommentService {
         snapCommentId: Long,
         request: UpdateSnapCommentRequest
     ): Long
+
+    fun deleteSnapComment(
+        userId: Long,
+        snapCommentId: Long
+    ): Boolean
 }

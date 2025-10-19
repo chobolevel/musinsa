@@ -159,4 +159,22 @@ class SnapCommentServiceV1Test {
         // then
         assertThat(result).isEqualTo(dummySnapCommentId)
     }
+
+    @Test
+    fun deleteSnapCommentTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummySnapCommentId: Long = dummySnapComment.id!!
+        dummySnapComment.assignUser(user = dummyUser)
+        `when`(repository.findById(id = dummySnapCommentId)).thenReturn(dummySnapComment)
+
+        // when
+        val result: Boolean = service.deleteSnapComment(
+            userId = dummyUserId,
+            snapCommentId = dummySnapCommentId
+        )
+
+        // then
+        assertThat(result).isTrue
+    }
 }

@@ -15,6 +15,7 @@ import com.musinsa.snap.vo.SnapCommentOrderType
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -91,6 +92,19 @@ class SnapCommentControllerV1(
             userId = principal.getUserId(),
             snapCommentId = snapCommentId,
             request = request
+        )
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
+
+    @DeleteMapping("/snaps/comments/{snapCommentId}")
+    @HasAuthorityUser
+    fun deleteSnapComment(
+        principal: Principal,
+        @PathVariable snapCommentId: Long
+    ): ResponseEntity<CommonResponse> {
+        val result: Boolean = service.deleteSnapComment(
+            userId = principal.getUserId(),
+            snapCommentId = snapCommentId
         )
         return ResponseEntity.ok(CommonResponse(data = result))
     }
