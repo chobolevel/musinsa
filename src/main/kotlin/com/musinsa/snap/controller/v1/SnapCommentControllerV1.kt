@@ -6,6 +6,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.extension.getUserId
 import com.musinsa.snap.dto.CreateSnapCommentRequest
+import com.musinsa.snap.dto.SnapCommentResponse
 import com.musinsa.snap.repository.SnapCommentQueryFilter
 import com.musinsa.snap.service.SnapCommentService
 import com.musinsa.snap.vo.SnapCommentOrderType
@@ -65,5 +66,11 @@ class SnapCommentControllerV1(
             orderTypes = orderTypes ?: emptyList()
         )
         return ResponseEntity.ok(result)
+    }
+
+    @GetMapping("/snaps/comments/{snapCommentId}")
+    fun getSnapComment(@PathVariable snapCommentId: Long): ResponseEntity<CommonResponse> {
+        val result: SnapCommentResponse = service.getSnapComment(snapCommentId = snapCommentId)
+        return ResponseEntity.ok(CommonResponse(data = result))
     }
 }

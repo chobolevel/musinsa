@@ -114,4 +114,18 @@ class SnapCommentServiceV1Test {
         assertThat(result.data).isEqualTo(dummySnapCommentResponses)
         assertThat(result.totalCount).isEqualTo(dummySnapCommentResponses.size.toLong())
     }
+
+    @Test
+    fun getSnapCommentTest() {
+        // given
+        val dummySnapCommentId: Long = dummySnapComment.id!!
+        `when`(repository.findById(id = dummySnapCommentId)).thenReturn(dummySnapComment)
+        `when`(converter.toResponse(snapComment = dummySnapComment)).thenReturn(dummySnapCommentResponse)
+
+        // when
+        val result: SnapCommentResponse = service.getSnapComment(snapCommentId = dummySnapCommentId)
+
+        // then
+        assertThat(result).isEqualTo(dummySnapCommentResponse)
+    }
 }

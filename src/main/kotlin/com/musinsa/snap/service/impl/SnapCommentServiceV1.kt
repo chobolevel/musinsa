@@ -4,6 +4,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.converter.SnapCommentConverter
 import com.musinsa.snap.dto.CreateSnapCommentRequest
+import com.musinsa.snap.dto.SnapCommentResponse
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapComment
 import com.musinsa.snap.repository.SnapCommentQueryFilter
@@ -57,5 +58,11 @@ class SnapCommentServiceV1(
             data = converter.toResponseInBatch(snapComments = snapComments),
             totalCount = totalCount
         )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getSnapComment(snapCommentId: Long): SnapCommentResponse {
+        val snapComment: SnapComment = repository.findById(id = snapCommentId)
+        return converter.toResponse(snapComment = snapComment)
     }
 }
