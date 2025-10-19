@@ -10,6 +10,7 @@ import com.musinsa.snap.dto.SnapResponse
 import com.musinsa.snap.dto.UpdateSnapRequest
 import com.musinsa.snap.repository.SnapQueryFilter
 import com.musinsa.snap.service.SnapService
+import com.musinsa.snap.validator.SnapParameterValidator
 import com.musinsa.snap.vo.SnapOrderType
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -28,7 +29,8 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api/v1")
 class SnapController(
-    private val service: SnapService
+    private val service: SnapService,
+    private val validator: SnapParameterValidator
 ) {
 
     @HasAuthorityUser
@@ -81,6 +83,7 @@ class SnapController(
         @Valid @RequestBody
         request: UpdateSnapRequest
     ): ResponseEntity<CommonResponse> {
+        validator.validate(request = request)
         val result: Long = service.updateSnap(
             userId = principal.getUserId(),
             snapId = snapId,
