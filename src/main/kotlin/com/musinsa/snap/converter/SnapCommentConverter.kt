@@ -22,7 +22,7 @@ class SnapCommentConverter(
         return SnapCommentResponse(
             id = snapComment.id!!,
             snapId = snapComment.snap!!.id!!,
-            writer = userConverter.toResponse(user = snapComment.user!!),
+            writer = userConverter.toResponse(user = snapComment.writer!!),
             comment = snapComment.comment,
             createdAt = snapComment.createdAt!!.toMillis(),
             updatedAt = snapComment.updatedAt!!.toMillis(),

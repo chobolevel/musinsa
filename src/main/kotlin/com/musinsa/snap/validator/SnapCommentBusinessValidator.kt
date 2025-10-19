@@ -10,7 +10,7 @@ class SnapCommentBusinessValidator {
 
     @Throws(PolicyViolationException::class)
     fun validateWriter(userId: Long, snapComment: SnapComment) {
-        if (userId != snapComment.user!!.id) {
+        if (userId != snapComment.writer!!.id) {
             throw PolicyViolationException(
                 errorCode = ErrorCode.ACCESSIBLE_ONLY_SNAP_COMMENT_WRITER,
                 message = ErrorCode.ACCESSIBLE_ONLY_SNAP_COMMENT_WRITER.defaultMessage

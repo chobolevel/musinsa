@@ -140,7 +140,7 @@ class SnapCommentServiceV1Test {
         val dummyUserId: Long = dummyUser.id!!
         val dummySnapCommentId: Long = dummySnapComment.id!!
         val dummyRequest: UpdateSnapCommentRequest = DummySnapComment.toUpdateRequest()
-        dummySnapComment.assignUser(user = dummyUser)
+        dummySnapComment.assignWriter(user = dummyUser)
         `when`(repository.findById(id = dummySnapCommentId)).thenReturn(dummySnapComment)
         `when`(
             updater.markAsUpdate(
@@ -165,7 +165,7 @@ class SnapCommentServiceV1Test {
         // given
         val dummyUserId: Long = dummyUser.id!!
         val dummySnapCommentId: Long = dummySnapComment.id!!
-        dummySnapComment.assignUser(user = dummyUser)
+        dummySnapComment.assignWriter(user = dummyUser)
         `when`(repository.findById(id = dummySnapCommentId)).thenReturn(dummySnapComment)
 
         // when

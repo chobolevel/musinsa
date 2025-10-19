@@ -26,15 +26,15 @@ class SnapCommentEntityTest {
     }
 
     @Test
-    fun assignUserTest() {
+    fun assignWriterTest() {
         // given
         val dummyUser: User = DummyUser.toEntity()
 
         // when
-        dummySnapComment.assignUser(user = dummyUser)
+        dummySnapComment.assignWriter(user = dummyUser)
 
         // then
-        assertThat(dummySnapComment.user).isEqualTo(dummyUser)
+        assertThat(dummySnapComment.writer).isEqualTo(dummyUser)
     }
 
     @Test

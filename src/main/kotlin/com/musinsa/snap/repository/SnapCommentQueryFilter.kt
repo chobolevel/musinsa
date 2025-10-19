@@ -11,7 +11,7 @@ class SnapCommentQueryFilter(
     fun toBooleanExpressions(): Array<BooleanExpression> {
         return listOfNotNull(
             snapId?.let { snapComment.snap.id.eq(it) },
-            userId?.let { snapComment.user.id.eq(it) },
+            userId?.let { snapComment.writer.id.eq(it) },
             snapComment.isDeleted.isFalse
         ).toTypedArray()
     }

@@ -40,7 +40,7 @@ class SnapCommentServiceV1(
         val snap: Snap = snapRepository.findById(id = snapId)
         val snapComment: SnapComment = converter.toEntity(request = request).also { snapComment ->
             snapComment.assignSnap(snap = snap)
-            snapComment.assignUser(user = user)
+            snapComment.assignWriter(user = user)
         }
         return repository.save(snapComment = snapComment).id!!
     }

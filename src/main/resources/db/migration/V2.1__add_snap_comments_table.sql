@@ -3,7 +3,7 @@ create table musinsa.snap_comments
   id         bigint auto_increment comment '아이디'
         primary key,
   snap_id    bigint       not null comment '스냅 아이디',
-  user_id    bigint       not null comment '회원 아이디',
+  writer_id  bigint       not null comment '작성자 아이디',
   comment    varchar(255) not null comment '코멘트',
   is_deleted bit          not null comment '삭제여부',
   created_at datetime     not null comment '생성일자',
@@ -11,7 +11,7 @@ create table musinsa.snap_comments
   constraint snap_comments_snaps_id_fk
     foreign key (snap_id) references musinsa.snaps (id),
   constraint snap_comments_users_id_fk
-    foreign key (user_id) references musinsa.users (id)
+    foreign key (writer_id) references musinsa.users (id)
 )
   comment '스냅 코멘트 테이블';
 
@@ -21,7 +21,7 @@ create table musinsa.snap_comments_histories
   revision_id   bigint       not null,
   revision_type tinyint      not null,
   snap_id       bigint       not null,
-  user_id       bigint       not null,
+  writer_id     bigint       not null,
   comment       varchar(255) not null,
   is_deleted    bit          not null,
   created_at    datetime     not null,

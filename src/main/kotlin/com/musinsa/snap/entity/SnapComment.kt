@@ -31,8 +31,8 @@ class SnapComment(
     var snap: Snap? = null
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    var user: User? = null
+    @JoinColumn(name = "writer_id")
+    var writer: User? = null
 
     @Column(nullable = false)
     var isDeleted: Boolean = false
@@ -43,9 +43,9 @@ class SnapComment(
         }
     }
 
-    fun assignUser(user: User) {
-        if (this.user != user) {
-            this.user = user
+    fun assignWriter(user: User) {
+        if (this.writer != user) {
+            this.writer = user
         }
     }
 
