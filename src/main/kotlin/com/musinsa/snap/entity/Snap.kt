@@ -48,6 +48,10 @@ class Snap(
     @OrderBy("created_at desc")
     val snapLikes: List<SnapLike> = listOf()
 
+    @OneToMany(mappedBy = "snap")
+    @OrderBy("order asc")
+    val snapTagMappings: MutableList<SnapTagMapping> = mutableListOf()
+
     fun assignWriter(user: User) {
         if (this.writer != user) {
             this.writer = user
@@ -80,5 +84,21 @@ class Snap(
     fun deleteSnapImageInBatch() {
         this.snapImages.forEach { it.delete() }
         this.snapImages.clear()
+    }
+
+    fun addSnapTag(snapTag: SnapTag) {
+        val snapTagMapping = SnapTagMapping(
+            order = this.snapTagMappings.size
+        ).also { snapTagMapping ->
+            snapTagMapping.assignSnap(snap = this)
+            snapTagMapping.assignSnapTag(snapTag = snapTag)
+        }
+        if (!this.snapTagMappings.contains(snapTagMapping)) {
+            this.snapTagMappings.add(snapTagMapping)
+        }
+    }
+
+    fun subSnapTag(snapTag: SnapTag) {
+        this.snapTagMappings.removeIf { it.snapTag == snapTag }
     }
 }

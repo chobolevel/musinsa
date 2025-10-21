@@ -1,6 +1,7 @@
 package com.musinsa.snap
 
 import com.musinsa.snap.entity.Snap
+import com.musinsa.snap.entity.SnapTag
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
 import org.assertj.core.api.Assertions.assertThat
@@ -68,5 +69,31 @@ class SnapEntityTest {
 
         // then
         assertThat(dummySnap.snapImages).isEmpty()
+    }
+
+    @Test
+    fun addSnapTagTest() {
+        // given
+        val dummySnapTag: SnapTag = DummySnapTag.toEntity()
+
+        // when
+        dummySnap.addSnapTag(snapTag = dummySnapTag)
+
+        // then
+        assertThat(dummySnap.snapTagMappings[0].snap).isEqualTo(dummySnap)
+        assertThat(dummySnap.snapTagMappings[0].snapTag).isEqualTo(dummySnapTag)
+    }
+
+    @Test
+    fun subSnapTagTest() {
+        // given
+        val dummySnapTag: SnapTag = DummySnapTag.toEntity()
+        dummySnap.addSnapTag(snapTag = dummySnapTag)
+
+        // when
+        dummySnap.subSnapTag(snapTag = dummySnapTag)
+
+        // then
+        assertThat(dummySnap.snapTagMappings).isEmpty()
     }
 }
