@@ -7,8 +7,10 @@ import com.musinsa.snap.dto.CreateSnapRequest
 import com.musinsa.snap.dto.SnapResponse
 import com.musinsa.snap.dto.UpdateSnapRequest
 import com.musinsa.snap.entity.Snap
+import com.musinsa.snap.entity.SnapTag
 import com.musinsa.snap.repository.SnapQueryFilter
 import com.musinsa.snap.repository.SnapRepositoryFacade
+import com.musinsa.snap.repository.SnapTagRepositoryFacade
 import com.musinsa.snap.service.SnapService
 import com.musinsa.snap.updater.SnapUpdater
 import com.musinsa.snap.validator.SnapBusinessValidator
@@ -23,6 +25,7 @@ class SnapServiceV1(
     private val converter: SnapConverter,
     private val userRepository: UserRepositoryFacade,
     private val snapRepository: SnapRepositoryFacade,
+    private val snapTagRepository: SnapTagRepositoryFacade,
     private val validator: SnapBusinessValidator,
     private val updater: SnapUpdater
 ) : SnapService {
@@ -31,8 +34,13 @@ class SnapServiceV1(
     override fun createSnap(userId: Long, request: CreateSnapRequest): Long {
         val snap: Snap = converter.toEntity(request = request).also { snap ->
             val user: User = userRepository.findById(id = userId)
-
             snap.assignWriter(user = user)
+
+            val snapTags: List<SnapTag> = snapTagRepository.findInIds(ids = request.snapTagIds)
+            snapTags.forEach { snapTag ->
+                snap.addSnapTag(snapTag = snapTag)
+            }
+
             request.snapImages.forEach { snapImageRequest ->
                 snap.addSnapImage(
                     url = snapImageRequest.url,

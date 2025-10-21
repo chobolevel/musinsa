@@ -7,8 +7,10 @@ import com.musinsa.snap.dto.CreateSnapRequest
 import com.musinsa.snap.dto.SnapResponse
 import com.musinsa.snap.dto.UpdateSnapRequest
 import com.musinsa.snap.entity.Snap
+import com.musinsa.snap.entity.SnapTag
 import com.musinsa.snap.repository.SnapQueryFilter
 import com.musinsa.snap.repository.SnapRepositoryFacade
+import com.musinsa.snap.repository.SnapTagRepositoryFacade
 import com.musinsa.snap.service.impl.SnapServiceV1
 import com.musinsa.snap.updater.SnapUpdater
 import com.musinsa.snap.validator.SnapBusinessValidator
@@ -33,6 +35,8 @@ class SnapServiceV1Test {
 
     private val dummySnap: Snap = DummySnap.toEntity()
 
+    private val dummySnapTag: SnapTag = DummySnapTag.toEntity()
+
     private val dummySnapResponse: SnapResponse = DummySnap.toResponse()
 
     @Mock
@@ -43,6 +47,9 @@ class SnapServiceV1Test {
 
     @Mock
     private lateinit var snapRepository: SnapRepositoryFacade
+
+    @Mock
+    private lateinit var snapTagRepository: SnapTagRepositoryFacade
 
     @Mock
     private lateinit var updater: SnapUpdater
@@ -58,8 +65,10 @@ class SnapServiceV1Test {
         // given
         val dummyUserId: Long = dummyUser.id!!
         val dummyRequest: CreateSnapRequest = DummySnap.toCreateRequest()
+        val dummySnapTags: List<SnapTag> = listOf(dummySnapTag)
         `when`(converter.toEntity(request = dummyRequest)).thenReturn(dummySnap)
         `when`(userRepository.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(snapTagRepository.findInIds(ids = dummyRequest.snapTagIds)).thenReturn(dummySnapTags)
         `when`(snapRepository.save(snap = dummySnap)).thenReturn(dummySnap)
 
         // when

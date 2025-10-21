@@ -36,6 +36,10 @@ class SnapTagRepositoryFacade(
         return customRepository.searchSnapTagsCount(booleanExpressions = queryFilter.toBooleanExpressions())
     }
 
+    fun findInIds(ids: List<Long>): List<SnapTag> {
+        return repository.findInIdsAndIsDeletedFalse(ids = ids)
+    }
+
     @Throws(DataNotFoundException::class)
     fun findById(id: Long): SnapTag {
         return repository.findByIdAndIsDeletedFalse(id = id) ?: throw DataNotFoundException(

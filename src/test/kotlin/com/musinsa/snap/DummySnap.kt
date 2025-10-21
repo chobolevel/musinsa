@@ -37,6 +37,7 @@ object DummySnap {
     private val dummyCreateRequest: CreateSnapRequest by lazy {
         CreateSnapRequest(
             content = content,
+            snapTagIds = listOf(DummySnapTag.toEntity().id!!),
             snapImages = emptyList()
         )
     }
