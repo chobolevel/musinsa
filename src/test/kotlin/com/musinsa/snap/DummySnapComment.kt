@@ -9,6 +9,7 @@ import com.musinsa.user.DummyUser
 
 object DummySnapComment {
     private val id: Long = 1L
+    private val parentId: Long = 2L
     private val comment: String = "스타일이 너무 멋저요!"
     private val createdAt: Long = 0L
     private val updatedAt: Long = 0L
@@ -18,6 +19,14 @@ object DummySnapComment {
             comment = comment
         ).also {
             it.id = id
+        }
+    }
+
+    private val dummyParentSnapComment: SnapComment by lazy {
+        SnapComment(
+            comment = "부모 코멘트"
+        ).also {
+            it.id = parentId
         }
     }
 
@@ -34,6 +43,7 @@ object DummySnapComment {
 
     private val dummyCreateRequest: CreateSnapCommentRequest by lazy {
         CreateSnapCommentRequest(
+            parentId = parentId,
             comment = comment
         )
     }
@@ -46,6 +56,8 @@ object DummySnapComment {
     }
 
     fun toEntity(): SnapComment = dummySnapComment
+
+    fun toParentEntity(): SnapComment = dummyParentSnapComment
 
     fun toResponse(): SnapCommentResponse = dummySnapCommentResponse
 

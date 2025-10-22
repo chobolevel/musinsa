@@ -14,6 +14,18 @@ class SnapCommentEntityTest {
     private val dummySnapComment: SnapComment = DummySnapComment.toEntity()
 
     @Test
+    fun assignParentTest() {
+        // given
+        val dummyParentSnapComment = DummySnapComment.toParentEntity()
+
+        // when
+        dummySnapComment.assignParent(snapComment = dummyParentSnapComment)
+
+        // then
+        assertThat(dummySnapComment.parent).isEqualTo(dummyParentSnapComment)
+    }
+
+    @Test
     fun assignSnapTest() {
         // given
         val dummySnap: Snap = DummySnap.toEntity()

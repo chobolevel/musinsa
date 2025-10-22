@@ -39,6 +39,9 @@ class SnapCommentServiceV1(
         val user: User = userRepository.findById(id = userId)
         val snap: Snap = snapRepository.findById(id = snapId)
         val snapComment: SnapComment = converter.toEntity(request = request).also { snapComment ->
+            request.parentId?.let { parentId ->
+                snapComment.assignParent(snapComment = repository.findById(id = parentId))
+            }
             snapComment.assignSnap(snap = snap)
             snapComment.assignWriter(user = user)
         }

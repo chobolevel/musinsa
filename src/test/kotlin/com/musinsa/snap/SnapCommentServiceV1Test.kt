@@ -37,6 +37,8 @@ class SnapCommentServiceV1Test {
 
     private val dummySnapComment: SnapComment = DummySnapComment.toEntity()
 
+    private val dummyParentSnapComment: SnapComment = DummySnapComment.toParentEntity()
+
     private val dummySnapCommentResponse: SnapCommentResponse = DummySnapComment.toResponse()
 
     @Mock
@@ -67,6 +69,7 @@ class SnapCommentServiceV1Test {
         val dummySnapId: Long = dummySnap.id!!
         val dummyRequest: CreateSnapCommentRequest = DummySnapComment.toCreateRequest()
         `when`(converter.toEntity(request = dummyRequest)).thenReturn(dummySnapComment)
+        `when`(repository.findById(id = dummyRequest.parentId!!)).thenReturn(dummyParentSnapComment)
         `when`(userRepository.findById(id = dummyUserId)).thenReturn(dummyUser)
         `when`(snapRepository.findById(id = dummySnapId)).thenReturn(dummySnap)
         `when`(repository.save(snapComment = dummySnapComment)).thenReturn(dummySnapComment)

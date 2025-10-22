@@ -26,6 +26,10 @@ class SnapComment(
     @Column(nullable = false, unique = true)
     var id: Long? = null
 
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    var parent: SnapComment? = null
+
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "snap_id")
     var snap: Snap? = null
@@ -36,6 +40,12 @@ class SnapComment(
 
     @Column(nullable = false)
     var isDeleted: Boolean = false
+
+    fun assignParent(snapComment: SnapComment?) {
+        if (this.parent != snapComment) {
+            this.parent = snapComment
+        }
+    }
 
     fun assignSnap(snap: Snap) {
         if (this.snap != snap) {
