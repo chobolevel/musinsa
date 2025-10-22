@@ -68,7 +68,7 @@ class SnapServiceV1Test {
         val dummySnapTags: List<SnapTag> = listOf(dummySnapTag)
         `when`(converter.toEntity(request = dummyRequest)).thenReturn(dummySnap)
         `when`(userRepository.findById(id = dummyUserId)).thenReturn(dummyUser)
-        `when`(snapTagRepository.findInIds(ids = dummyRequest.snapTagIds)).thenReturn(dummySnapTags)
+        `when`(snapTagRepository.findByIds(ids = dummyRequest.snapTagIds)).thenReturn(dummySnapTags)
         `when`(snapRepository.save(snap = dummySnap)).thenReturn(dummySnap)
 
         // when
