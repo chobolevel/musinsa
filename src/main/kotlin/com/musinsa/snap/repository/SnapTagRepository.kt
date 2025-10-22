@@ -7,5 +7,5 @@ interface SnapTagRepository : JpaRepository<SnapTag, Long> {
 
     fun findByIdAndIsDeletedFalse(id: Long): SnapTag?
 
-    fun findInIdsAndIsDeletedFalse(ids: List<Long>): List<SnapTag>
+    fun findByIdInAndIsDeletedFalse(ids: List<Long>): List<SnapTag>
 }

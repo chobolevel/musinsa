@@ -36,7 +36,7 @@ class SnapServiceV1(
             val user: User = userRepository.findById(id = userId)
             snap.assignWriter(user = user)
 
-            val snapTags: List<SnapTag> = snapTagRepository.findInIds(ids = request.snapTagIds)
+            val snapTags: List<SnapTag> = snapTagRepository.findByIds(ids = request.snapTagIds)
             snapTags.forEach { snapTag ->
                 snap.addSnapTag(snapTag = snapTag)
             }
