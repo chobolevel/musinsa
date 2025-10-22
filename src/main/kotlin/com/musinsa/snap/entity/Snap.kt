@@ -48,6 +48,7 @@ class Snap(
     @OrderBy("created_at desc")
     val snapLikes: List<SnapLike> = listOf()
 
+    @NotAudited
     @OneToMany(mappedBy = "snap")
     @OrderBy("order asc")
     val snapTagMappings: MutableList<SnapTagMapping> = mutableListOf()
