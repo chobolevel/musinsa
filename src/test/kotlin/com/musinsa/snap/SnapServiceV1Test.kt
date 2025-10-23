@@ -82,7 +82,8 @@ class SnapServiceV1Test {
     fun getSnapsTest() {
         // given
         val dummyQueryFilter = SnapQueryFilter(
-            writerId = null
+            writerId = null,
+            keyword = null
         )
         val dummyPagination = Pagination(
             page = 1,

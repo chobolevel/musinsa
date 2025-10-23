@@ -50,12 +50,14 @@ class SnapController(
     @GetMapping("/snaps")
     fun getSnaps(
         @RequestParam(required = false) writerId: Long?,
+        @RequestParam(required = false) keyword: String?,
         @RequestParam(required = false) page: Long?,
         @RequestParam(required = false) size: Long?,
         @RequestParam(required = false) orderTypes: List<SnapOrderType>?
     ): ResponseEntity<PaginationResponse> {
         val queryFilter = SnapQueryFilter(
             writerId = writerId,
+            keyword = keyword,
         )
         val pagination = Pagination(
             page = page ?: 1,
