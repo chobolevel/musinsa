@@ -49,7 +49,7 @@ class Snap(
     val snapLikes: List<SnapLike> = listOf()
 
     @NotAudited
-    @OneToMany(mappedBy = "snap")
+    @OneToMany(mappedBy = "snap", cascade = [(CascadeType.ALL)], orphanRemoval = true)
     @OrderBy("order asc")
     val snapTagMappings: MutableList<SnapTagMapping> = mutableListOf()
 
