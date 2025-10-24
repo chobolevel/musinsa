@@ -21,6 +21,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -110,6 +111,16 @@ class UserController(
         request: ChangeUserPasswordRequest
     ): ResponseEntity<CommonResponse> {
         val result: Long = service.changePassword(userId = principal.getUserId(), request = request)
+        return ResponseEntity.ok().body(CommonResponse(data = result))
+    }
+
+    @HasAuthorityUser
+    @PostMapping("/user/following/{followingUserId}")
+    fun following(principal: Principal, @PathVariable followingUserId: Long): ResponseEntity<CommonResponse> {
+        val result: Boolean = service.following(
+            userId = principal.getUserId(),
+            followingUserId = followingUserId
+        )
         return ResponseEntity.ok().body(CommonResponse(data = result))
     }
 }

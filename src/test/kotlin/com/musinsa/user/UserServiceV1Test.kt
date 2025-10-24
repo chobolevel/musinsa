@@ -178,4 +178,22 @@ class UserServiceV1Test {
         // then
         assertThat(result).isEqualTo(dummyUserId)
     }
+
+    @Test
+    fun followingTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummyFollowingUserId: Long = dummySocialUser.id!!
+        `when`(repository.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(repository.findById(id = dummyFollowingUserId)).thenReturn(dummySocialUser)
+
+        // when
+        val result: Boolean = userService.following(
+            userId = dummyUserId,
+            followingUserId = dummyFollowingUserId
+        )
+
+        // then
+        assertThat(result).isTrue()
+    }
 }

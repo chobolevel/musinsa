@@ -110,4 +110,12 @@ class UserServiceV1(
         user.password = passwordEncoder.encode(request.newPassword)
         return userId
     }
+
+    @Transactional
+    override fun following(userId: Long, followingUserId: Long): Boolean {
+        val user: User = repository.findById(id = userId)
+        val followingUser: User = repository.findById(id = followingUserId)
+        user.following(user = followingUser)
+        return true
+    }
 }

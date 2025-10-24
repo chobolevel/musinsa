@@ -19,6 +19,7 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.hibernate.annotations.SQLRestriction
 import org.hibernate.envers.Audited
+import org.hibernate.envers.NotAudited
 import java.time.LocalDate
 
 @Entity
@@ -70,7 +71,25 @@ class User(
     @SQLRestriction("is_deleted = false")
     val applicationMembers: MutableList<ApplicationMember> = mutableListOf()
 
+    @NotAudited
+    @OneToMany(mappedBy = "follower", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val userFollows: MutableList<UserFollow> = mutableListOf()
+
     fun delete() {
         this.isDeleted = true
+    }
+
+    fun following(user: User) {
+        val userFollow = UserFollow().also { userFollow ->
+            userFollow.assignFollower(user = this)
+            userFollow.assignFollowing(user = user)
+        }
+        if (!this.userFollows.contains(userFollow)) {
+            this.userFollows.add(userFollow)
+        }
+    }
+
+    fun unFollowing(user: User) {
+        this.userFollows.removeIf { it.following == user }
     }
 }
