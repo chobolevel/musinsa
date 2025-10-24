@@ -118,4 +118,12 @@ class UserServiceV1(
         user.following(user = followingUser)
         return true
     }
+
+    @Transactional
+    override fun unFollowing(userId: Long, unFollowingUserId: Long): Boolean {
+        val user: User = repository.findById(id = userId)
+        val unFollowingUser: User = repository.findById(id = unFollowingUserId)
+        user.unFollowing(user = unFollowingUser)
+        return true
+    }
 }

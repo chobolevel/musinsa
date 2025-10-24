@@ -196,4 +196,22 @@ class UserServiceV1Test {
         // then
         assertThat(result).isTrue()
     }
+
+    @Test
+    fun unFollowingTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummyUnFollowingId: Long = dummySocialUser.id!!
+        `when`(repository.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(repository.findById(id = dummyUnFollowingId)).thenReturn(dummySocialUser)
+
+        // when
+        val result: Boolean = userService.unFollowing(
+            userId = dummyUserId,
+            unFollowingUserId = dummyUnFollowingId
+        )
+
+        // then
+        assertThat(result).isTrue()
+    }
 }
