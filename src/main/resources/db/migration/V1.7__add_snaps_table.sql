@@ -12,6 +12,9 @@ create table musinsa.snaps
 )
   comment '스냅 테이블';
 
+create fulltext index idx_content_fulltext
+    on musinsa.snaps (content);
+
 create table musinsa.snaps_histories
 (
   id            bigint   not null,
