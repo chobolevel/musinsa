@@ -1,7 +1,7 @@
 package com.musinsa.user
 
 import com.musinsa.user.entity.User
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import kotlin.test.Test
 
@@ -18,6 +18,6 @@ class UserEntityTest {
         dummyUser.delete()
 
         // then
-        Assertions.assertThat(dummyUser.isDeleted).isTrue()
+        assertThat(dummyUser.isDeleted).isTrue()
     }
 }
