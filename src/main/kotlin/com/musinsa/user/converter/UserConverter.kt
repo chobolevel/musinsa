@@ -73,7 +73,6 @@ class UserConverter(
             role = user.role,
             pointBalance = user.pointBalance,
             isDeleted = user.isDeleted,
-            followings = user.userFollows.map { toResponse(user = it.following!!) },
             createdAt = user.createdAt!!.toMillis(),
             updatedAt = user.updatedAt!!.toMillis()
         )

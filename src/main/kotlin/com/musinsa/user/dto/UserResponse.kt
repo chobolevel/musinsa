@@ -23,7 +23,6 @@ data class UserResponse(
     val role: UserRole,
     val pointBalance: Int,
     val isDeleted: Boolean,
-    val followings: List<UserResponse>,
     val createdAt: Long,
     val updatedAt: Long,
 )
