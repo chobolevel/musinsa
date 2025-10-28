@@ -34,6 +34,10 @@ class UserFollowRepositoryFacade(
         )
     }
 
+    fun deleteByFollowerIdAndFollowingId(followerId: Long, followingId: Long) {
+        return repository.deleteByFollowerIdAndFollowingId(followerId, followingId)
+    }
+
     private fun List<UserFollowOrderType>.toOrderSpecifiers(): Array<OrderSpecifier<*>> {
         return this.map {
             when (it) {

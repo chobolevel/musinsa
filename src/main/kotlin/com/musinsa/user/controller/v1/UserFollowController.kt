@@ -29,4 +29,16 @@ class UserFollowController(
         )
         return ResponseEntity.ok(CommonResponse(data = result))
     }
+
+    @PostMapping("/user/un-following/{unFollowingUserId}")
+    fun unFollowing(
+        principal: Principal,
+        @PathVariable unFollowingUserId: Long
+    ): ResponseEntity<CommonResponse> {
+        val result: Boolean = service.unFollowing(
+            userId = principal.getUserId(),
+            unFollowingUserId = unFollowingUserId
+        )
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
 }
