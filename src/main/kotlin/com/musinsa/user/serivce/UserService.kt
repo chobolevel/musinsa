@@ -26,8 +26,4 @@ interface UserService {
     fun resignUser(userId: Long): Boolean
 
     fun changePassword(userId: Long, request: ChangeUserPasswordRequest): Long
-
-    fun following(userId: Long, followingUserId: Long): Boolean
-
-    fun unFollowing(userId: Long, unFollowingUserId: Long): Boolean
 }

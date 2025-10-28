@@ -22,28 +22,4 @@ class UserEntityTest {
         // then
         assertThat(dummyUser.isDeleted).isTrue()
     }
-
-    @Test
-    fun followingTest() {
-        // given
-
-        // when
-        dummyUser.following(user = dummySocialUser)
-
-        // then
-        assertThat(dummyUser.userFollows[0].follower).isEqualTo(dummyUser)
-        assertThat(dummyUser.userFollows[0].following).isEqualTo(dummySocialUser)
-    }
-
-    @Test
-    fun unFollowingTest() {
-        // given
-        dummyUser.following(user = dummySocialUser)
-
-        // when
-        dummyUser.unFollowing(user = dummySocialUser)
-
-        // then
-        assertThat(dummyUser.userFollows.find { it.following == dummySocialUser }).isNull()
-    }
 }
