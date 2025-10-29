@@ -27,10 +27,10 @@ class UserFollowServiceV1(
     }
 
     @Transactional
-    override fun unFollowing(userId: Long, followingUserId: Long): Boolean {
+    override fun unFollowing(userId: Long, unFollowingUserId: Long): Boolean {
         repository.deleteByFollowerIdAndFollowingId(
             followerId = userId,
-            followingId = followingUserId
+            followingId = unFollowingUserId
         )
         return true
     }
