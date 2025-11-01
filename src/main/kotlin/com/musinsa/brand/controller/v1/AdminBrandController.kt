@@ -1,4 +1,4 @@
-package com.musinsa.brand.controller
+package com.musinsa.brand.controller.v1
 
 import com.musinsa.brand.dto.CreateBrandRequest
 import com.musinsa.brand.service.BrandService
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1/admin")
-class BrandController(
+class AdminBrandController(
     private val service: BrandService
 ) {
 
