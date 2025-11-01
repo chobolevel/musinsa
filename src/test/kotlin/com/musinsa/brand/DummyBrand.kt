@@ -1,5 +1,6 @@
 package com.musinsa.brand
 
+import com.musinsa.brand.dto.CreateBrandRequest
 import com.musinsa.brand.entity.Brand
 import com.musinsa.common.vo.NationType
 
@@ -21,5 +22,17 @@ object DummyBrand {
         ).also { it.id = id }
     }
 
+    private val dummyCreateRequest: CreateBrandRequest by lazy {
+        CreateBrandRequest(
+            name = name,
+            englishName = englishName,
+            yearOfLaunch = yearOfLaunch,
+            nation = nation,
+            description = description,
+        )
+    }
+
     fun toEntity(): Brand = dummyBrand
+
+    fun toCreateRequest(): CreateBrandRequest = dummyCreateRequest
 }

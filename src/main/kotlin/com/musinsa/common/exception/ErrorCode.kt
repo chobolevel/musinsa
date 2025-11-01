@@ -34,4 +34,7 @@ enum class ErrorCode(val defaultMessage: String) {
     // SNAP COMMENT
     SNAP_COMMENT_NOT_FOUND("스냅 코멘트를 찾을 수 없습니다."),
     ACCESSIBLE_ONLY_SNAP_COMMENT_WRITER("스냅 코멘트 작성자만 접근할 수 있습니다."),
+
+    // BRAND
+    BRAND_NOT_FOUND("브랜드를 찾을 수 없습니다."),
 }
