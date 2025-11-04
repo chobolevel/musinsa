@@ -3,10 +3,12 @@ package com.musinsa.brand
 import com.musinsa.brand.converter.BrandConverter
 import com.musinsa.brand.dto.BrandResponse
 import com.musinsa.brand.dto.CreateBrandRequest
+import com.musinsa.brand.dto.UpdateBrandRequest
 import com.musinsa.brand.entity.Brand
 import com.musinsa.brand.repository.BrandQueryFilter
 import com.musinsa.brand.repository.BrandRepositoryFacade
 import com.musinsa.brand.service.impl.BrandServiceV1
+import com.musinsa.brand.updater.BrandUpdater
 import com.musinsa.brand.vo.BrandOrderType
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
@@ -32,6 +34,9 @@ class BrandServiceV1Test {
 
     @Mock
     private lateinit var converter: BrandConverter
+
+    @Mock
+    private lateinit var updater: BrandUpdater
 
     @InjectMocks
     private lateinit var service: BrandServiceV1
@@ -105,5 +110,23 @@ class BrandServiceV1Test {
 
         // then
         assertThat(result).isEqualTo(dummyBrandResponse)
+    }
+
+    @Test
+    fun updateBrandTest() {
+        // given
+        val dummyBrandId: Long = dummyBrand.id!!
+        val dummyRequest: UpdateBrandRequest = DummyBrand.toUpdateRequest()
+        `when`(repository.findById(id = dummyBrandId)).thenReturn(dummyBrand)
+        `when`(updater.markAsUpdate(request = dummyRequest, brand = dummyBrand)).thenReturn(dummyBrand)
+
+        // when
+        val result: Long = service.updateBrand(
+            id = dummyBrandId,
+            request = dummyRequest
+        )
+
+        // then
+        assertThat(result).isEqualTo(dummyBrandId)
     }
 }

@@ -2,7 +2,9 @@ package com.musinsa.brand
 
 import com.musinsa.brand.dto.BrandResponse
 import com.musinsa.brand.dto.CreateBrandRequest
+import com.musinsa.brand.dto.UpdateBrandRequest
 import com.musinsa.brand.entity.Brand
+import com.musinsa.brand.vo.BrandUpdateMask
 import com.musinsa.common.vo.NationType
 
 object DummyBrand {
@@ -49,9 +51,22 @@ object DummyBrand {
         )
     }
 
+    private val dummyUpdateRequest: UpdateBrandRequest by lazy {
+        UpdateBrandRequest(
+            name = "뉴 오프닝 프로젝트",
+            englishName = null,
+            yearOfLaunch = null,
+            nation = null,
+            description = null,
+            updateMask = listOfNotNull(BrandUpdateMask.NAME)
+        )
+    }
+
     fun toEntity(): Brand = dummyBrand
 
     fun toResponse(): BrandResponse = dummyBrandResponse
 
     fun toCreateRequest(): CreateBrandRequest = dummyCreateRequest
+
+    fun toUpdateRequest(): UpdateBrandRequest = dummyUpdateRequest
 }
