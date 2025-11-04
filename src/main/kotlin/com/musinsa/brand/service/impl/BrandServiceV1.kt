@@ -1,6 +1,7 @@
 package com.musinsa.brand.service.impl
 
 import com.musinsa.brand.converter.BrandConverter
+import com.musinsa.brand.dto.BrandResponse
 import com.musinsa.brand.dto.CreateBrandRequest
 import com.musinsa.brand.entity.Brand
 import com.musinsa.brand.repository.BrandQueryFilter
@@ -43,5 +44,10 @@ class BrandServiceV1(
             data = converter.toResponseInBatch(brands = brands),
             totalCount = totalCount
         )
+    }
+
+    override fun getBrand(id: Long): BrandResponse {
+        val brand: Brand = repository.findById(id = id)
+        return converter.toResponse(brand = brand)
     }
 }

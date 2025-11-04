@@ -1,5 +1,6 @@
 package com.musinsa.brand.service
 
+import com.musinsa.brand.dto.BrandResponse
 import com.musinsa.brand.dto.CreateBrandRequest
 import com.musinsa.brand.repository.BrandQueryFilter
 import com.musinsa.brand.vo.BrandOrderType
@@ -15,4 +16,6 @@ interface BrandService {
         pagination: Pagination,
         orderTypes: List<BrandOrderType>
     ): PaginationResponse
+
+    fun getBrand(id: Long): BrandResponse
 }

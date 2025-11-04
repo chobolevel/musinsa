@@ -1,13 +1,16 @@
 package com.musinsa.brand.controller.v1
 
+import com.musinsa.brand.dto.BrandResponse
 import com.musinsa.brand.repository.BrandQueryFilter
 import com.musinsa.brand.service.BrandService
 import com.musinsa.brand.vo.BrandOrderType
+import com.musinsa.common.dto.CommonResponse
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.vo.NationType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -42,5 +45,11 @@ class BrandController(
             orderTypes = orderTypes ?: emptyList()
         )
         return ResponseEntity.ok(result)
+    }
+
+    @GetMapping("/brands/{id}")
+    fun getBrand(@PathVariable id: Long): ResponseEntity<CommonResponse> {
+        val result: BrandResponse = service.getBrand(id = id)
+        return ResponseEntity.ok(CommonResponse(data = result))
     }
 }

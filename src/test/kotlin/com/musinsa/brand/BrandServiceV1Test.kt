@@ -92,4 +92,18 @@ class BrandServiceV1Test {
         assertThat(result.data).isEqualTo(dummyBrandResponses)
         assertThat(result.totalCount).isEqualTo(dummyBrandResponses.size.toLong())
     }
+
+    @Test
+    fun getBrandTest() {
+        // given
+        val dummyBrandId: Long = dummyBrand.id!!
+        `when`(repository.findById(id = dummyBrandId)).thenReturn(dummyBrand)
+        `when`(converter.toResponse(brand = dummyBrand)).thenReturn(dummyBrandResponse)
+
+        // when
+        val result: BrandResponse = service.getBrand(id = dummyBrandId)
+
+        // then
+        assertThat(result).isEqualTo(dummyBrandResponse)
+    }
 }
