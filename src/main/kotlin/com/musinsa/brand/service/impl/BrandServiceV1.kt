@@ -63,4 +63,11 @@ class BrandServiceV1(
         )
         return id
     }
+
+    @Transactional
+    override fun deleteBrand(id: Long): Boolean {
+        val brand: Brand = repository.findById(id = id)
+        brand.delete()
+        return true
+    }
 }

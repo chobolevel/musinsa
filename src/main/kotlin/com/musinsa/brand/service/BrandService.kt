@@ -21,4 +21,6 @@ interface BrandService {
     fun getBrand(id: Long): BrandResponse
 
     fun updateBrand(id: Long, request: UpdateBrandRequest): Long
+
+    fun deleteBrand(id: Long): Boolean
 }

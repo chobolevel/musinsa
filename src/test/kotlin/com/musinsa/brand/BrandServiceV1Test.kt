@@ -129,4 +129,17 @@ class BrandServiceV1Test {
         // then
         assertThat(result).isEqualTo(dummyBrandId)
     }
+
+    @Test
+    fun deleteBrandTest() {
+        // given
+        val dummyBrandId: Long = dummyBrand.id!!
+        `when`(repository.findById(id = dummyBrandId)).thenReturn(dummyBrand)
+
+        // when
+        val result: Boolean = service.deleteBrand(id = dummyBrandId)
+
+        // then
+        assertThat(result).isTrue()
+    }
 }
