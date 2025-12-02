@@ -7,7 +7,6 @@ import com.amazonaws.services.s3.model.CannedAccessControlList
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
 import com.musinsa.common.dto.UploadRequestDto
 import com.musinsa.common.dto.UploadResponseDto
-import com.musinsa.common.service.upload.validator.UploadValidator
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.net.URL
@@ -22,11 +21,9 @@ class UploadService(
     @Value("\${cloud.aws.s3.bucket}")
     private val bucket: String,
     private val amazonS3: AmazonS3,
-    private val validator: UploadValidator,
 ) {
 
     fun getPresignedUrl(request: UploadRequestDto): UploadResponseDto {
-        validator.validate(request)
         val savedPath: String = createSavedPath(
             prefix = request.prefix,
             extension = request.extension

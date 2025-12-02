@@ -4,7 +4,9 @@ import com.musinsa.common.annotation.HasAuthorityUser
 import com.musinsa.common.dto.CommonResponse
 import com.musinsa.common.dto.ErrorResponse
 import com.musinsa.common.dto.UploadRequestDto
+import com.musinsa.common.dto.UploadResponseDto
 import com.musinsa.common.service.upload.UploadService
+import com.musinsa.common.validator.UploadParameterValidator
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -22,7 +24,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1")
 @Tag(name = "파일 업로드 API", description = "파일 업로드를 위한 API 제공")
 class UploadController(
-    private val service: UploadService
+    private val service: UploadService,
+    private val validator: UploadParameterValidator
 ) {
 
     @HasAuthorityUser
@@ -54,7 +57,8 @@ class UploadController(
         ]
     )
     fun issuePresignedUrl(@RequestBody request: UploadRequestDto): ResponseEntity<CommonResponse> {
-        val result = service.getPresignedUrl(request)
+        validator.validate(request = request)
+        val result: UploadResponseDto = service.getPresignedUrl(request)
         return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse(result))
     }
 }

@@ -1,4 +1,4 @@
-package com.musinsa.common.service.upload.validator
+package com.musinsa.common.validator
 
 import com.musinsa.common.dto.UploadRequestDto
 import com.musinsa.common.exception.ErrorCode
@@ -6,7 +6,7 @@ import com.musinsa.common.exception.InvalidParameterException
 import org.springframework.stereotype.Component
 
 @Component
-class UploadValidator {
+class UploadParameterValidator {
 
     private final val availablePrefixList = listOf("image")
     private final val availableExtensionList = listOf("jpg", "jpeg", "png", "gif")
