@@ -1,5 +1,6 @@
 package com.musinsa.product.category
 
+import com.musinsa.product.dto.CreateProductCategoryRequest
 import com.musinsa.product.entity.ProductCategory
 
 object DummyProductCategory {
@@ -33,7 +34,16 @@ object DummyProductCategory {
         }
     }
 
+    private val dummyCreateProductCategoryRequest: CreateProductCategoryRequest by lazy {
+        CreateProductCategoryRequest(
+            name = name,
+            iconImageUrl = iconImageUrl
+        )
+    }
+
     fun toEntity(): ProductCategory = dummyProductCategory
 
     fun toParentEntity(): ProductCategory = dummyParentProductCategory
+
+    fun toCreateRequest(): CreateProductCategoryRequest = dummyCreateProductCategoryRequest
 }
