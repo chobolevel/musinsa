@@ -5,7 +5,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class ProductCategoryRepositoryFacade(
-    private val repository: ProductCategoryRepository
+    private val repository: ProductCategoryRepository,
+    private val customRepository: ProductCategoryCustomRepository
 ) {
 
     fun save(productCategory: ProductCategory): ProductCategory {
