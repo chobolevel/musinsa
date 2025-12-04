@@ -1,10 +1,15 @@
 package com.musinsa.product.category
 
+import com.musinsa.common.dto.Pagination
+import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.product.converter.ProductCategoryConverter
 import com.musinsa.product.dto.CreateProductCategoryRequest
+import com.musinsa.product.dto.ProductCategoryResponse
 import com.musinsa.product.entity.ProductCategory
+import com.musinsa.product.repository.ProductCategoryQueryFilter
 import com.musinsa.product.repository.ProductCategoryRepositoryFacade
 import com.musinsa.product.service.impl.ProductCategoryServiceV1
+import com.musinsa.product.vo.ProductCategoryOrderType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
@@ -19,6 +24,8 @@ import kotlin.test.Test
 class ProductCategoryServiceV1Test {
 
     private val dummyProductCategory: ProductCategory = DummyProductCategory.toEntity()
+
+    private val dummyProductCategoryResponse: ProductCategoryResponse = DummyProductCategory.toResponse()
 
     @Mock
     private lateinit var repository: ProductCategoryRepositoryFacade
@@ -41,5 +48,47 @@ class ProductCategoryServiceV1Test {
 
         // then
         assertThat(result).isEqualTo(dummyProductCategory.id)
+    }
+
+    @Test
+    fun getProductCategoriesTest() {
+        // given
+        val queryFilter = ProductCategoryQueryFilter(
+            parentId = null,
+            name = null
+        )
+        val pagination = Pagination(
+            page = 1,
+            size = 20
+        )
+        val orderTypes: List<ProductCategoryOrderType> = emptyList()
+        val dummyProductCategories: List<ProductCategory> = listOf(dummyProductCategory)
+        val dummyProductCategoryResponses: List<ProductCategoryResponse> = listOf(dummyProductCategoryResponse)
+        `when`(
+            repository.searchProductCategories(
+                queryFilter = queryFilter,
+                pagination = pagination,
+                orderTypes = orderTypes
+            )
+        ).thenReturn(dummyProductCategories)
+        `when`(
+            repository.searchProductCategoriesCount(
+                queryFilter = queryFilter,
+            )
+        ).thenReturn(dummyProductCategories.size.toLong())
+        `when`(converter.toResponses(productCategories = dummyProductCategories)).thenReturn(dummyProductCategoryResponses)
+
+        // when
+        val result: PaginationResponse = service.getProductCategories(
+            queryFilter = queryFilter,
+            pagination = pagination,
+            orderTypes = orderTypes
+        )
+
+        // then
+        assertThat(result.page).isEqualTo(pagination.page)
+        assertThat(result.size).isEqualTo(pagination.size)
+        assertThat(result.data).isEqualTo(dummyProductCategoryResponses)
+        assertThat(result.totalCount).isEqualTo(dummyProductCategoryResponses.size.toLong())
     }
 }
