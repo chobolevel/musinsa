@@ -37,4 +37,7 @@ enum class ErrorCode(val defaultMessage: String) {
 
     // BRAND
     BRAND_NOT_FOUND("브랜드를 찾을 수 없습니다."),
+
+    // PRODUCT CATEGORY
+    PRODUCT_CATEGORY_NOT_FOUND("상품 카테고리를 찾을 수 없습니다."),
 }

@@ -1,6 +1,8 @@
 package com.musinsa.product.repository
 
 import com.musinsa.common.dto.Pagination
+import com.musinsa.common.exception.DataNotFoundException
+import com.musinsa.common.exception.ErrorCode
 import com.musinsa.product.entity.ProductCategory
 import com.musinsa.product.entity.QProductCategory.productCategory
 import com.musinsa.product.vo.ProductCategoryOrderType
@@ -31,6 +33,13 @@ class ProductCategoryRepositoryFacade(
 
     fun searchProductCategoriesCount(queryFilter: ProductCategoryQueryFilter): Long {
         return customRepository.searchProductCategoriesCount(booleanExpressions = queryFilter.toBooleanExpressions())
+    }
+
+    fun findByIdAndISDeletedFalse(id: Long): ProductCategory? {
+        return repository.findByIdAndIsDeletedFalse(id) ?: throw DataNotFoundException(
+            errorCode = ErrorCode.PRODUCT_CATEGORY_NOT_FOUND,
+            message = ErrorCode.PRODUCT_CATEGORY_NOT_FOUND.defaultMessage
+        )
     }
 
     private fun List<ProductCategoryOrderType>.toOrderSpecifiers(): Array<OrderSpecifier<*>> {
