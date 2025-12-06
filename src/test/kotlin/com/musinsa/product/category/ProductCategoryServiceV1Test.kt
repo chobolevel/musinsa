@@ -91,4 +91,18 @@ class ProductCategoryServiceV1Test {
         assertThat(result.data).isEqualTo(dummyProductCategoryResponses)
         assertThat(result.totalCount).isEqualTo(dummyProductCategoryResponses.size.toLong())
     }
+
+    @Test
+    fun getProductCategoryTest() {
+        // given
+        val dummyProductCategoryId: Long = dummyProductCategory.id!!
+        `when`(repository.findById(id = dummyProductCategoryId)).thenReturn(dummyProductCategory)
+        `when`(converter.toResponse(productCategory = dummyProductCategory)).thenReturn(dummyProductCategoryResponse)
+
+        // when
+        val result: ProductCategoryResponse = service.getProductCategory(id = dummyProductCategoryId)
+
+        // then
+        assertThat(result.id).isEqualTo(dummyProductCategoryId)
+    }
 }

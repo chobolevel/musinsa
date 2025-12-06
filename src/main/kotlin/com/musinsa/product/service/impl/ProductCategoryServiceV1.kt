@@ -4,6 +4,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.product.converter.ProductCategoryConverter
 import com.musinsa.product.dto.CreateProductCategoryRequest
+import com.musinsa.product.dto.ProductCategoryResponse
 import com.musinsa.product.entity.ProductCategory
 import com.musinsa.product.repository.ProductCategoryQueryFilter
 import com.musinsa.product.repository.ProductCategoryRepositoryFacade
@@ -44,5 +45,11 @@ class ProductCategoryServiceV1(
             data = converter.toResponses(productCategories = productCategories),
             totalCount = totalCount,
         )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getProductCategory(id: Long): ProductCategoryResponse {
+        val productCategory: ProductCategory = repository.findById(id = id)
+        return converter.toResponse(productCategory = productCategory)
     }
 }

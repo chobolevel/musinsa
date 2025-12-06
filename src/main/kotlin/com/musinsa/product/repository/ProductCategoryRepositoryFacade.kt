@@ -35,7 +35,7 @@ class ProductCategoryRepositoryFacade(
         return customRepository.searchProductCategoriesCount(booleanExpressions = queryFilter.toBooleanExpressions())
     }
 
-    fun findByIdAndISDeletedFalse(id: Long): ProductCategory? {
+    fun findById(id: Long): ProductCategory {
         return repository.findByIdAndIsDeletedFalse(id) ?: throw DataNotFoundException(
             errorCode = ErrorCode.PRODUCT_CATEGORY_NOT_FOUND,
             message = ErrorCode.PRODUCT_CATEGORY_NOT_FOUND.defaultMessage

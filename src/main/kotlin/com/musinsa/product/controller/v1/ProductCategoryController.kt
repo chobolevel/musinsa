@@ -1,12 +1,15 @@
 package com.musinsa.product.controller.v1
 
+import com.musinsa.common.dto.CommonResponse
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.product.dto.ProductCategoryResponse
 import com.musinsa.product.repository.ProductCategoryQueryFilter
 import com.musinsa.product.service.ProductCategoryService
 import com.musinsa.product.vo.ProductCategoryOrderType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -39,5 +42,11 @@ class ProductCategoryController(
             orderTypes = orderTypes ?: emptyList()
         )
         return ResponseEntity.ok(result)
+    }
+
+    @GetMapping("/product-categories/{id}")
+    fun getProductCategoryById(@PathVariable id: Long): ResponseEntity<CommonResponse> {
+        val result: ProductCategoryResponse = service.getProductCategory(id = id)
+        return ResponseEntity.ok(CommonResponse(data = result))
     }
 }
