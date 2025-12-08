@@ -51,8 +51,8 @@ class ProductCategoryServiceV1(
     }
 
     @Transactional(readOnly = true)
-    override fun getProductCategory(id: Long): ProductCategoryResponse {
-        val productCategory: ProductCategory = repository.findById(id = id)
+    override fun getProductCategory(productCategoryId: Long): ProductCategoryResponse {
+        val productCategory: ProductCategory = repository.findById(id = productCategoryId)
         return converter.toResponse(productCategory = productCategory)
     }
 

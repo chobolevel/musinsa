@@ -44,9 +44,9 @@ class ProductCategoryController(
         return ResponseEntity.ok(result)
     }
 
-    @GetMapping("/product-categories/{id}")
-    fun getProductCategoryById(@PathVariable id: Long): ResponseEntity<CommonResponse> {
-        val result: ProductCategoryResponse = service.getProductCategory(id = id)
+    @GetMapping("/product-categories/{productCategoryId}")
+    fun getProductCategoryById(@PathVariable productCategoryId: Long): ResponseEntity<CommonResponse> {
+        val result: ProductCategoryResponse = service.getProductCategory(productCategoryId = productCategoryId)
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 }

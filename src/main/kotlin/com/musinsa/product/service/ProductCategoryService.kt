@@ -18,7 +18,7 @@ interface ProductCategoryService {
         orderTypes: List<ProductCategoryOrderType>
     ): PaginationResponse
 
-    fun getProductCategory(id: Long): ProductCategoryResponse
+    fun getProductCategory(productCategoryId: Long): ProductCategoryResponse
 
     fun updateProductCategory(productCategoryId: Long, request: UpdateProductCategoryRequest): Long
 }

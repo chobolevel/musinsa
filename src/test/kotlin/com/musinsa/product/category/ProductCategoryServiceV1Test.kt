@@ -105,7 +105,7 @@ class ProductCategoryServiceV1Test {
         `when`(converter.toResponse(productCategory = dummyProductCategory)).thenReturn(dummyProductCategoryResponse)
 
         // when
-        val result: ProductCategoryResponse = service.getProductCategory(id = dummyProductCategoryId)
+        val result: ProductCategoryResponse = service.getProductCategory(productCategoryId = dummyProductCategoryId)
 
         // then
         assertThat(result.id).isEqualTo(dummyProductCategoryId)
