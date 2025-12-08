@@ -34,7 +34,7 @@ class ProductCategory(
     @Column(nullable = false)
     var isDeleted: Boolean = false
 
-    fun assignParent(parent: ProductCategory) {
+    fun assignParent(parent: ProductCategory?) {
         if (this.parent != parent) {
             this.parent = parent
         }

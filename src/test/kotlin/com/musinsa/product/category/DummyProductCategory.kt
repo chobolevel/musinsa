@@ -2,7 +2,9 @@ package com.musinsa.product.category
 
 import com.musinsa.product.dto.CreateProductCategoryRequest
 import com.musinsa.product.dto.ProductCategoryResponse
+import com.musinsa.product.dto.UpdateProductCategoryRequest
 import com.musinsa.product.entity.ProductCategory
+import com.musinsa.product.vo.ProductCategoryUpdateMask
 
 object DummyProductCategory {
     private const val id: Long = 1L
@@ -53,6 +55,15 @@ object DummyProductCategory {
         )
     }
 
+    private val dummyUpdateProductCategoryRequest: UpdateProductCategoryRequest by lazy {
+        UpdateProductCategoryRequest(
+            parentId = null,
+            name = "에어포스1",
+            iconImageUrl = null,
+            updateMask = listOf(ProductCategoryUpdateMask.NAME)
+        )
+    }
+
     fun toEntity(): ProductCategory = dummyProductCategory
 
     fun toParentEntity(): ProductCategory = dummyParentProductCategory
@@ -60,4 +71,6 @@ object DummyProductCategory {
     fun toResponse(): ProductCategoryResponse = dummyProductCategoryResponse
 
     fun toCreateRequest(): CreateProductCategoryRequest = dummyCreateProductCategoryRequest
+
+    fun toUpdateRequest(): UpdateProductCategoryRequest = dummyUpdateProductCategoryRequest
 }
