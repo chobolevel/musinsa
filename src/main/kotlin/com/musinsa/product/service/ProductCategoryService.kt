@@ -21,4 +21,6 @@ interface ProductCategoryService {
     fun getProductCategory(productCategoryId: Long): ProductCategoryResponse
 
     fun updateProductCategory(productCategoryId: Long, request: UpdateProductCategoryRequest): Long
+
+    fun deleteProductCategory(productCategoryId: Long): Boolean
 }

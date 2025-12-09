@@ -68,4 +68,11 @@ class ProductCategoryServiceV1(
         )
         return productCategoryId
     }
+
+    @Transactional
+    override fun deleteProductCategory(productCategoryId: Long): Boolean {
+        val productCategory: ProductCategory = repository.findById(id = productCategoryId)
+        productCategory.delete()
+        return true
+    }
 }
