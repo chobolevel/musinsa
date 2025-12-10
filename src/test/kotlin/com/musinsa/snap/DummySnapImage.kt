@@ -5,7 +5,7 @@ import com.musinsa.snap.entity.SnapImage
 
 object DummySnapImage {
     private val id: Long = 1L
-    private val url: String = "https://chobolevel.s3.ap-northeast-2.amazonaws.com/image/2025/06/02/c92caa4f-4240-4ddc-8c51-f235845103b9.jpeg"
+    private val path: String = "/image/2025/06/02/c92caa4f-4240-4ddc-8c51-f235845103b9.jpeg"
     private val width: Int = 100
     private val height: Int = 100
     private val order: Int = 0
@@ -14,7 +14,7 @@ object DummySnapImage {
 
     private val dummySnapImage: SnapImage by lazy {
         SnapImage(
-            url = url,
+            path = path,
             width = width,
             height = height,
             order = order,
@@ -26,7 +26,8 @@ object DummySnapImage {
     private val dummySnapImageResponse: SnapImageResponse by lazy {
         SnapImageResponse(
             id = id,
-            url = url,
+            path = path,
+            url = "https://chobolevel.s3.ap-northeast-2.amazonaws.comv$path",
             width = width,
             height = height,
             order = order,

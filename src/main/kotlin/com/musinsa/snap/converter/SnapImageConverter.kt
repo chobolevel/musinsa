@@ -3,15 +3,20 @@ package com.musinsa.snap.converter
 import com.musinsa.common.extension.toMillis
 import com.musinsa.snap.dto.SnapImageResponse
 import com.musinsa.snap.entity.SnapImage
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 @Component
-class SnapImageConverter {
+class SnapImageConverter(
+    @Value("\${cloud.aws.s3.imageHost}")
+    private val imageHost: String,
+) {
 
     fun toResponse(snapImage: SnapImage): SnapImageResponse {
         return SnapImageResponse(
             id = snapImage.id!!,
-            url = snapImage.url,
+            path = snapImage.path,
+            url = "$imageHost${snapImage.path}",
             width = snapImage.width,
             height = snapImage.height,
             order = snapImage.order,

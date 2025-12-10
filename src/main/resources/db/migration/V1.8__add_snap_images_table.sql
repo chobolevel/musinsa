@@ -3,7 +3,7 @@ create table musinsa.snap_images
   id         bigint auto_increment comment '아이디'
         primary key,
   snap_id    bigint       not null comment '스냅 아이디',
-  url        varchar(255) not null comment '스냅 사진 경로',
+  path       varchar(255) not null comment '스냅 사진 경로',
   width      int          not null comment '스냅 사진 너비',
   height     int          not null comment '스냅 사진 높이',
   `order`    int          not null comment '스냅 사진 정렬순서',
@@ -21,7 +21,7 @@ create table musinsa.snap_images_histories
   revision_id   bigint       not null,
   revision_type tinyint      not null,
   snap_id       bigint       not null,
-  url           varchar(255) not null,
+  path          varchar(255) not null,
   width         int          not null,
   height        int          not null,
   `order`       int          not null,

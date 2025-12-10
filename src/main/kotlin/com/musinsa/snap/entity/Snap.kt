@@ -64,13 +64,13 @@ class Snap(
     }
 
     fun addSnapImage(
-        url: String,
+        path: String,
         width: Int,
         height: Int,
         order: Int
     ) {
         SnapImage(
-            url = url,
+            path = path,
             width = width,
             height = height,
             order = order

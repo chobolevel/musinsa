@@ -17,7 +17,7 @@ import org.hibernate.envers.Audited
 @Audited
 class SnapImage(
     @Column(nullable = false, length = 255)
-    var url: String,
+    var path: String,
     @Column(nullable = false)
     var width: Int,
     @Column(nullable = false)

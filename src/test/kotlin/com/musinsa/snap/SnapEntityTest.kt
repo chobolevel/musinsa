@@ -39,26 +39,26 @@ class SnapEntityTest {
     @Test
     fun addSnapImageTest() {
         // given
-        val dummySnapImageUrl = "dummyUrl"
+        val dummySnapImagePath = "dummyUrl"
 
         // when
         dummySnap.addSnapImage(
-            url = dummySnapImageUrl,
+            path = dummySnapImagePath,
             width = 0,
             height = 0,
             order = 0
         )
 
         // then
-        assertThat(dummySnap.snapImages[0].url).isEqualTo(dummySnapImageUrl)
+        assertThat(dummySnap.snapImages[0].path).isEqualTo(dummySnapImagePath)
     }
 
     @Test
     fun deleteSnapImageInBatchTest() {
         // given
-        val dummySnapImageUrl = "dummyUrl"
+        val dummySnapImagePath = "dummyUrl"
         dummySnap.addSnapImage(
-            url = dummySnapImageUrl,
+            path = dummySnapImagePath,
             width = 0,
             height = 0,
             order = 0
