@@ -128,4 +128,17 @@ class ProductCategoryServiceV1Test {
         // then
         assertThat(result).isEqualTo(dummyProductCategoryId)
     }
+
+    @Test
+    fun deleteProductCategoryTest() {
+        // given
+        val dummyProductCategoryId: Long = dummyProductCategory.id!!
+        `when`(repository.findById(id = dummyProductCategoryId)).thenReturn(dummyProductCategory)
+
+        // when
+        val result: Boolean = service.deleteProductCategory(productCategoryId = dummyProductCategoryId)
+
+        // then
+        assertThat(result).isTrue
+    }
 }

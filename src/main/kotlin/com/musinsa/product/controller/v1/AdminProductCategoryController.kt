@@ -9,6 +9,7 @@ import com.musinsa.product.validator.ProductCategoryParameterValidator
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -45,6 +46,13 @@ class AdminProductCategoryController(
             productCategoryId = productCategoryId,
             request = request
         )
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
+
+    @DeleteMapping("/product-categories/{productCategoryId}")
+    @HasAuthorityAdmin
+    fun deleteProductCategory(@PathVariable("productCategoryId") productCategoryId: Long): ResponseEntity<CommonResponse> {
+        val result: Boolean = service.deleteProductCategory(productCategoryId = productCategoryId)
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 }
