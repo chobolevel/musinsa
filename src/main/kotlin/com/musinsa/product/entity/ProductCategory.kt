@@ -19,7 +19,7 @@ class ProductCategory(
     @Column(nullable = false, length = 100)
     var name: String,
     @Column(nullable = false, length = 255)
-    var iconImageUrl: String,
+    var iconImagePath: String,
 ) : Audit() {
 
     @Id

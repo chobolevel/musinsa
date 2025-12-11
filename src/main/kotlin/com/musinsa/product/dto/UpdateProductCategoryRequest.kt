@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size
 data class UpdateProductCategoryRequest(
     val parentId: Long?,
     val name: String?,
-    val iconImageUrl: String?,
+    val iconImagePath: String?,
     @field:Size(min = 1)
     val updateMask: List<ProductCategoryUpdateMask>
 )

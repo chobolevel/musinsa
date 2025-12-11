@@ -6,5 +6,5 @@ data class CreateProductCategoryRequest(
     @field:NotEmpty
     val name: String,
     @field:NotEmpty
-    val iconImageUrl: String
+    val iconImagePath: String
 )

@@ -21,11 +21,11 @@ class ProductCategoryParameterValidator {
                     }
                 }
 
-                ProductCategoryUpdateMask.ICON_IMAGE_URL -> {
-                    if (request.iconImageUrl.isNullOrEmpty()) {
+                ProductCategoryUpdateMask.ICON_IMAGE_PATH -> {
+                    if (request.iconImagePath.isNullOrEmpty()) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[icon_image_url]은(는) 필수 값입니다."
+                            message = "[icon_image_path]은(는) 필수 값입니다."
                         )
                     }
                 }

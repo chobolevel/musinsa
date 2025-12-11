@@ -24,8 +24,8 @@ class ProductCategoryUpdater(
                 ProductCategoryUpdateMask.NAME -> {
                     productCategory.name = request.name!!
                 }
-                ProductCategoryUpdateMask.ICON_IMAGE_URL -> {
-                    productCategory.iconImageUrl = request.iconImageUrl!!
+                ProductCategoryUpdateMask.ICON_IMAGE_PATH -> {
+                    productCategory.iconImagePath = request.iconImagePath!!
                 }
             }
         }
