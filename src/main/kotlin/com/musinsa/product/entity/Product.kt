@@ -24,7 +24,7 @@ class Product(
     @Column(nullable = false)
     var standardPrice: Int,
     @Column(nullable = false)
-    var order: Int = 10,
+    var sortOrder: Int = 10,
 ) : Audit() {
 
     @Id
@@ -44,7 +44,7 @@ class Product(
     @Column(nullable = false, length = 20)
     var saleStatus: ProductSaleStatus = ProductSaleStatus.DISCONTINUED
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT(1)")
     var isDeleted: Boolean = false
 
     fun assignProductBrand(productBrand: ProductBrand) {

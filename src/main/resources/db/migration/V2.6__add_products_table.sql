@@ -8,8 +8,8 @@ create table musinsa.products
   description         varchar(255)                          null comment '상품 설명',
   standard_price      int                                   not null comment '기준가',
   sale_status         varchar(20) default 'DISCONTINUED'    not null comment '상품 판매 상태(SALE = 판매중, SOLD_OUT = 품절, DISCONTINUED = 판매 중지)',
-  `order`             int         default 10                not null comment '상품 정렬 순서',
-  is_deleted          bit         default b'0'              not null comment '삭제 여부',
+  sort_order          int         default 10                not null comment '상품 정렬 순서',
+  is_deleted          tinyint     default 0                 not null comment '삭제 여부(0: 정상, 1: 삭제)',
   created_at          datetime    default CURRENT_TIMESTAMP not null comment '생성일자',
   updated_at          datetime    default CURRENT_TIMESTAMP not null comment '수정일자',
   constraint products_product_brands_id_fk
@@ -20,13 +20,13 @@ create table musinsa.products
   comment '상품 테이블';
 
 create fulltext index products_name_index
-    on musinsa.products (name) with parser ngram;
+    on musinsa.products (name);
 
 create index products_product_brand_id_index
-  on musinsa.products (product_brand_id asc, sale_status asc, is_deleted asc, `order` asc, created_at desc);
+  on musinsa.products (product_brand_id asc, sale_status asc, is_deleted asc, sort_order asc, created_at desc);
 
 create index products_product_category_id_index
-  on musinsa.products (product_category_id asc, sale_status asc, is_deleted asc, `order` asc, created_at desc);
+  on musinsa.products (product_category_id asc, sale_status asc, is_deleted asc, sort_order asc, created_at desc);
 
 create table musinsa.products_histories
 (
@@ -39,12 +39,11 @@ create table musinsa.products_histories
   description         varchar(255) null,
   standard_price      int          not null,
   sale_status         varchar(20)  not null,
-  `order`             int          not null,
-  is_deleted          bit          not null,
+  sort_order          int          not null,
+  is_deleted          tinyint      not null,
   created_at          datetime     not null,
   updated_at          datetime     null,
   primary key (id, revision_id)
 )
   comment '상품 이력 테이블';
-
 

@@ -12,7 +12,7 @@ class ProductConverter {
             name = request.name,
             description = request.description,
             standardPrice = request.standardPrice,
-            order = request.order ?: 10
+            sortOrder = request.sortOrder ?: 10
         )
     }
 }

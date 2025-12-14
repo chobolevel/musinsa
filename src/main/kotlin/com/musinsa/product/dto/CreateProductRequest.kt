@@ -13,5 +13,5 @@ data class CreateProductRequest(
     val description: String?,
     @field:NotNull
     val standardPrice: Int,
-    var order: Int?
+    var sortOrder: Int?
 )

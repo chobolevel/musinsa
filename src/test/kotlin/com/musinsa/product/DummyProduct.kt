@@ -24,7 +24,7 @@ object DummyProduct {
             name = name,
             description = description,
             standardPrice = standardPrice,
-            order = null
+            sortOrder = null
         )
     }
 
