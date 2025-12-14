@@ -1,4 +1,4 @@
-package com.musinsa.snap.repository
+package com.musinsa.product.repository
 
 import com.musinsa.product.entity.Product
 import org.springframework.data.jpa.repository.JpaRepository

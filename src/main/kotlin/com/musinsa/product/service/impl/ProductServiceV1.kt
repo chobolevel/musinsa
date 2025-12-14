@@ -1,5 +1,7 @@
 package com.musinsa.product.service.impl
 
+import com.musinsa.common.dto.Pagination
+import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.product.converter.ProductConverter
 import com.musinsa.product.dto.CreateProductRequest
 import com.musinsa.product.entity.Product
@@ -7,10 +9,12 @@ import com.musinsa.product.entity.ProductBrand
 import com.musinsa.product.entity.ProductCategory
 import com.musinsa.product.repository.ProductBrandRepositoryFacade
 import com.musinsa.product.repository.ProductCategoryRepositoryFacade
+import com.musinsa.product.repository.ProductQueryFilter
+import com.musinsa.product.repository.ProductRepositoryFacade
 import com.musinsa.product.service.ProductService
-import com.musinsa.snap.repository.ProductRepositoryFacade
-import jakarta.transaction.Transactional
+import com.musinsa.product.vo.ProductOrderType
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ProductServiceV1(
@@ -30,5 +34,27 @@ class ProductServiceV1(
             product.assignProductCategory(productCategory = productCategory)
         }
         return productRepository.save(product = product).id!!
+    }
+
+    @Transactional(readOnly = true)
+    override fun getProducts(
+        queryFilter: ProductQueryFilter,
+        pagination: Pagination,
+        orderTypes: List<ProductOrderType>
+    ): PaginationResponse {
+        val products: List<Product> = productRepository.searchProducts(
+            queryFilter = queryFilter,
+            pagination = pagination,
+            orderTypes = orderTypes
+        )
+        val totalCount: Long = productRepository.searchProductsCount(
+            queryFilter = queryFilter,
+        )
+        return PaginationResponse(
+            page = pagination.page,
+            size = pagination.size,
+            data = converter.toResponseInBatch(products = products),
+            totalCount = totalCount
+        )
     }
 }
