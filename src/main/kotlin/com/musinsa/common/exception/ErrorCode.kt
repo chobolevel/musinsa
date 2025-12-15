@@ -40,4 +40,7 @@ enum class ErrorCode(val defaultMessage: String) {
 
     // PRODUCT CATEGORY
     PRODUCT_CATEGORY_NOT_FOUND("상품 카테고리를 찾을 수 없습니다."),
+
+    // PRODUCT
+    PRODUCT_NOT_FOUND("상품을 찾을 수 없습니다."),
 }

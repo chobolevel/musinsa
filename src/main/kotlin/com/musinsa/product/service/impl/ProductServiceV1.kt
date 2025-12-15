@@ -4,6 +4,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.product.converter.ProductConverter
 import com.musinsa.product.dto.CreateProductRequest
+import com.musinsa.product.dto.ProductResponse
 import com.musinsa.product.entity.Product
 import com.musinsa.product.entity.ProductBrand
 import com.musinsa.product.entity.ProductCategory
@@ -56,5 +57,11 @@ class ProductServiceV1(
             data = converter.toResponseInBatch(products = products),
             totalCount = totalCount
         )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getProduct(productId: Long): ProductResponse {
+        val product: Product = productRepository.findById(id = productId)
+        return converter.toResponse(product = product)
     }
 }

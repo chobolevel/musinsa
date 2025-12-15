@@ -109,4 +109,18 @@ class ProductServiceV1Test {
         assertThat(result.page).isEqualTo(pagination.page)
         assertThat(result.size).isEqualTo(pagination.size)
     }
+
+    @Test
+    fun getProductTest() {
+        // given
+        val dummyProductId: Long = dummyProduct.id!!
+        `when`(productRepository.findById(id = dummyProductId)).thenReturn(dummyProduct)
+        `when`(converter.toResponse(product = dummyProduct)).thenReturn(dummyProductResponse)
+
+        // when
+        val result: ProductResponse = service.getProduct(productId = dummyProductId)
+
+        // then
+        assertThat(result).isEqualTo(dummyProductResponse)
+    }
 }
