@@ -4,6 +4,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.product.dto.CreateProductRequest
 import com.musinsa.product.dto.ProductResponse
+import com.musinsa.product.dto.UpdateProductRequest
 import com.musinsa.product.repository.ProductQueryFilter
 import com.musinsa.product.vo.ProductOrderType
 
@@ -18,4 +19,6 @@ interface ProductService {
     ): PaginationResponse
 
     fun getProduct(productId: Long): ProductResponse
+
+    fun updateProduct(productId: Long, request: UpdateProductRequest): Long
 }

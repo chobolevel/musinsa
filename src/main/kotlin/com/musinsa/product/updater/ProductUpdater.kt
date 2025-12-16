@@ -1,0 +1,38 @@
+package com.musinsa.product.updater
+
+import com.musinsa.product.dto.UpdateProductRequest
+import com.musinsa.product.entity.Product
+import com.musinsa.product.entity.ProductBrand
+import com.musinsa.product.entity.ProductCategory
+import com.musinsa.product.repository.ProductBrandRepositoryFacade
+import com.musinsa.product.repository.ProductCategoryRepositoryFacade
+import com.musinsa.product.vo.ProductUpdateMask
+import org.springframework.stereotype.Component
+
+@Component
+class ProductUpdater(
+    private val productBrandRepository: ProductBrandRepositoryFacade,
+    private val productCategoryRepository: ProductCategoryRepositoryFacade,
+) {
+
+    fun markAsUpdate(request: UpdateProductRequest, product: Product): Product {
+        request.updateMask.forEach {
+            when (it) {
+                ProductUpdateMask.PRODUCT_BRAND -> {
+                    val productBrand: ProductBrand = productBrandRepository.findById(id = request.productBrandId!!)
+                    product.assignProductBrand(productBrand = productBrand)
+                }
+                ProductUpdateMask.PRODUCT_CATEGORY -> {
+                    val productCategory: ProductCategory = productCategoryRepository.findById(id = request.productCategoryId!!)
+                    product.assignProductCategory(productCategory = productCategory)
+                }
+                ProductUpdateMask.NAME -> product.name = request.name!!
+                ProductUpdateMask.DESCRIPTION -> product.description = request.description
+                ProductUpdateMask.STANDARD_PRICE -> product.standardPrice = request.standardPrice!!
+                ProductUpdateMask.SALE_STATUS -> product.saleStatus = request.saleStatus!!
+                ProductUpdateMask.SORT_ORDER -> product.sortOrder = request.sortOrder!!
+            }
+        }
+        return product
+    }
+}

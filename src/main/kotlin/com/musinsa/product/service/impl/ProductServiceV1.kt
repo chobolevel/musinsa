@@ -5,6 +5,7 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.product.converter.ProductConverter
 import com.musinsa.product.dto.CreateProductRequest
 import com.musinsa.product.dto.ProductResponse
+import com.musinsa.product.dto.UpdateProductRequest
 import com.musinsa.product.entity.Product
 import com.musinsa.product.entity.ProductBrand
 import com.musinsa.product.entity.ProductCategory
@@ -13,6 +14,7 @@ import com.musinsa.product.repository.ProductCategoryRepositoryFacade
 import com.musinsa.product.repository.ProductQueryFilter
 import com.musinsa.product.repository.ProductRepositoryFacade
 import com.musinsa.product.service.ProductService
+import com.musinsa.product.updater.ProductUpdater
 import com.musinsa.product.vo.ProductOrderType
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -23,6 +25,7 @@ class ProductServiceV1(
     private val productBrandRepository: ProductBrandRepositoryFacade,
     private val productCategoryRepository: ProductCategoryRepositoryFacade,
     private val converter: ProductConverter,
+    private val updater: ProductUpdater
 ) : ProductService {
 
     @Transactional
@@ -63,5 +66,18 @@ class ProductServiceV1(
     override fun getProduct(productId: Long): ProductResponse {
         val product: Product = productRepository.findById(id = productId)
         return converter.toResponse(product = product)
+    }
+
+    @Transactional
+    override fun updateProduct(
+        productId: Long,
+        request: UpdateProductRequest
+    ): Long {
+        val product: Product = productRepository.findById(id = productId)
+        updater.markAsUpdate(
+            request = request,
+            product = product
+        )
+        return productId
     }
 }

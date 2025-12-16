@@ -7,6 +7,7 @@ import com.musinsa.product.category.DummyProductCategory
 import com.musinsa.product.converter.ProductConverter
 import com.musinsa.product.dto.CreateProductRequest
 import com.musinsa.product.dto.ProductResponse
+import com.musinsa.product.dto.UpdateProductRequest
 import com.musinsa.product.entity.Product
 import com.musinsa.product.entity.ProductBrand
 import com.musinsa.product.entity.ProductCategory
@@ -15,6 +16,7 @@ import com.musinsa.product.repository.ProductCategoryRepositoryFacade
 import com.musinsa.product.repository.ProductQueryFilter
 import com.musinsa.product.repository.ProductRepositoryFacade
 import com.musinsa.product.service.impl.ProductServiceV1
+import com.musinsa.product.updater.ProductUpdater
 import com.musinsa.product.vo.ProductOrderType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -44,6 +46,9 @@ class ProductServiceV1Test {
 
     @Mock
     private lateinit var converter: ProductConverter
+
+    @Mock
+    private lateinit var updater: ProductUpdater
 
     @InjectMocks
     private lateinit var service: ProductServiceV1
@@ -122,5 +127,20 @@ class ProductServiceV1Test {
 
         // then
         assertThat(result).isEqualTo(dummyProductResponse)
+    }
+
+    @Test
+    fun updateProductTest() {
+        // given
+        val dummyProductId: Long = dummyProduct.id!!
+        val request: UpdateProductRequest = DummyProduct.toUpdateRequest()
+        `when`(productRepository.findById(id = dummyProductId)).thenReturn(dummyProduct)
+        `when`(updater.markAsUpdate(request = request, product = dummyProduct)).thenReturn(dummyProduct)
+
+        // when
+        val result: Long = service.updateProduct(productId = dummyProductId, request = request)
+
+        // then
+        assertThat(result).isEqualTo(dummyProductId)
     }
 }
