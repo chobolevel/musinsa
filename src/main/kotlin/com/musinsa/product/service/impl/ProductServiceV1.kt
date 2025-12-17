@@ -80,4 +80,11 @@ class ProductServiceV1(
         )
         return productId
     }
+
+    @Transactional
+    override fun deleteProduct(productId: Long): Boolean {
+        val product: Product = productRepository.findById(id = productId)
+        product.delete()
+        return product.isDeleted
+    }
 }
