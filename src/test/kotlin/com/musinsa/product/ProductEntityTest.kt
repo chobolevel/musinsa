@@ -5,7 +5,9 @@ import com.musinsa.product.category.DummyProductCategory
 import com.musinsa.product.entity.Product
 import com.musinsa.product.entity.ProductBrand
 import com.musinsa.product.entity.ProductCategory
+import com.musinsa.product.entity.ProductOption
 import com.musinsa.product.entity.QProductBrand.productBrand
+import com.musinsa.product.option.DummyProductOption
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import kotlin.test.Test
@@ -37,6 +39,19 @@ class ProductEntityTest {
 
         // then
         assertThat(dummyProduct.productCategory).isEqualTo(dummyProductCategory)
+    }
+
+    @Test
+    fun addProductOptionTest() {
+        // given
+        val dummyProductOption: ProductOption = DummyProductOption.toEntity()
+
+        // when
+        dummyProduct.addProductOption(productOption = dummyProductOption)
+
+        // then
+        assertThat(dummyProduct.productOptions.get(0)).isEqualTo(dummyProductOption)
+        assertThat(dummyProductOption.product).isEqualTo(dummyProduct)
     }
 
     @Test

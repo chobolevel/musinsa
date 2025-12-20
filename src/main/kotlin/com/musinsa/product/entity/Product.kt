@@ -2,6 +2,7 @@ package com.musinsa.product.entity
 
 import com.musinsa.common.entity.Audit
 import com.musinsa.product.vo.ProductSaleStatus
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -12,7 +13,10 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
+import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
+import org.hibernate.envers.NotAudited
 
 @Entity
 @Table(name = "products")
@@ -47,6 +51,11 @@ class Product(
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     var isDeleted: Boolean = false
 
+    @NotAudited
+    @OneToMany(mappedBy = "product", cascade = [(CascadeType.ALL)], orphanRemoval = true)
+    @OrderBy("sortOrder asc")
+    val productOptions: MutableList<ProductOption> = mutableListOf()
+
     fun assignProductBrand(productBrand: ProductBrand) {
         if (this.productBrand != productBrand) {
             this.productBrand = productBrand
@@ -56,6 +65,13 @@ class Product(
     fun assignProductCategory(productCategory: ProductCategory) {
         if (this.productCategory != productCategory) {
             this.productCategory = productCategory
+        }
+    }
+
+    fun addProductOption(productOption: ProductOption) {
+        if (!this.productOptions.contains(productOption)) {
+            this.productOptions.add(productOption)
+            productOption.assignProduct(product = this)
         }
     }
 
