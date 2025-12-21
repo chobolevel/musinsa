@@ -1,5 +1,6 @@
 package com.musinsa.product.option
 
+import com.musinsa.product.dto.CreateProductOptionRequest
 import com.musinsa.product.entity.ProductOption
 
 object DummyProductOption {
@@ -18,5 +19,15 @@ object DummyProductOption {
         ).also { it.id = id }
     }
 
+    private val dummyCreateRequest: CreateProductOptionRequest by lazy {
+        CreateProductOptionRequest(
+            name = name,
+            sortOrder = sortOrder,
+            isRequired = isRequired,
+        )
+    }
+
     fun toEntity(): ProductOption = dummyProductOption
+
+    fun toCreateRequest(): CreateProductOptionRequest = dummyCreateRequest
 }

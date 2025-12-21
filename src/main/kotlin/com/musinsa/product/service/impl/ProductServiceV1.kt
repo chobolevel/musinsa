@@ -3,12 +3,14 @@ package com.musinsa.product.service.impl
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.product.converter.ProductConverter
+import com.musinsa.product.converter.ProductOptionConverter
 import com.musinsa.product.dto.CreateProductRequest
 import com.musinsa.product.dto.ProductResponse
 import com.musinsa.product.dto.UpdateProductRequest
 import com.musinsa.product.entity.Product
 import com.musinsa.product.entity.ProductBrand
 import com.musinsa.product.entity.ProductCategory
+import com.musinsa.product.entity.ProductOption
 import com.musinsa.product.repository.ProductBrandRepositoryFacade
 import com.musinsa.product.repository.ProductCategoryRepositoryFacade
 import com.musinsa.product.repository.ProductQueryFilter
@@ -25,18 +27,25 @@ class ProductServiceV1(
     private val productBrandRepository: ProductBrandRepositoryFacade,
     private val productCategoryRepository: ProductCategoryRepositoryFacade,
     private val converter: ProductConverter,
+    private val productOptionConverter: ProductOptionConverter,
     private val updater: ProductUpdater
 ) : ProductService {
 
     @Transactional
     override fun createProduct(request: CreateProductRequest): Long {
-        val product: Product = converter.toEntity(request = request).also { product ->
-            val productBrand: ProductBrand = productBrandRepository.findById(id = request.productBrandId)
-            product.assignProductBrand(productBrand = productBrand)
+        val baseProduct: Product = converter.toEntity(request = request)
 
-            val productCategory: ProductCategory = productCategoryRepository.findById(id = request.productCategoryId)
-            product.assignProductCategory(productCategory = productCategory)
-        }
+        val productBrand: ProductBrand = productBrandRepository.findById(id = request.productBrandId)
+        val productCategory: ProductCategory = productCategoryRepository.findById(id = request.productCategoryId)
+        val productOptions: List<ProductOption> = productOptionConverter.toEntityInBatch(requests = request.productOptions)
+
+        val product: Product = Product.create(
+            product = baseProduct,
+            productBrand = productBrand,
+            productCategory = productCategory,
+            productOptions = productOptions,
+        )
+
         return productRepository.save(product = product).id!!
     }
 

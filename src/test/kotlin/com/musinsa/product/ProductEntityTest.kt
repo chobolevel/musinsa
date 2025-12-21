@@ -17,6 +17,8 @@ class ProductEntityTest {
 
     private val dummyProduct: Product = DummyProduct.toEntity()
 
+    private val dummyProductOption: ProductOption = DummyProductOption.toEntity()
+
     @Test
     fun assignProductBrandTest() {
         // given
@@ -44,13 +46,12 @@ class ProductEntityTest {
     @Test
     fun addProductOptionTest() {
         // given
-        val dummyProductOption: ProductOption = DummyProductOption.toEntity()
 
         // when
         dummyProduct.addProductOption(productOption = dummyProductOption)
 
         // then
-        assertThat(dummyProduct.productOptions.get(0)).isEqualTo(dummyProductOption)
+        assertThat(dummyProduct.productOptions[0]).isEqualTo(dummyProductOption)
         assertThat(dummyProductOption.product).isEqualTo(dummyProduct)
     }
 

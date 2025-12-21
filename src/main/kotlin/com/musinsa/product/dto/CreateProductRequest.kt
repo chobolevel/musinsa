@@ -2,6 +2,7 @@ package com.musinsa.product.dto
 
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Size
 
 data class CreateProductRequest(
     @field:NotNull
@@ -13,5 +14,7 @@ data class CreateProductRequest(
     val description: String?,
     @field:NotNull
     val standardPrice: Int,
-    var sortOrder: Int?
+    var sortOrder: Int?,
+    @field:Size(min = 1)
+    val productOptions: List<CreateProductOptionRequest>
 )

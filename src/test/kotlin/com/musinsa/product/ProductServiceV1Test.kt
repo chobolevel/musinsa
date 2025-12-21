@@ -5,12 +5,15 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.product.brand.DummyProductBrand
 import com.musinsa.product.category.DummyProductCategory
 import com.musinsa.product.converter.ProductConverter
+import com.musinsa.product.converter.ProductOptionConverter
 import com.musinsa.product.dto.CreateProductRequest
 import com.musinsa.product.dto.ProductResponse
 import com.musinsa.product.dto.UpdateProductRequest
 import com.musinsa.product.entity.Product
 import com.musinsa.product.entity.ProductBrand
 import com.musinsa.product.entity.ProductCategory
+import com.musinsa.product.entity.ProductOption
+import com.musinsa.product.option.DummyProductOption
 import com.musinsa.product.repository.ProductBrandRepositoryFacade
 import com.musinsa.product.repository.ProductCategoryRepositoryFacade
 import com.musinsa.product.repository.ProductQueryFilter
@@ -48,6 +51,9 @@ class ProductServiceV1Test {
     private lateinit var converter: ProductConverter
 
     @Mock
+    private lateinit var productOptionConverter: ProductOptionConverter
+
+    @Mock
     private lateinit var updater: ProductUpdater
 
     @InjectMocks
@@ -59,9 +65,11 @@ class ProductServiceV1Test {
         val request: CreateProductRequest = DummyProduct.toCreateRequest()
         val dummyProductBrand: ProductBrand = DummyProductBrand.toEntity()
         val dummyProductCategory: ProductCategory = DummyProductCategory.toEntity()
+        val dummyProductOptions: List<ProductOption> = listOf(DummyProductOption.toEntity())
         `when`(converter.toEntity(request = request)).thenReturn(dummyProduct)
         `when`(productBrandRepository.findById(id = request.productBrandId)).thenReturn(dummyProductBrand)
         `when`(productCategoryRepository.findById(id = request.productCategoryId)).thenReturn(dummyProductCategory)
+        `when`(productOptionConverter.toEntityInBatch(requests = request.productOptions)).thenReturn(dummyProductOptions)
         `when`(productRepository.save(product = dummyProduct)).thenReturn(dummyProduct)
 
         // when

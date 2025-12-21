@@ -16,6 +16,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
+import org.hibernate.annotations.SQLRestriction
 import org.hibernate.envers.NotAudited
 
 @Entity
@@ -53,8 +54,24 @@ class Product(
 
     @NotAudited
     @OneToMany(mappedBy = "product", cascade = [(CascadeType.ALL)], orphanRemoval = true)
-    @OrderBy("sortOrder asc")
+    @SQLRestriction("is_deleted = false")
+    @OrderBy("sort_order asc")
     val productOptions: MutableList<ProductOption> = mutableListOf()
+
+    companion object {
+        fun create(
+            product: Product,
+            productBrand: ProductBrand,
+            productCategory: ProductCategory,
+            productOptions: List<ProductOption>
+        ): Product {
+            product.assignProductBrand(productBrand = productBrand)
+            product.assignProductCategory(productCategory = productCategory)
+            productOptions.forEach { product.addProductOption(productOption = it) }
+
+            return product
+        }
+    }
 
     fun assignProductBrand(productBrand: ProductBrand) {
         if (this.productBrand != productBrand) {
