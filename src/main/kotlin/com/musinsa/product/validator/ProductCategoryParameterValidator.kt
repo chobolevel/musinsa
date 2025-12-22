@@ -16,7 +16,7 @@ class ProductCategoryParameterValidator {
                     if (request.name.isNullOrEmpty()) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[name]은(는) 필수 값입니다."
+                            message = "[${ProductCategoryUpdateMask.NAME.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }
@@ -25,7 +25,7 @@ class ProductCategoryParameterValidator {
                     if (request.iconImagePath.isNullOrEmpty()) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[icon_image_path]은(는) 필수 값입니다."
+                            message = "[${ProductCategoryUpdateMask.ICON_IMAGE_PATH.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }
