@@ -18,6 +18,7 @@ import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
 import org.hibernate.annotations.SQLRestriction
 import org.hibernate.envers.NotAudited
+import java.security.InvalidParameterException
 
 @Entity
 @Table(name = "products")
@@ -57,6 +58,17 @@ class Product(
     @SQLRestriction("is_deleted = false")
     @OrderBy("sort_order asc")
     val productOptions: MutableList<ProductOption> = mutableListOf()
+
+    init {
+        validate()
+    }
+
+    private fun validate() {
+        // 정책이 변경되어도 변경되지 않는 검증 로직만 작성되어야 함
+        // throw IllegalArgumentException
+        require(standardPrice > 0) { "기준가(standard_price)은(는) 0보다 커야 합니다."}
+        require(sortOrder > 0) { "상품 정렬 순서(sort_order)은(는) 0보다 커야 합니다."}
+    }
 
     companion object {
         fun create(
