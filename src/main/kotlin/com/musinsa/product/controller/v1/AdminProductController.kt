@@ -5,6 +5,7 @@ import com.musinsa.common.dto.CommonResponse
 import com.musinsa.product.dto.CreateProductRequest
 import com.musinsa.product.dto.UpdateProductRequest
 import com.musinsa.product.service.ProductService
+import com.musinsa.product.validator.ProductParameterValidator
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -19,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1")
 class AdminProductController(
-    private val service: ProductService
+    private val service: ProductService,
+    private val validator: ProductParameterValidator
 ) {
 
     @PostMapping("/products")
@@ -39,6 +41,7 @@ class AdminProductController(
         @Valid @RequestBody
         request: UpdateProductRequest
     ): ResponseEntity<CommonResponse> {
+        validator.validate(request = request)
         val result: Long = service.updateProduct(
             productId = productId,
             request = request
