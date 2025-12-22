@@ -5,6 +5,7 @@ import com.musinsa.common.dto.CommonResponse
 import com.musinsa.product.dto.CreateProductBrandRequest
 import com.musinsa.product.dto.UpdateProductBrandRequest
 import com.musinsa.product.service.ProductBrandService
+import com.musinsa.product.validator.ProductBrandParameterValidator
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -19,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/admin")
 class AdminProductBrandController(
-    private val service: ProductBrandService
+    private val service: ProductBrandService,
+    private val validator: ProductBrandParameterValidator
 ) {
 
     @PostMapping("/product-brands")
@@ -39,6 +41,7 @@ class AdminProductBrandController(
         @Valid @RequestBody
         request: UpdateProductBrandRequest
     ): ResponseEntity<CommonResponse> {
+        validator.validate(request = request)
         val result: Long = service.updateBrand(
             id = id,
             request = request
