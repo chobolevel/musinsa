@@ -16,7 +16,7 @@ class ProductParameterValidator {
                     if (request.productBrandId == null) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[product_brand_id]으(는) 필수 값입니다."
+                            message = "[${ProductUpdateMask.PRODUCT_BRAND.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }
@@ -25,7 +25,7 @@ class ProductParameterValidator {
                     if (request.productCategoryId == null) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[product_category_id]은(는) 필수 값입니다."
+                            message = "[${ProductUpdateMask.PRODUCT_CATEGORY.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }
@@ -34,7 +34,7 @@ class ProductParameterValidator {
                     if (request.name.isNullOrEmpty()) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[name]은(는) 필수 값입니다."
+                            message = "[${ProductUpdateMask.NAME.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }
@@ -43,7 +43,7 @@ class ProductParameterValidator {
                     if (request.standardPrice == null) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[standard_price]은(는) 필수 값입니다."
+                            message = "[${ProductUpdateMask.STANDARD_PRICE.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }
@@ -52,7 +52,7 @@ class ProductParameterValidator {
                     if (request.saleStatus == null) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[sale_status]은(는) 필수 값입니다."
+                            message = "[${ProductUpdateMask.SALE_STATUS.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }
@@ -61,7 +61,7 @@ class ProductParameterValidator {
                     if (request.sortOrder == null) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[sort_order]은(는) 필수 값입니다."
+                            message = "[${ProductUpdateMask.SORT_ORDER.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }

@@ -1,11 +1,11 @@
 package com.musinsa.product.vo
 
-enum class ProductUpdateMask {
-    PRODUCT_BRAND,
-    PRODUCT_CATEGORY,
-    NAME,
-    DESCRIPTION,
-    STANDARD_PRICE,
-    SALE_STATUS,
-    SORT_ORDER,
+enum class ProductUpdateMask(val fieldName: String,) {
+    PRODUCT_BRAND("product_brand_id"),
+    PRODUCT_CATEGORY("product_category_id"),
+    NAME("name"),
+    DESCRIPTION("description"),
+    STANDARD_PRICE("standard_price"),
+    SALE_STATUS("sale_status"),
+    SORT_ORDER("sort_order"),
 }
