@@ -16,7 +16,7 @@ class SnapCommentParameterValidator {
                     if (request.comment.isNullOrEmpty()) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[comment]은(는) 필수 값입니다."
+                            message = "[${SnapCommentUpdateMask.COMMENT.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }

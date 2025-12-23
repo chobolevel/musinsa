@@ -18,7 +18,7 @@ class SnapParameterValidator {
                     if (request.content.isNullOrEmpty()) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[content]은(는) 필수 값입니다."
+                            message = "[${SnapUpdateMask.CONTENT.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }
@@ -26,7 +26,7 @@ class SnapParameterValidator {
                     if (request.snapImages.isNullOrEmpty()) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[snap_images]은(는) 필수 값입니다."
+                            message = "[${SnapUpdateMask.SNAP_IMAGE.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }
