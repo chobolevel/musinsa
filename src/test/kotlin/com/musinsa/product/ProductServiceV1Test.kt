@@ -41,6 +41,10 @@ class ProductServiceV1Test {
 
     private val dummyProductResponse: ProductResponse = DummyProduct.toResponse()
 
+    private val dummyProductBrand: ProductBrand = DummyProductBrand.toEntity()
+
+    private val dummyProductCategory: ProductCategory = DummyProductCategory.toEntity()
+
     @Mock
     private lateinit var productRepository: ProductRepositoryFacade
 
@@ -66,8 +70,6 @@ class ProductServiceV1Test {
     fun createProductTest_success() {
         // given
         val request: CreateProductRequest = DummyProduct.toCreateRequest()
-        val dummyProductBrand: ProductBrand = DummyProductBrand.toEntity()
-        val dummyProductCategory: ProductCategory = DummyProductCategory.toEntity()
         val dummyProductOptions: List<ProductOption> = listOf(DummyProductOption.toEntity())
         `when`(converter.toEntity(request = request)).thenReturn(dummyProduct)
         `when`(productBrandRepository.findById(id = request.productBrandId)).thenReturn(dummyProductBrand)
@@ -98,6 +100,25 @@ class ProductServiceV1Test {
         assertThatThrownBy { service.createProduct(request = request) }
             .isInstanceOf(DataNotFoundException::class.java)
             .hasMessageContaining(ErrorCode.PRODUCT_BRAND_NOT_FOUND.defaultMessage)
+    }
+
+    @Test
+    fun createProductTest_productCategoryNotFound() {
+        // given
+        val request: CreateProductRequest = DummyProduct.toCreateRequest()
+        `when`(converter.toEntity(request = request)).thenReturn(dummyProduct)
+        `when`(productBrandRepository.findById(id = request.productBrandId)).thenReturn(dummyProductBrand)
+        `when`(productCategoryRepository.findById(id = request.productCategoryId)).thenThrow(
+            DataNotFoundException(
+                errorCode = ErrorCode.PRODUCT_CATEGORY_NOT_FOUND,
+                message = ErrorCode.PRODUCT_CATEGORY_NOT_FOUND.defaultMessage
+            )
+        )
+
+        // when & then
+        assertThatThrownBy { service.createProduct(request = request) }
+            .isInstanceOf(DataNotFoundException::class.java)
+            .hasMessageContaining(ErrorCode.PRODUCT_CATEGORY_NOT_FOUND.defaultMessage)
     }
 
     @Test
