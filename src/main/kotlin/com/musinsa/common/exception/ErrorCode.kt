@@ -36,7 +36,7 @@ enum class ErrorCode(val defaultMessage: String) {
     ACCESSIBLE_ONLY_SNAP_COMMENT_WRITER("스냅 코멘트 작성자만 접근할 수 있습니다."),
 
     // BRAND
-    BRAND_NOT_FOUND("브랜드를 찾을 수 없습니다."),
+    PRODUCT_BRAND_NOT_FOUND("상품 브랜드를 찾을 수 없습니다."),
 
     // PRODUCT CATEGORY
     PRODUCT_CATEGORY_NOT_FOUND("상품 카테고리를 찾을 수 없습니다."),

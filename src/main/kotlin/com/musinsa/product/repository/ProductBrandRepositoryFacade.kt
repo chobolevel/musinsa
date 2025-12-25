@@ -41,8 +41,8 @@ class ProductBrandRepositoryFacade(
 
     fun findById(id: Long): ProductBrand {
         return repository.findByIdAndIsDeletedFalse(id = id) ?: throw DataNotFoundException(
-            errorCode = ErrorCode.BRAND_NOT_FOUND,
-            message = ErrorCode.BRAND_NOT_FOUND.defaultMessage
+            errorCode = ErrorCode.PRODUCT_BRAND_NOT_FOUND,
+            message = ErrorCode.PRODUCT_BRAND_NOT_FOUND.defaultMessage
         )
     }
 

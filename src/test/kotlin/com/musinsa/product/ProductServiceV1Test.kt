@@ -2,6 +2,8 @@ package com.musinsa.product
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.common.exception.DataNotFoundException
+import com.musinsa.common.exception.ErrorCode
 import com.musinsa.product.brand.DummyProductBrand
 import com.musinsa.product.category.DummyProductCategory
 import com.musinsa.product.converter.ProductConverter
@@ -22,6 +24,7 @@ import com.musinsa.product.service.impl.ProductServiceV1
 import com.musinsa.product.updater.ProductUpdater
 import com.musinsa.product.vo.ProductOrderType
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
@@ -60,7 +63,7 @@ class ProductServiceV1Test {
     private lateinit var service: ProductServiceV1
 
     @Test
-    fun createProductTest() {
+    fun createProductTest_success() {
         // given
         val request: CreateProductRequest = DummyProduct.toCreateRequest()
         val dummyProductBrand: ProductBrand = DummyProductBrand.toEntity()
@@ -77,6 +80,24 @@ class ProductServiceV1Test {
 
         // then
         assertThat(result).isEqualTo(dummyProduct.id)
+    }
+
+    @Test
+    fun createProductTest_productBrandNotFound() {
+        // given
+        val request: CreateProductRequest = DummyProduct.toCreateRequest()
+        `when`(converter.toEntity(request = request)).thenReturn(dummyProduct)
+        `when`(productBrandRepository.findById(id = request.productBrandId)).thenThrow(
+            DataNotFoundException(
+                errorCode = ErrorCode.PRODUCT_BRAND_NOT_FOUND,
+                message = ErrorCode.PRODUCT_BRAND_NOT_FOUND.defaultMessage
+            )
+        )
+
+        // when & then
+        assertThatThrownBy { service.createProduct(request = request) }
+            .isInstanceOf(DataNotFoundException::class.java)
+            .hasMessageContaining(ErrorCode.PRODUCT_BRAND_NOT_FOUND.defaultMessage)
     }
 
     @Test
