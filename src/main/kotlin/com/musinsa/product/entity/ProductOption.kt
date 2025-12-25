@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.hibernate.envers.Audited
+import org.hibernate.envers.NotAudited
 
 @Entity
 @Table(name = "product_options")
@@ -29,6 +30,7 @@ class ProductOption(
     @Column(nullable = false, updatable = false, unique = true)
     var id: Long? = null
 
+    @NotAudited
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     var product: Product? = null
