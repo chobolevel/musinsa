@@ -46,7 +46,7 @@ class ProductOption(
     }
 
     private fun validate() {
-        require(sortOrder > 0) { "상품 옵션 정렬 순서(sort_order)은(는) 0보다 커야 합니다."}
+        require(sortOrder > 0) { "상품 옵션 정렬 순서(sort_order)은(는) 0보다 커야 합니다." }
     }
 
     /* ==============================
