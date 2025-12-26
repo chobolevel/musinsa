@@ -38,12 +38,29 @@ class ProductOption(
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     var isDeleted: Boolean = false
 
+    /* ==============================
+     * 생성 시 불변식 검증
+     * ============================== */
+    init {
+        validate()
+    }
+
+    private fun validate() {
+        require(sortOrder > 0) { "상품 옵션 정렬 순서(sort_order)은(는) 0보다 커야 합니다."}
+    }
+
+    /* ==============================
+     * 연관관계 편의 메서드
+     * ============================== */
     fun assignProduct(product: Product) {
         if (this.product != product) {
             this.product = product
         }
     }
 
+    /* ==============================
+     * 상태 변경 메서드
+     * ============================== */
     fun delete() {
         this.isDeleted = true
     }
