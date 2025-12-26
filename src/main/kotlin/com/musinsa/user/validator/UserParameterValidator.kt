@@ -46,7 +46,7 @@ class UserParameterValidator {
                     if (request.email.isNullOrEmpty()) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[email]은(는) 필수 값입니다."
+                            message = "[${UserUpdateMask.EMAIL.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }
@@ -55,7 +55,7 @@ class UserParameterValidator {
                     if (request.name.isNullOrEmpty()) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[name]은(는) 필수 값입니다."
+                            message = "[${UserUpdateMask.NAME.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }
@@ -64,7 +64,7 @@ class UserParameterValidator {
                     if (request.phone.isNullOrEmpty()) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.PHONE_NUMBER_ALREADY_EXISTS,
-                            message = "[phone]은(는) 필수 값입니다."
+                            message = "[${UserUpdateMask.PHONE.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }
@@ -73,7 +73,7 @@ class UserParameterValidator {
                     if (request.gender == null) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[gender]은(는) 필수 값입니다."
+                            message = "[${UserUpdateMask.GENDER.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }
@@ -82,7 +82,7 @@ class UserParameterValidator {
                     if (request.birthDate == null) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[birth_date]은(는) 필수 값입니다."
+                            message = "[${UserUpdateMask.BIRTH_DATE.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }
