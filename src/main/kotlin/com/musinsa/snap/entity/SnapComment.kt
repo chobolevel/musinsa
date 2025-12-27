@@ -62,4 +62,21 @@ class SnapComment(
     fun delete() {
         this.isDeleted = true
     }
+
+    /* ==============================
+    * 팩토리 / 생성 메서드
+    * ============================== */
+    companion object {
+        fun create(
+            snapComment: SnapComment,
+            snap: Snap,
+            writer: User,
+            parent: SnapComment?,
+        ): SnapComment {
+            snapComment.assignSnap(snap = snap)
+            snapComment.assignWriter(user = writer)
+            parent?.let { snapComment.assignParent(it) }
+            return snapComment
+        }
+    }
 }

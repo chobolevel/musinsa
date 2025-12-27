@@ -36,15 +36,18 @@ class SnapCommentServiceV1(
         snapId: Long,
         request: CreateSnapCommentRequest
     ): Long {
+        val base: SnapComment = converter.toEntity(request = request)
         val user: User = userRepository.findById(id = userId)
         val snap: Snap = snapRepository.findById(id = snapId)
-        val snapComment: SnapComment = converter.toEntity(request = request).also { snapComment ->
-            request.parentId?.let { parentId ->
-                snapComment.assignParent(snapComment = repository.findById(id = parentId))
-            }
-            snapComment.assignSnap(snap = snap)
-            snapComment.assignWriter(user = user)
+        val parentSnapComment: SnapComment? = request.parentId?.let { parentId ->
+            repository.findById(id = parentId)
         }
+        val snapComment: SnapComment = SnapComment.create(
+            snapComment = base,
+            snap = snap,
+            writer = user,
+            parent = parentSnapComment,
+        )
         return repository.save(snapComment = snapComment).id!!
     }
 
