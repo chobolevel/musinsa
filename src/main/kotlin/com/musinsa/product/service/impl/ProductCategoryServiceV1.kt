@@ -2,6 +2,7 @@ package com.musinsa.product.service.impl
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.product.assembler.ProductCategoryAssembler
 import com.musinsa.product.converter.ProductCategoryConverter
 import com.musinsa.product.dto.CreateProductCategoryRequest
 import com.musinsa.product.dto.ProductCategoryResponse
@@ -19,12 +20,19 @@ import org.springframework.transaction.annotation.Transactional
 class ProductCategoryServiceV1(
     private val repository: ProductCategoryRepositoryFacade,
     private val converter: ProductCategoryConverter,
+    private val assembler: ProductCategoryAssembler,
     private val updater: ProductCategoryUpdater
 ) : ProductCategoryService {
 
     @Transactional
     override fun createProductCategory(request: CreateProductCategoryRequest): Long {
-        val productCategory: ProductCategory = converter.toEntity(request = request)
+        val baseProductCategory: ProductCategory = converter.toEntity(request = request)
+        val parent: ProductCategory? = request.parentId?.let { repository.findById(id = it) }
+
+        val productCategory: ProductCategory = assembler.assemble(
+            productCategory = baseProductCategory,
+            parent = parent
+        )
         return repository.save(productCategory = productCategory).id!!
     }
 

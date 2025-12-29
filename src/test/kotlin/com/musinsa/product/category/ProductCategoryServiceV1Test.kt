@@ -2,6 +2,7 @@ package com.musinsa.product.category
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.product.assembler.ProductCategoryAssembler
 import com.musinsa.product.converter.ProductCategoryConverter
 import com.musinsa.product.dto.CreateProductCategoryRequest
 import com.musinsa.product.dto.ProductCategoryResponse
@@ -27,6 +28,8 @@ class ProductCategoryServiceV1Test {
 
     private val dummyProductCategory: ProductCategory = DummyProductCategory.toEntity()
 
+    private val dummyParentProductCategory: ProductCategory = DummyProductCategory.toParentEntity()
+
     private val dummyProductCategoryResponse: ProductCategoryResponse = DummyProductCategory.toResponse()
 
     @Mock
@@ -34,6 +37,9 @@ class ProductCategoryServiceV1Test {
 
     @Mock
     private lateinit var converter: ProductCategoryConverter
+
+    @Mock
+    private lateinit var assembler: ProductCategoryAssembler
 
     @Mock
     private lateinit var updater: ProductCategoryUpdater
@@ -46,6 +52,13 @@ class ProductCategoryServiceV1Test {
         // given
         val dummyRequest: CreateProductCategoryRequest = DummyProductCategory.toCreateRequest()
         `when`(converter.toEntity(request = dummyRequest)).thenReturn(dummyProductCategory)
+        `when`(repository.findById(id = dummyRequest.parentId!!)).thenReturn(dummyParentProductCategory)
+        `when`(
+            assembler.assemble(
+                productCategory = dummyProductCategory,
+                parent = dummyParentProductCategory,
+            )
+        ).thenReturn(dummyProductCategory)
         `when`(repository.save(productCategory = dummyProductCategory)).thenReturn(dummyProductCategory)
 
         // when

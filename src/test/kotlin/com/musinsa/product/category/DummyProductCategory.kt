@@ -51,6 +51,7 @@ object DummyProductCategory {
 
     private val dummyCreateProductCategoryRequest: CreateProductCategoryRequest by lazy {
         CreateProductCategoryRequest(
+            parentId = parentId,
             name = name,
             iconImagePath = iconImagePath
         )
