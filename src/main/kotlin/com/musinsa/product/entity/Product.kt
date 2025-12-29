@@ -58,14 +58,13 @@ class Product(
     @OrderBy("sort_order asc")
     val productOptions: MutableList<ProductOption> = mutableListOf()
 
-    /* ==============================
-     * 생성 시 불변식 검증
-     * ============================== */
-
     init {
         validate()
     }
 
+    /* ==============================
+     * 생성 시 불변식 검증
+     * ============================== */
     private fun validate() {
         // 정책이 변경되어도 변경되지 않는 검증 로직만 작성되어야 함
         // throw IllegalArgumentException
@@ -76,7 +75,6 @@ class Product(
     /* ==============================
      * 연관관계 편의 메서드
      * ============================== */
-
     fun assignProductBrand(productBrand: ProductBrand) {
         if (this.productBrand != productBrand) {
             this.productBrand = productBrand
@@ -99,31 +97,7 @@ class Product(
     /* ==============================
      * 상태 변경 메서드
      * ============================== */
-
     fun delete() {
         this.isDeleted = true
-    }
-
-    /* ==============================
-    * 조회성 로직 (도메인 계산)
-    * ============================== */
-
-    /* ==============================
-    * 팩토리 / 생성 메서드
-    * ============================== */
-
-    companion object {
-        fun create(
-            product: Product,
-            productBrand: ProductBrand,
-            productCategory: ProductCategory,
-            productOptions: List<ProductOption>
-        ): Product {
-            product.assignProductBrand(productBrand = productBrand)
-            product.assignProductCategory(productCategory = productCategory)
-            productOptions.forEach { product.addProductOption(productOption = it) }
-
-            return product
-        }
     }
 }

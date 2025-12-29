@@ -4,6 +4,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.exception.DataNotFoundException
 import com.musinsa.common.exception.ErrorCode
+import com.musinsa.product.assembler.ProductAssembler
 import com.musinsa.product.brand.DummyProductBrand
 import com.musinsa.product.category.DummyProductCategory
 import com.musinsa.product.converter.ProductConverter
@@ -58,6 +59,9 @@ class ProductServiceV1Test {
     private lateinit var converter: ProductConverter
 
     @Mock
+    private lateinit var assembler: ProductAssembler
+
+    @Mock
     private lateinit var productOptionConverter: ProductOptionConverter
 
     @Mock
@@ -75,6 +79,14 @@ class ProductServiceV1Test {
         `when`(productBrandRepository.findById(id = request.productBrandId)).thenReturn(dummyProductBrand)
         `when`(productCategoryRepository.findById(id = request.productCategoryId)).thenReturn(dummyProductCategory)
         `when`(productOptionConverter.toEntityInBatch(requests = request.productOptions)).thenReturn(dummyProductOptions)
+        `when`(
+            assembler.assemble(
+                product = dummyProduct,
+                productBrand = dummyProductBrand,
+                productCategory = dummyProductCategory,
+                productOptions = dummyProductOptions,
+            )
+        ).thenReturn(dummyProduct)
         `when`(productRepository.save(product = dummyProduct)).thenReturn(dummyProduct)
 
         // when

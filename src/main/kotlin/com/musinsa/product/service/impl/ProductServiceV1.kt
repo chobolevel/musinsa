@@ -2,6 +2,7 @@ package com.musinsa.product.service.impl
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.product.assembler.ProductAssembler
 import com.musinsa.product.converter.ProductConverter
 import com.musinsa.product.converter.ProductOptionConverter
 import com.musinsa.product.dto.CreateProductRequest
@@ -27,6 +28,7 @@ class ProductServiceV1(
     private val productBrandRepository: ProductBrandRepositoryFacade,
     private val productCategoryRepository: ProductCategoryRepositoryFacade,
     private val converter: ProductConverter,
+    private val assembler: ProductAssembler,
     private val productOptionConverter: ProductOptionConverter,
     private val updater: ProductUpdater
 ) : ProductService {
@@ -34,16 +36,15 @@ class ProductServiceV1(
     @Transactional
     override fun createProduct(request: CreateProductRequest): Long {
         val baseProduct: Product = converter.toEntity(request = request)
-
         val productBrand: ProductBrand = productBrandRepository.findById(id = request.productBrandId)
         val productCategory: ProductCategory = productCategoryRepository.findById(id = request.productCategoryId)
         val productOptions: List<ProductOption> = productOptionConverter.toEntityInBatch(requests = request.productOptions)
 
-        val product: Product = Product.create(
+        val product: Product = assembler.assemble(
             product = baseProduct,
             productBrand = productBrand,
             productCategory = productCategory,
-            productOptions = productOptions,
+            productOptions = productOptions
         )
 
         return productRepository.save(product = product).id!!
