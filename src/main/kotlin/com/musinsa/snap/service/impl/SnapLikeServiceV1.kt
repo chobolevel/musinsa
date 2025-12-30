@@ -4,6 +4,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.exception.ErrorCode
 import com.musinsa.common.exception.PolicyViolationException
+import com.musinsa.snap.assembler.SnapLikeAssembler
 import com.musinsa.snap.converter.SnapLikeConverter
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapLike
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional
 class SnapLikeServiceV1(
     private val repository: SnapLikeRepositoryFacade,
     private val converter: SnapLikeConverter,
+    private val assembler: SnapLikeAssembler,
     private val userRepository: UserRepositoryFacade,
     private val snapRepository: SnapRepositoryFacade
 ) : SnapLikeService {
@@ -61,10 +63,12 @@ class SnapLikeServiceV1(
                 message = ErrorCode.ALREADY_LIKED_SNAP.defaultMessage
             )
         }
-        val snapLike = SnapLike().also { snapLike ->
-            snapLike.assignUser(user = user)
-            snapLike.assignSnap(snap = snap)
-        }
+        val baseSnapLike: SnapLike = SnapLike()
+        val snapLike: SnapLike = assembler.assemble(
+            snapLike = baseSnapLike,
+            snap = snap,
+            user = user
+        )
         return repository.save(snapLike).id!!
     }
 
