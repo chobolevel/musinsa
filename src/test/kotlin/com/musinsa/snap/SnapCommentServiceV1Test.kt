@@ -2,6 +2,7 @@ package com.musinsa.snap
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.snap.assembler.SnapCommentAssembler
 import com.musinsa.snap.converter.SnapCommentConverter
 import com.musinsa.snap.dto.CreateSnapCommentRequest
 import com.musinsa.snap.dto.SnapCommentResponse
@@ -54,6 +55,9 @@ class SnapCommentServiceV1Test {
     private lateinit var converter: SnapCommentConverter
 
     @Mock
+    private lateinit var assembler: SnapCommentAssembler
+
+    @Mock
     private lateinit var updater: SnapCommentUpdater
 
     @Mock
@@ -72,6 +76,14 @@ class SnapCommentServiceV1Test {
         `when`(repository.findById(id = dummyRequest.parentId!!)).thenReturn(dummyParentSnapComment)
         `when`(userRepository.findById(id = dummyUserId)).thenReturn(dummyUser)
         `when`(snapRepository.findById(id = dummySnapId)).thenReturn(dummySnap)
+        `when`(
+            assembler.assemble(
+                snapComment = dummySnapComment,
+                parentSnapComment = dummyParentSnapComment,
+                snap = dummySnap,
+                writer = dummyUser
+            )
+        ).thenReturn(dummySnapComment)
         `when`(repository.save(snapComment = dummySnapComment)).thenReturn(dummySnapComment)
 
         // when

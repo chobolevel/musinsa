@@ -2,6 +2,7 @@ package com.musinsa.snap.service.impl
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.snap.assembler.SnapCommentAssembler
 import com.musinsa.snap.converter.SnapCommentConverter
 import com.musinsa.snap.dto.CreateSnapCommentRequest
 import com.musinsa.snap.dto.SnapCommentResponse
@@ -26,6 +27,7 @@ class SnapCommentServiceV1(
     private val userRepository: UserRepositoryFacade,
     private val snapRepository: SnapRepositoryFacade,
     private val converter: SnapCommentConverter,
+    private val assembler: SnapCommentAssembler,
     private val validator: SnapCommentBusinessValidator,
     private val updater: SnapCommentUpdater
 ) : SnapCommentService {
@@ -36,18 +38,20 @@ class SnapCommentServiceV1(
         snapId: Long,
         request: CreateSnapCommentRequest
     ): Long {
-        val base: SnapComment = converter.toEntity(request = request)
-        val user: User = userRepository.findById(id = userId)
-        val snap: Snap = snapRepository.findById(id = snapId)
+        val baseSnapComment: SnapComment = converter.toEntity(request = request)
         val parentSnapComment: SnapComment? = request.parentId?.let { parentId ->
             repository.findById(id = parentId)
         }
-        val snapComment: SnapComment = SnapComment.create(
-            snapComment = base,
+        val user: User = userRepository.findById(id = userId)
+        val snap: Snap = snapRepository.findById(id = snapId)
+
+        val snapComment: SnapComment = assembler.assemble(
+            snapComment = baseSnapComment,
+            parentSnapComment = parentSnapComment,
             snap = snap,
             writer = user,
-            parent = parentSnapComment,
         )
+
         return repository.save(snapComment = snapComment).id!!
     }
 
