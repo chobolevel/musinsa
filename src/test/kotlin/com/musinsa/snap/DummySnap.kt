@@ -4,6 +4,8 @@ import com.musinsa.snap.dto.CreateSnapRequest
 import com.musinsa.snap.dto.SnapResponse
 import com.musinsa.snap.dto.UpdateSnapRequest
 import com.musinsa.snap.entity.Snap
+import com.musinsa.snap.image.DummySnapImage
+import com.musinsa.snap.tag.DummySnapTag
 import com.musinsa.snap.vo.SnapUpdateMask
 import com.musinsa.user.DummyUser
 

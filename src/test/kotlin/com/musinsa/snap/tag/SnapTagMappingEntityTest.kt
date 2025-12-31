@@ -1,5 +1,6 @@
-package com.musinsa.snap
+package com.musinsa.snap.tag
 
+import com.musinsa.snap.DummySnap
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapTag
 import com.musinsa.snap.entity.SnapTagMapping

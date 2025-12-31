@@ -1,5 +1,6 @@
-package com.musinsa.snap
+package com.musinsa.snap.comment
 
+import com.musinsa.snap.DummySnap
 import com.musinsa.snap.dto.CreateSnapCommentRequest
 import com.musinsa.snap.dto.SnapCommentResponse
 import com.musinsa.snap.dto.UpdateSnapCommentRequest

@@ -1,7 +1,8 @@
-package com.musinsa.snap
+package com.musinsa.snap.comment
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.snap.DummySnap
 import com.musinsa.snap.assembler.SnapCommentAssembler
 import com.musinsa.snap.converter.SnapCommentConverter
 import com.musinsa.snap.dto.CreateSnapCommentRequest

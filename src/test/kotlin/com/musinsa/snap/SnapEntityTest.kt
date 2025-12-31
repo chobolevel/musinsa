@@ -2,6 +2,7 @@ package com.musinsa.snap
 
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapTag
+import com.musinsa.snap.tag.DummySnapTag
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
 import org.assertj.core.api.Assertions.assertThat

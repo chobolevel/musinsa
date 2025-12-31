@@ -1,5 +1,6 @@
-package com.musinsa.snap
+package com.musinsa.snap.comment
 
+import com.musinsa.snap.DummySnap
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapComment
 import com.musinsa.user.DummyUser

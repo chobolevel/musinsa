@@ -1,4 +1,4 @@
-package com.musinsa.snap
+package com.musinsa.snap.tag
 
 import com.musinsa.snap.entity.SnapTag
 import org.assertj.core.api.Assertions.assertThat

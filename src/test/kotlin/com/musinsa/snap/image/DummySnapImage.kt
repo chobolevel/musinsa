@@ -1,4 +1,4 @@
-package com.musinsa.snap
+package com.musinsa.snap.image
 
 import com.musinsa.snap.dto.SnapImageResponse
 import com.musinsa.snap.entity.SnapImage

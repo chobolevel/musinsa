@@ -1,4 +1,4 @@
-package com.musinsa.snap
+package com.musinsa.snap.tag
 
 import com.musinsa.snap.dto.CreateSnapTagRequest
 import com.musinsa.snap.dto.SnapTagResponse

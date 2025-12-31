@@ -12,6 +12,7 @@ import com.musinsa.snap.repository.SnapQueryFilter
 import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.repository.SnapTagRepositoryFacade
 import com.musinsa.snap.service.impl.SnapServiceV1
+import com.musinsa.snap.tag.DummySnapTag
 import com.musinsa.snap.updater.SnapUpdater
 import com.musinsa.snap.validator.SnapBusinessValidator
 import com.musinsa.snap.vo.SnapOrderType

@@ -1,5 +1,6 @@
-package com.musinsa.snap
+package com.musinsa.snap.image
 
+import com.musinsa.snap.DummySnap
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapImage
 import org.assertj.core.api.Assertions.assertThat

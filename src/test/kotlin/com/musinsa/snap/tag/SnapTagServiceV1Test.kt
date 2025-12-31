@@ -1,4 +1,4 @@
-package com.musinsa.snap
+package com.musinsa.snap.tag
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse

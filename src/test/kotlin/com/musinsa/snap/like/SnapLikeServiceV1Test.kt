@@ -1,7 +1,9 @@
-package com.musinsa.snap
+package com.musinsa.snap.like
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.snap.DummySnap
+import com.musinsa.snap.assembler.SnapLikeAssembler
 import com.musinsa.snap.converter.SnapLikeConverter
 import com.musinsa.snap.dto.SnapLikeResponse
 import com.musinsa.snap.entity.Snap
@@ -40,6 +42,9 @@ class SnapLikeServiceV1Test {
 
     @Mock
     private lateinit var converter: SnapLikeConverter
+
+    @Mock
+    private lateinit var assembler: SnapLikeAssembler
 
     @Mock
     private lateinit var userRepository: UserRepositoryFacade
