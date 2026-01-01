@@ -64,21 +64,11 @@ class Snap(
     }
 
     fun addSnapImage(
-        path: String,
-        width: Int,
-        height: Int,
-        order: Int
+        snapImage: SnapImage
     ) {
-        SnapImage(
-            path = path,
-            width = width,
-            height = height,
-            order = order
-        ).also { snapImage ->
-            snapImage.assignSnap(snap = this)
-            if (!this.snapImages.contains(snapImage)) {
-                this.snapImages.add(snapImage)
-            }
+        snapImage.assignSnap(snap = this)
+        if (!this.snapImages.contains(snapImage)) {
+            this.snapImages.add(snapImage)
         }
     }
 

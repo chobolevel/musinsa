@@ -2,11 +2,14 @@ package com.musinsa.snap.service.impl
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.snap.assembler.SnapAssembler
 import com.musinsa.snap.converter.SnapConverter
+import com.musinsa.snap.converter.SnapImageConverter
 import com.musinsa.snap.dto.CreateSnapRequest
 import com.musinsa.snap.dto.SnapResponse
 import com.musinsa.snap.dto.UpdateSnapRequest
 import com.musinsa.snap.entity.Snap
+import com.musinsa.snap.entity.SnapImage
 import com.musinsa.snap.entity.SnapTag
 import com.musinsa.snap.repository.SnapQueryFilter
 import com.musinsa.snap.repository.SnapRepositoryFacade
@@ -23,33 +26,29 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class SnapServiceV1(
     private val converter: SnapConverter,
+    private val snapImageConverter: SnapImageConverter,
     private val userRepository: UserRepositoryFacade,
     private val snapRepository: SnapRepositoryFacade,
     private val snapTagRepository: SnapTagRepositoryFacade,
+    private val assembler: SnapAssembler,
     private val validator: SnapBusinessValidator,
     private val updater: SnapUpdater
 ) : SnapService {
 
     @Transactional
     override fun createSnap(userId: Long, request: CreateSnapRequest): Long {
-        val snap: Snap = converter.toEntity(request = request).also { snap ->
-            val user: User = userRepository.findById(id = userId)
-            snap.assignWriter(user = user)
+        val baseSnap: Snap = converter.toEntity(request = request)
+        val user: User = userRepository.findById(id = userId)
+        val snapTags: List<SnapTag> = snapTagRepository.findByIds(ids = request.snapTagIds)
+        val snapImages: List<SnapImage> = snapImageConverter.toEntityInBatch(requests = request.snapImages)
 
-            val snapTags: List<SnapTag> = snapTagRepository.findByIds(ids = request.snapTagIds)
-            snapTags.forEach { snapTag ->
-                snap.addSnapTag(snapTag = snapTag)
-            }
+        val snap: Snap = assembler.assemble(
+            snap = baseSnap,
+            writer = user,
+            snapTags = snapTags,
+            snapImages = snapImages,
+        )
 
-            request.snapImages.forEach { snapImageRequest ->
-                snap.addSnapImage(
-                    path = snapImageRequest.path,
-                    width = snapImageRequest.width,
-                    height = snapImageRequest.height,
-                    order = snapImageRequest.order,
-                )
-            }
-        }
         return snapRepository.save(snap = snap).id!!
     }
 

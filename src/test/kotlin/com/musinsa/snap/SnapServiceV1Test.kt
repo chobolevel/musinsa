@@ -2,12 +2,16 @@ package com.musinsa.snap
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
+import com.musinsa.snap.assembler.SnapAssembler
 import com.musinsa.snap.converter.SnapConverter
+import com.musinsa.snap.converter.SnapImageConverter
 import com.musinsa.snap.dto.CreateSnapRequest
 import com.musinsa.snap.dto.SnapResponse
 import com.musinsa.snap.dto.UpdateSnapRequest
 import com.musinsa.snap.entity.Snap
+import com.musinsa.snap.entity.SnapImage
 import com.musinsa.snap.entity.SnapTag
+import com.musinsa.snap.image.DummySnapImage
 import com.musinsa.snap.repository.SnapQueryFilter
 import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.repository.SnapTagRepositoryFacade
@@ -38,10 +42,15 @@ class SnapServiceV1Test {
 
     private val dummySnapTag: SnapTag = DummySnapTag.toEntity()
 
+    private val dummySnapImage: SnapImage = DummySnapImage.toEntity()
+
     private val dummySnapResponse: SnapResponse = DummySnap.toResponse()
 
     @Mock
     private lateinit var converter: SnapConverter
+
+    @Mock
+    private lateinit var snapImageConverter: SnapImageConverter
 
     @Mock
     private lateinit var userRepository: UserRepositoryFacade
@@ -51,6 +60,9 @@ class SnapServiceV1Test {
 
     @Mock
     private lateinit var snapTagRepository: SnapTagRepositoryFacade
+
+    @Mock
+    private lateinit var assembler: SnapAssembler
 
     @Mock
     private lateinit var updater: SnapUpdater
@@ -67,9 +79,19 @@ class SnapServiceV1Test {
         val dummyUserId: Long = dummyUser.id!!
         val dummyRequest: CreateSnapRequest = DummySnap.toCreateRequest()
         val dummySnapTags: List<SnapTag> = listOf(dummySnapTag)
+        val dummySnapImages: List<SnapImage> = listOf(dummySnapImage)
         `when`(converter.toEntity(request = dummyRequest)).thenReturn(dummySnap)
+        `when`(snapImageConverter.toEntityInBatch(requests = dummyRequest.snapImages)).thenReturn(dummySnapImages)
         `when`(userRepository.findById(id = dummyUserId)).thenReturn(dummyUser)
         `when`(snapTagRepository.findByIds(ids = dummyRequest.snapTagIds)).thenReturn(dummySnapTags)
+        `when`(
+            assembler.assemble(
+                snap = dummySnap,
+                writer = dummyUser,
+                snapTags = dummySnapTags,
+                snapImages = dummySnapImages
+            )
+        ).thenReturn(dummySnap)
         `when`(snapRepository.save(snap = dummySnap)).thenReturn(dummySnap)
 
         // when

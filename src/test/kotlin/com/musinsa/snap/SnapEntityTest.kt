@@ -1,7 +1,9 @@
 package com.musinsa.snap
 
 import com.musinsa.snap.entity.Snap
+import com.musinsa.snap.entity.SnapImage
 import com.musinsa.snap.entity.SnapTag
+import com.musinsa.snap.image.DummySnapImage
 import com.musinsa.snap.tag.DummySnapTag
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
@@ -13,6 +15,8 @@ import kotlin.test.Test
 class SnapEntityTest {
 
     private val dummySnap: Snap = DummySnap.toEntity()
+
+    private val dummySnapImage: SnapImage = DummySnapImage.toEntity()
 
     @Test
     fun mappingWriterTest() {
@@ -40,30 +44,19 @@ class SnapEntityTest {
     @Test
     fun addSnapImageTest() {
         // given
-        val dummySnapImagePath = "dummyUrl"
 
         // when
-        dummySnap.addSnapImage(
-            path = dummySnapImagePath,
-            width = 0,
-            height = 0,
-            order = 0
-        )
+        dummySnap.addSnapImage(snapImage = dummySnapImage)
 
         // then
-        assertThat(dummySnap.snapImages[0].path).isEqualTo(dummySnapImagePath)
+        assertThat(dummySnap.snapImages[0]).isEqualTo(dummySnapImage)
     }
 
     @Test
     fun deleteSnapImageInBatchTest() {
         // given
         val dummySnapImagePath = "dummyUrl"
-        dummySnap.addSnapImage(
-            path = dummySnapImagePath,
-            width = 0,
-            height = 0,
-            order = 0
-        )
+        dummySnap.addSnapImage(snapImage = dummySnapImage)
 
         // when
         dummySnap.deleteSnapImageInBatch()
