@@ -24,6 +24,7 @@ object DummyProductOption {
             name = name,
             sortOrder = sortOrder,
             isRequired = isRequired,
+            values = listOf(DummyProductOptionValue.toCreateRequest())
         )
     }
 

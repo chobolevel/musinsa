@@ -17,7 +17,10 @@ class ProductAssembler {
     ): Product {
         product.assignProductBrand(productBrand = productBrand)
         product.assignProductCategory(productCategory = productCategory)
-        productOptions.forEach { product.addProductOption(productOption = it) }
+        productOptions.forEach { productOption ->
+            productOption.flushProductOptionValues()
+            product.addProductOption(productOption = productOption)
+        }
 
         return product
     }

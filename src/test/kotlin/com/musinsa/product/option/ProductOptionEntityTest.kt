@@ -3,6 +3,7 @@ package com.musinsa.product.option
 import com.musinsa.product.DummyProduct
 import com.musinsa.product.entity.Product
 import com.musinsa.product.entity.ProductOption
+import com.musinsa.product.entity.ProductOptionValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import kotlin.test.Test
@@ -33,5 +34,18 @@ class ProductOptionEntityTest {
 
         // then
         assertThat(dummyProductOption.isDeleted).isTrue
+    }
+
+    @Test
+    fun addProductOptionValuesTest() {
+        // given
+        val dummyProductOptionValue: ProductOptionValue = DummyProductOptionValue.toEntity()
+
+        // when
+        dummyProductOption.addProductOptionValue(productOptionValue = dummyProductOptionValue)
+
+        // then
+        assertThat(dummyProductOption.productOptionValues[0]).isEqualTo(dummyProductOptionValue)
+        assertThat(dummyProductOption.productOptionValues[0].productOption).isEqualTo(dummyProductOption)
     }
 }

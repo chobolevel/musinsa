@@ -1,6 +1,7 @@
 package com.musinsa.product.entity
 
 import com.musinsa.common.entity.Audit
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
@@ -9,7 +10,10 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
+import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
+import org.hibernate.annotations.SQLRestriction
 import org.hibernate.envers.Audited
 import org.hibernate.envers.NotAudited
 
@@ -38,6 +42,28 @@ class ProductOption(
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     var isDeleted: Boolean = false
 
+    @OneToMany(mappedBy = "productOption", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @NotAudited
+    @SQLRestriction("is_deleted = 0")
+    @OrderBy("sort_order asc")
+    val productOptionValues: MutableList<ProductOptionValue> = mutableListOf()
+
+    // JPA에 이 필드는 영속성 대상이 아님을 명시
+    @Transient
+    private val pendingProductOptionValues: MutableList<ProductOptionValue> = mutableListOf()
+
+    fun attachProductOptionValues(productOptionValues: List<ProductOptionValue>) {
+        this.pendingProductOptionValues.addAll(productOptionValues)
+    }
+
+    fun flushProductOptionValues() {
+        this.pendingProductOptionValues.forEach {
+                productOptionValue ->
+            this.addProductOptionValue(productOptionValue = productOptionValue)
+        }
+        this.pendingProductOptionValues.clear()
+    }
+
     /* ==============================
      * 생성 시 불변식 검증
      * ============================== */
@@ -55,6 +81,13 @@ class ProductOption(
     fun assignProduct(product: Product) {
         if (this.product != product) {
             this.product = product
+        }
+    }
+
+    fun addProductOptionValue(productOptionValue: ProductOptionValue) {
+        if (!this.productOptionValues.contains(productOptionValue)) {
+            this.productOptionValues.add(productOptionValue)
+            productOptionValue.assignProductOption(productOption = this)
         }
     }
 
