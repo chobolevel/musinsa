@@ -58,14 +58,10 @@ class Product(
     @OrderBy("sort_order asc")
     val productOptions: MutableList<ProductOption> = mutableListOf()
 
-    init {
-        validate()
-    }
-
     /* ==============================
      * 생성 시 불변식 검증
      * ============================== */
-    private fun validate() {
+    init {
         // 정책이 변경되어도 변경되지 않는 검증 로직만 작성되어야 함
         // throw IllegalArgumentException
         require(standardPrice > 0) { "기준가(standard_price)은(는) 0보다 커야 합니다." }
