@@ -29,6 +29,9 @@ class SnapLike : Audit() {
     @JoinColumn(name = "user_id")
     var user: User? = null
 
+    /* ==============================
+     * 연관관계 편의 메서드
+     * ============================== */
     fun assignSnap(snap: Snap) {
         if (this.snap != snap) {
             this.snap = snap

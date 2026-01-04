@@ -53,14 +53,13 @@ class Snap(
     @OrderBy("order asc")
     val snapTagMappings: MutableList<SnapTagMapping> = mutableListOf()
 
+    /* ==============================
+     * 연관관계 편의 메서드
+     * ============================== */
     fun assignWriter(user: User) {
         if (this.writer != user) {
             this.writer = user
         }
-    }
-
-    fun delete() {
-        this.isDeleted = true
     }
 
     fun addSnapImage(
@@ -70,11 +69,6 @@ class Snap(
         if (!this.snapImages.contains(snapImage)) {
             this.snapImages.add(snapImage)
         }
-    }
-
-    fun deleteSnapImageInBatch() {
-        this.snapImages.forEach { it.delete() }
-        this.snapImages.clear()
     }
 
     fun addSnapTag(snapTag: SnapTag) {
@@ -91,5 +85,17 @@ class Snap(
 
     fun subSnapTag(snapTag: SnapTag) {
         this.snapTagMappings.removeIf { it.snapTag == snapTag }
+    }
+
+    /* ==============================
+     * 상태 변경 메서드
+     * ============================== */
+    fun delete() {
+        this.isDeleted = true
+    }
+
+    fun deleteSnapImageInBatch() {
+        this.snapImages.forEach { it.delete() }
+        this.snapImages.clear()
     }
 }

@@ -31,6 +31,9 @@ class SnapTagMapping(
     @JoinColumn(name = "snap_tag_id")
     var snapTag: SnapTag? = null
 
+    /* ==============================
+     * 연관관계 편의 메서드
+     * ============================== */
     fun assignSnap(snap: Snap) {
         if (this.snap != snap) {
             this.snap = snap
