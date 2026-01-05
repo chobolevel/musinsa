@@ -18,7 +18,7 @@ class SnapImageConverter(
             path = request.path,
             width = request.width,
             height = request.height,
-            order = request.order
+            sortOrder = request.sortOrder
         )
     }
 
@@ -33,7 +33,7 @@ class SnapImageConverter(
             url = "$imageHost${snapImage.path}",
             width = snapImage.width,
             height = snapImage.height,
-            order = snapImage.order,
+            sortOrder = snapImage.sortOrder,
             createdAt = snapImage.createdAt!!.toMillis(),
             updatedAt = snapImage.updatedAt!!.toMillis()
         )

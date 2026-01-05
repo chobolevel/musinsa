@@ -8,7 +8,7 @@ object DummySnapImage {
     private val path: String = "/image/2025/06/02/c92caa4f-4240-4ddc-8c51-f235845103b9.jpeg"
     private val width: Int = 100
     private val height: Int = 100
-    private val order: Int = 0
+    private val sortOrder: Int = 0
     private val createdAt: Long = 0L
     private val updatedAt: Long = 0L
 
@@ -17,7 +17,7 @@ object DummySnapImage {
             path = path,
             width = width,
             height = height,
-            order = order,
+            sortOrder = sortOrder,
         ).also {
             it.id = id
         }
@@ -30,7 +30,7 @@ object DummySnapImage {
             url = "https://chobolevel.s3.ap-northeast-2.amazonaws.comv$path",
             width = width,
             height = height,
-            order = order,
+            sortOrder = sortOrder,
             createdAt = createdAt,
             updatedAt = updatedAt,
         )

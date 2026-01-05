@@ -23,7 +23,7 @@ class SnapImage(
     @Column(nullable = false)
     var height: Int,
     @Column(nullable = false)
-    var order: Int,
+    var sortOrder: Int,
 ) : Audit() {
 
     @Id
@@ -42,9 +42,9 @@ class SnapImage(
      * 생성 시 불변식 검증
      * ============================== */
     init {
-        require(width >= 0) { "이미지 너비(width)는 0보다 크거나 같아야 합니다."}
-        require(height >= 0) { "이미지 높이(height)는 0보다 크거나 같아야 합니다."}
-        require(order >= 0) { "이미지 정렬 순서(order)는 0보다 크거나 같아야 합니다."}
+        require(width >= 0) { "스냅 이미지 너비(width)는 0보다 크거나 같아야 합니다." }
+        require(height >= 0) { "스냅 이미지 높이(height)는 0보다 크거나 같아야 합니다." }
+        require(sortOrder >= 0) { "스냅 이미지 정렬 순서(order)는 0보다 크거나 같아야 합니다." }
     }
 
     /* ==============================

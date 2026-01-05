@@ -7,5 +7,5 @@ data class SnapImageRequest(
     val path: String,
     val width: Int = 0,
     val height: Int = 0,
-    val order: Int = 0,
+    val sortOrder: Int = 0,
 )

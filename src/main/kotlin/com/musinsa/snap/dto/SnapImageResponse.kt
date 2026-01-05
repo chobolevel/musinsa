@@ -6,7 +6,7 @@ data class SnapImageResponse(
     val url: String,
     val width: Int,
     val height: Int,
-    val order: Int,
+    val sortOrder: Int,
     val createdAt: Long,
     val updatedAt: Long,
 )
