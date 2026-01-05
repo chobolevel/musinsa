@@ -10,11 +10,13 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.hibernate.annotations.SQLDelete
 import org.hibernate.envers.Audited
 
 @Entity
 @Table(name = "snap_images")
 @Audited
+@SQLDelete(sql = "UPDATE snap_images SET is_deleted = 1 WHERE id = ?")
 class SnapImage(
     @Column(nullable = false, length = 255)
     var path: String,

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size
 
 data class UpdateSnapRequest(
     val content: String?,
-    val snapImages: List<SnapImageRequest>?,
+    val snapImages: List<UpdateSnapImageRequest>?,
     @field:Size(min = 1)
     val updateMasks: List<SnapUpdateMask>
 )

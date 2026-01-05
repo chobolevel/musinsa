@@ -7,5 +7,5 @@ data class CreateSnapRequest(
     @field:Size(min = 1)
     val snapTagIds: List<Long>,
     @field:Size(min = 1)
-    val snapImages: List<SnapImageRequest>
+    val snapImages: List<CreateSnapImageRequest>
 )

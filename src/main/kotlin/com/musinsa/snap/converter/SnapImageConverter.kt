@@ -1,7 +1,7 @@
 package com.musinsa.snap.converter
 
 import com.musinsa.common.extension.toMillis
-import com.musinsa.snap.dto.SnapImageRequest
+import com.musinsa.snap.dto.CreateSnapImageRequest
 import com.musinsa.snap.dto.SnapImageResponse
 import com.musinsa.snap.entity.SnapImage
 import org.springframework.beans.factory.annotation.Value
@@ -13,7 +13,7 @@ class SnapImageConverter(
     private val imageHost: String,
 ) {
 
-    fun toEntity(request: SnapImageRequest): SnapImage {
+    fun toEntity(request: CreateSnapImageRequest): SnapImage {
         return SnapImage(
             path = request.path,
             width = request.width,
@@ -22,7 +22,7 @@ class SnapImageConverter(
         )
     }
 
-    fun toEntityInBatch(requests: List<SnapImageRequest>): List<SnapImage> {
+    fun toEntityInBatch(requests: List<CreateSnapImageRequest>): List<SnapImage> {
         return requests.map { request -> toEntity(request = request) }
     }
 

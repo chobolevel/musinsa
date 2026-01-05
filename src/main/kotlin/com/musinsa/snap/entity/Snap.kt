@@ -94,8 +94,9 @@ class Snap(
         this.isDeleted = true
     }
 
-    fun deleteSnapImageInBatch() {
-        this.snapImages.forEach { it.delete() }
-        this.snapImages.clear()
+    fun deleteSnapImageInBatch(snapImageIds: List<Long>) {
+        this.snapImages.removeIf { snapImage ->
+            snapImageIds.contains(snapImage.id)
+        }
     }
 }
