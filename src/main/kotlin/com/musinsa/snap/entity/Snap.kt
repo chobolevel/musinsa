@@ -94,6 +94,12 @@ class Snap(
         this.isDeleted = true
     }
 
+    fun deleteSnapTagInBatch(snapTagIds: List<Long>) {
+        this.snapTagMappings.removeIf { snapTagMapping ->
+            snapTagIds.contains(snapTagMapping.snapTag!!.id!!)
+        }
+    }
+
     fun deleteSnapImageInBatch(snapImageIds: List<Long>) {
         this.snapImages.removeIf { snapImage ->
             snapImageIds.contains(snapImage.id)

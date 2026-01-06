@@ -30,6 +30,7 @@ class SnapParameterValidator {
                         )
                     }
                 }
+                else -> Unit
             }
         }
     }

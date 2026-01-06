@@ -5,6 +5,8 @@ import com.musinsa.snap.dto.CreateSnapImageRequest
 import com.musinsa.snap.dto.UpdateSnapRequest
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapImage
+import com.musinsa.snap.entity.SnapTag
+import com.musinsa.snap.repository.SnapTagRepositoryFacade
 import com.musinsa.snap.vo.SnapUpdateMask
 import org.springframework.stereotype.Component
 
@@ -12,12 +14,29 @@ import org.springframework.stereotype.Component
 class SnapUpdater(
     private val snapImageUpdater: SnapImageUpdater,
     private val snapImageConverter: SnapImageConverter,
+    private val snapTagRepository: SnapTagRepositoryFacade
 ) {
 
     fun markAsUpdate(request: UpdateSnapRequest, snap: Snap): Snap {
+        // TODO check collection update logic
         request.updateMasks.forEach {
             when (it) {
                 SnapUpdateMask.CONTENT -> snap.content = request.content
+                SnapUpdateMask.SNAP_TAG -> {
+                    val savedSnapTagMap: Map<Long, SnapTag> = snap.snapTagMappings.map { it.snapTag!! }.associateBy { it.id!! }
+
+                    request.snapTagIds?.forEach { snapTagId ->
+                        val savedSnapTag: SnapTag? = savedSnapTagMap[snapTagId]
+                        if (savedSnapTag == null) {
+                            val snapTag: SnapTag = snapTagRepository.findById(id = snapTagId)
+                            snap.addSnapTag(snapTag = snapTag)
+                        }
+                    }
+
+                    val requestIds: List<Long> = request.snapTagIds ?: emptyList()
+                    val deletedSnapTagIds: List<Long> = snap.snapTagMappings.map { it.snapTag!!.id!! }.filter { it !in requestIds }
+                    snap.deleteSnapTagInBatch(snapTagIds = deletedSnapTagIds)
+                }
                 SnapUpdateMask.SNAP_IMAGE -> {
                     val savedSnapImageMap: Map<Long, SnapImage> = snap.snapImages.associateBy { it.id!! }
 

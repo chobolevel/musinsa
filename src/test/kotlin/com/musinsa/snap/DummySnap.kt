@@ -47,6 +47,7 @@ object DummySnap {
     private val dummyUpdateRequest: UpdateSnapRequest by lazy {
         UpdateSnapRequest(
             content = null,
+            snapTagIds = null,
             snapImages = null,
             updateMasks = listOfNotNull(SnapUpdateMask.CONTENT)
         )

@@ -55,11 +55,12 @@ class SnapEntityTest {
     @Test
     fun deleteSnapImageInBatchTest() {
         // given
-        val dummySnapImagePath = "dummyUrl"
         dummySnap.addSnapImage(snapImage = dummySnapImage)
 
         // when
-        dummySnap.deleteSnapImageInBatch()
+        dummySnap.deleteSnapImageInBatch(
+            listOf(dummySnapImage.id!!)
+        )
 
         // then
         assertThat(dummySnap.snapImages).isEmpty()
