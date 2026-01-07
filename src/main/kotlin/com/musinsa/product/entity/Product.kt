@@ -96,4 +96,10 @@ class Product(
     fun delete() {
         this.isDeleted = true
     }
+
+    fun deleteProductOptionInBatch(productOptionIds: List<Long>) {
+        this.productOptions.removeIf { productOption ->
+            productOption.id in productOptionIds
+        }
+    }
 }
