@@ -1,9 +1,9 @@
 package com.musinsa.user.serivce.impl
 
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserFollow
-import com.musinsa.user.entity.UserFollowRepositoryFacade
 import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.entity.follow.UserFollow
+import com.musinsa.user.entity.follow.UserFollowRepositoryFacade
 import com.musinsa.user.serivce.UserFollowService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

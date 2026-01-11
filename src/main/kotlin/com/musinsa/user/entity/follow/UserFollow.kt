@@ -1,6 +1,7 @@
-package com.musinsa.user.entity
+package com.musinsa.user.entity.follow
 
 import com.musinsa.common.entity.Audit
+import com.musinsa.user.entity.User
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType

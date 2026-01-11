@@ -1,8 +1,8 @@
 package com.musinsa.user
 
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserFollowRepositoryFacade
 import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.entity.follow.UserFollowRepositoryFacade
 import com.musinsa.user.serivce.impl.UserFollowServiceV1
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName

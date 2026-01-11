@@ -1,4 +1,4 @@
-package com.musinsa.user.entity
+package com.musinsa.user.entity.follow
 
 import org.springframework.data.jpa.repository.JpaRepository
 

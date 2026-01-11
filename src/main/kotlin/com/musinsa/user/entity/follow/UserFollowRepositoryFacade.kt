@@ -1,7 +1,7 @@
-package com.musinsa.user.entity
+package com.musinsa.user.entity.follow
 
 import com.musinsa.common.dto.Pagination
-import com.musinsa.user.entity.QUserFollow.userFollow
+import com.musinsa.user.entity.follow.QUserFollow.userFollow
 import com.musinsa.user.vo.UserFollowOrderType
 import com.querydsl.core.types.OrderSpecifier
 import org.springframework.stereotype.Component

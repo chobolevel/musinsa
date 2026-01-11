@@ -1,7 +1,7 @@
 package com.musinsa.user
 
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserFollow
+import com.musinsa.user.entity.follow.UserFollow
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import kotlin.test.Test
