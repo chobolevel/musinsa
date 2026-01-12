@@ -34,12 +34,18 @@ class ProductCategory(
     @Column(nullable = false)
     var isDeleted: Boolean = false
 
+    /* ==============================
+     * 연관관계 편의 메서드
+     * ============================== */
     fun assignParent(parent: ProductCategory?) {
         if (this.parent != parent) {
             this.parent = parent
         }
     }
 
+    /* ==============================
+     * 상태 변경 메서드
+     * ============================== */
     fun delete() {
         this.isDeleted = true
     }

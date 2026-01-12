@@ -37,6 +37,9 @@ class ProductBrand(
     @Column(nullable = false)
     var isDeleted: Boolean = false
 
+    /* ==============================
+     * 상태 변경 메서드
+     * ============================== */
     fun delete() {
         this.isDeleted = true
     }
