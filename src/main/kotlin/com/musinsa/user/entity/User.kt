@@ -70,6 +70,9 @@ class User(
     @SQLRestriction("is_deleted = false")
     val applicationMembers: MutableList<ApplicationMember> = mutableListOf()
 
+    /* ==============================
+     * 상태 변경 메서드
+     * ============================== */
     fun delete() {
         this.isDeleted = true
     }

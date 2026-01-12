@@ -29,6 +29,9 @@ class UserFollow : Audit() {
     @JoinColumn(name = "following_id")
     var following: User? = null
 
+    /* ==============================
+     * 연관관계 편의 메서드
+     * ============================== */
     fun assignFollower(user: User) {
         if (this.follower != user) {
             this.follower = user
