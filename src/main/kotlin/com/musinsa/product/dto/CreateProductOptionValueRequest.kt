@@ -8,4 +8,4 @@ data class CreateProductOptionValueRequest(
     val name: String,
     @field:NotNull
     val sortOrder: Int,
-)
+) : ProductOptionValueCommand

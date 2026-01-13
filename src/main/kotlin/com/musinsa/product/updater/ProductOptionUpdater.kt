@@ -1,6 +1,9 @@
 package com.musinsa.product.updater
 
+import com.musinsa.product.converter.ProductOptionValueConverter
+import com.musinsa.product.dto.CreateProductOptionValueRequest
 import com.musinsa.product.dto.UpdateProductOptionRequest
+import com.musinsa.product.dto.UpdateProductOptionValueRequest
 import com.musinsa.product.entity.ProductOption
 import com.musinsa.product.entity.ProductOptionValue
 import com.musinsa.product.vo.ProductOptionUpdateMask
@@ -8,7 +11,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class ProductOptionUpdater(
-    private val productOptionValueUpdater: ProductOptionValueUpdater
+    private val productOptionValueUpdater: ProductOptionValueUpdater,
+    private val productOptionValueConverter: ProductOptionValueConverter,
 ) {
 
     fun markAsUpdate(request: UpdateProductOptionRequest, productOption: ProductOption): ProductOption {
@@ -20,20 +24,26 @@ class ProductOptionUpdater(
                 ProductOptionUpdateMask.VALUE -> {
                     val savedProductOptionValueMap: Map<Long, ProductOptionValue> = productOption.productOptionValues.associateBy { it.id!! }
 
-                    request.values?.forEach { updateProductOptionValueRequest ->
-                        val savedProductOptionValue: ProductOptionValue? = savedProductOptionValueMap[updateProductOptionValueRequest.id]
-                        if (savedProductOptionValue != null) {
-                            productOptionValueUpdater.markAsUpdate(
-                                request = updateProductOptionValueRequest,
-                                productOptionValue = savedProductOptionValue
-                            )
-                        } else {
-                            // 신규 상품 옵션 값 등록
+                    request.values?.forEach { request ->
+                        when (request) {
+                            is CreateProductOptionValueRequest -> {
+                                val productOptionValue: ProductOptionValue = productOptionValueConverter.toEntity(request = request)
+                                productOption.addProductOptionValue(productOptionValue = productOptionValue)
+                            }
+                            is UpdateProductOptionValueRequest -> {
+                                val savedProductOptionValue: ProductOptionValue? = savedProductOptionValueMap[request.id]
+                                savedProductOptionValue?.let {
+                                    productOptionValueUpdater.markAsUpdate(
+                                        request = request,
+                                        productOptionValue = savedProductOptionValue
+                                    )
+                                }
+                            }
                         }
                     }
 
-                    val requestIds: List<Long> = request.values?.map { it.id!! } ?: emptyList()
-                    val deletedProductOptionValueIds: List<Long> = productOption.productOptionValues.filter { it.id !in requestIds }.map { it.id!! }
+                    val requestIds: Set<Long> = request.values?.filterIsInstance<UpdateProductOptionValueRequest>()?.map { it.id!! }?.toSet() ?: emptySet()
+                    val deletedProductOptionValueIds: List<Long> = productOption.productOptionValues.filter { it.id!! !in requestIds }.map { it.id!! }
                     productOption.deleteProductOptionValueInBatch(
                         productOptionValueIds = deletedProductOptionValueIds
                     )

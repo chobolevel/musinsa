@@ -9,4 +9,4 @@ data class UpdateProductOptionValueRequest(
     val sortOrder: Int?,
     @field:Size(min = 1)
     val updateMask: List<ProductOptionValueUpdateMask>
-)
+) : ProductOptionValueCommand

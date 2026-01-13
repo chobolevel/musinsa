@@ -8,7 +8,7 @@ data class UpdateProductOptionRequest(
     val name: String?,
     val sortOrder: Int?,
     val isRequired: Boolean?,
-    val values: List<UpdateProductOptionValueRequest>?,
+    val values: List<ProductOptionValueCommand>?,
     @field:Size(min = 1)
     val updateMask: List<ProductOptionUpdateMask>
 ) : ProductOptionCommand
