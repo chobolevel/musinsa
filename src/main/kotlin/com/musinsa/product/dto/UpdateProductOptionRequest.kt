@@ -11,4 +11,4 @@ data class UpdateProductOptionRequest(
     val values: List<UpdateProductOptionValueRequest>?,
     @field:Size(min = 1)
     val updateMask: List<ProductOptionUpdateMask>
-)
+) : ProductOptionCommand

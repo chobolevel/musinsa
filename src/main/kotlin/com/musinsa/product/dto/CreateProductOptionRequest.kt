@@ -13,4 +13,4 @@ data class CreateProductOptionRequest(
     val isRequired: Boolean,
     @field:Size(min = 1)
     val values: List<CreateProductOptionValueRequest>
-)
+) : ProductOptionCommand

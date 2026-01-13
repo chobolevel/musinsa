@@ -1,11 +1,14 @@
 package com.musinsa.product.updater
 
 import com.musinsa.product.converter.ProductOptionConverter
+import com.musinsa.product.dto.CreateProductOptionRequest
+import com.musinsa.product.dto.UpdateProductOptionRequest
 import com.musinsa.product.dto.UpdateProductRequest
 import com.musinsa.product.entity.Product
 import com.musinsa.product.entity.ProductBrand
 import com.musinsa.product.entity.ProductCategory
 import com.musinsa.product.entity.ProductOption
+import com.musinsa.product.entity.QProductOption.productOption
 import com.musinsa.product.repository.ProductBrandRepositoryFacade
 import com.musinsa.product.repository.ProductCategoryRepositoryFacade
 import com.musinsa.product.vo.ProductUpdateMask
@@ -38,20 +41,25 @@ class ProductUpdater(
                 ProductUpdateMask.OPTION -> {
                     val savedProductOptionMap: Map<Long, ProductOption> = product.productOptions.associateBy { it.id!! }
 
-                    request.productOptions?.forEach { updateProductOptionRequest ->
-                        val savedProductOption: ProductOption? = savedProductOptionMap[updateProductOptionRequest.id]
-
-                        if (savedProductOption != null) {
-                            productOptionUpdater.markAsUpdate(
-                                request = updateProductOptionRequest,
-                                productOption = savedProductOption
-                            )
-                        } else {
-                            // 신규 상품 옵션 등록 로직 고민해보기
+                    request.productOptions?.forEach { request ->
+                        when (request) {
+                            is CreateProductOptionRequest -> {
+                                val productOption: ProductOption = productOptionConverter.toEntity(request = request)
+                                product.addProductOption(productOption = productOption)
+                            }
+                            is UpdateProductOptionRequest -> {
+                                val savedProductOption: ProductOption? = savedProductOptionMap[request.id]
+                                savedProductOption?.let {
+                                    productOptionUpdater.markAsUpdate(
+                                        request = request,
+                                        productOption = savedProductOption,
+                                    )
+                                }
+                            }
                         }
                     }
 
-                    val requestIds: List<Long> = request.productOptions?.map { it.id!! } ?: emptyList()
+                    val requestIds: Set<Long> = request.productOptions?.filterIsInstance<UpdateProductOptionRequest>()?.map { it.id!! }?.toSet() ?: emptySet()
                     val deletedProductOptionIds: List<Long> = product.productOptions.filter { it.id!! !in requestIds }.map { it.id!! }
                     product.deleteProductOptionInBatch(productOptionIds = deletedProductOptionIds)
                 }
