@@ -11,4 +11,4 @@ data class UpdateSnapImageRequest(
     val sortOrder: Int?,
     @field:Size(min = 1)
     val updateMask: List<SnapImageUpdateMask>
-)
+) : SnapImageCommand

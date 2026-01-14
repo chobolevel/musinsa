@@ -12,4 +12,4 @@ data class CreateSnapImageRequest(
     val height: Int,
     @field:NotNull
     val sortOrder: Int,
-)
+) : SnapImageCommand
