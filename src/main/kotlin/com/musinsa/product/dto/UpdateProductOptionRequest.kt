@@ -4,7 +4,7 @@ import com.musinsa.product.vo.ProductOptionUpdateMask
 import jakarta.validation.constraints.Size
 
 data class UpdateProductOptionRequest(
-    val id: Long?,
+    val id: Long,
     val name: String?,
     val sortOrder: Int?,
     val isRequired: Boolean?,

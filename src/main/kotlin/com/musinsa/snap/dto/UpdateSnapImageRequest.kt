@@ -4,7 +4,7 @@ import com.musinsa.snap.vo.SnapImageUpdateMask
 import jakarta.validation.constraints.Size
 
 data class UpdateSnapImageRequest(
-    val id: Long?,
+    val id: Long,
     val path: String?,
     val width: Int?,
     val height: Int?,
