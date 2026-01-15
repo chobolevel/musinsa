@@ -33,7 +33,7 @@ class SnapUpdater(
                         }
                     }
 
-                    val requestIds: List<Long> = request.snapTagIds ?: emptyList()
+                    val requestIds: Set<Long> = request.snapTagIds?.toSet() ?: emptySet()
                     val deletedSnapTagIds: List<Long> = snap.snapTagMappings.map { it.snapTag!!.id!! }.filter { it !in requestIds }
                     snap.deleteSnapTagInBatch(snapTagIds = deletedSnapTagIds)
                 }
