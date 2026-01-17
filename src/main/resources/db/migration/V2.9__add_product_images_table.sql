@@ -18,18 +18,20 @@ create index product_id_index
 
 create table musinsa.product_images_histories
 (
-  id          bigint       not null,
-  revision_id bigint       not null,
-  `tinyint`   tinyint      not null,
-  product_id  bigint       not null,
-  path        varchar(255) not null,
-  width       int          not null,
-  height      int          not null,
-  sort_order  int          not null,
-  is_deleted  tinyint      not null,
-  created_at  datetime     not null,
-  updated_at  datetime     not null,
+  id            bigint       not null,
+  revision_id   bigint       not null,
+  revision_type tinyint      not null,
+  product_id    bigint       not null,
+  path          varchar(255) not null,
+  width         int          not null,
+  height        int          not null,
+  sort_order    int          not null,
+  is_deleted    tinyint      not null,
+  created_at    datetime     not null,
+  updated_at    datetime     not null,
   primary key (id, revision_id)
 )
   comment '상품 이미지 이력 테이블';
+
+
 

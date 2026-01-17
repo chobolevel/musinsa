@@ -56,6 +56,12 @@ class Product(
     @OneToMany(mappedBy = "product", cascade = [(CascadeType.ALL)], orphanRemoval = true)
     @SQLRestriction("is_deleted = false")
     @OrderBy("sort_order asc")
+    val productImages: MutableList<ProductImage> = mutableListOf()
+
+    @NotAudited
+    @OneToMany(mappedBy = "product", cascade = [(CascadeType.ALL)], orphanRemoval = true)
+    @SQLRestriction("is_deleted = false")
+    @OrderBy("sort_order asc")
     val productOptions: MutableList<ProductOption> = mutableListOf()
 
     /* ==============================
@@ -80,6 +86,12 @@ class Product(
     fun assignProductCategory(productCategory: ProductCategory) {
         if (this.productCategory != productCategory) {
             this.productCategory = productCategory
+        }
+    }
+
+    fun addProductImage(productImage: ProductImage) {
+        if (!this.productImages.contains(productImage)) {
+            this.productImages.add(productImage)
         }
     }
 
