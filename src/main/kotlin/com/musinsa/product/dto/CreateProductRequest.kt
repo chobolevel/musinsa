@@ -18,5 +18,8 @@ data class CreateProductRequest(
     var sortOrder: Int?,
     @field:Size(min = 1)
     @field:Valid
-    val productOptions: List<CreateProductOptionRequest>
+    val productOptions: List<CreateProductOptionRequest>,
+    @field:Size(min = 1)
+    @field:Valid
+    val productImages: List<CreateProductImageRequest>
 )

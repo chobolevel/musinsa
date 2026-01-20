@@ -1,5 +1,6 @@
 package com.musinsa.product.image
 
+import com.musinsa.product.dto.CreateProductImageRequest
 import com.musinsa.product.entity.ProductImage
 
 object DummyProductImage {
@@ -15,8 +16,19 @@ object DummyProductImage {
             width = width,
             height = height,
             sortOrder = sortOrder,
+        ).also { it.id = id }
+    }
+
+    private val dummyCreateRequest: CreateProductImageRequest by lazy {
+        CreateProductImageRequest(
+            path = path,
+            width = width,
+            height = height,
+            sortOrder = sortOrder,
         )
     }
 
     fun toEntity(): ProductImage = dummyProductImage
+
+    fun toCreateRequest(): CreateProductImageRequest = dummyCreateRequest
 }

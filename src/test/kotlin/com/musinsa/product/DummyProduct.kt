@@ -8,6 +8,7 @@ import com.musinsa.product.dto.UpdateProductRequest
 import com.musinsa.product.entity.Product
 import com.musinsa.product.entity.ProductBrand
 import com.musinsa.product.entity.ProductCategory
+import com.musinsa.product.image.DummyProductImage
 import com.musinsa.product.option.DummyProductOption
 import com.musinsa.product.vo.ProductSaleStatus
 import com.musinsa.product.vo.ProductUpdateMask
@@ -54,7 +55,8 @@ object DummyProduct {
             description = description,
             standardPrice = standardPrice,
             sortOrder = null,
-            productOptions = listOf(DummyProductOption.toCreateRequest())
+            productOptions = listOf(DummyProductOption.toCreateRequest()),
+            productImages = listOf(DummyProductImage.toCreateRequest())
         )
     }
 

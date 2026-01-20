@@ -4,6 +4,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.product.assembler.ProductAssembler
 import com.musinsa.product.converter.ProductConverter
+import com.musinsa.product.converter.ProductImageConverter
 import com.musinsa.product.converter.ProductOptionConverter
 import com.musinsa.product.dto.CreateProductRequest
 import com.musinsa.product.dto.ProductResponse
@@ -11,6 +12,7 @@ import com.musinsa.product.dto.UpdateProductRequest
 import com.musinsa.product.entity.Product
 import com.musinsa.product.entity.ProductBrand
 import com.musinsa.product.entity.ProductCategory
+import com.musinsa.product.entity.ProductImage
 import com.musinsa.product.entity.ProductOption
 import com.musinsa.product.repository.ProductBrandRepositoryFacade
 import com.musinsa.product.repository.ProductCategoryRepositoryFacade
@@ -30,6 +32,7 @@ class ProductServiceV1(
     private val converter: ProductConverter,
     private val assembler: ProductAssembler,
     private val productOptionConverter: ProductOptionConverter,
+    private val productImageConverter: ProductImageConverter,
     private val updater: ProductUpdater
 ) : ProductService {
 
@@ -39,12 +42,14 @@ class ProductServiceV1(
         val productBrand: ProductBrand = productBrandRepository.findById(id = request.productBrandId)
         val productCategory: ProductCategory = productCategoryRepository.findById(id = request.productCategoryId)
         val productOptions: List<ProductOption> = productOptionConverter.toEntityInBatch(requests = request.productOptions)
+        val productImages: List<ProductImage> = productImageConverter.toEntityInBatch(requests = request.productImages)
 
         val product: Product = assembler.assemble(
             product = baseProduct,
             productBrand = productBrand,
             productCategory = productCategory,
-            productOptions = productOptions
+            productOptions = productOptions,
+            productImages = productImages
         )
 
         return productRepository.save(product = product).id!!

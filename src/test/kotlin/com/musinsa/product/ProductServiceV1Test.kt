@@ -8,6 +8,7 @@ import com.musinsa.product.assembler.ProductAssembler
 import com.musinsa.product.brand.DummyProductBrand
 import com.musinsa.product.category.DummyProductCategory
 import com.musinsa.product.converter.ProductConverter
+import com.musinsa.product.converter.ProductImageConverter
 import com.musinsa.product.converter.ProductOptionConverter
 import com.musinsa.product.dto.CreateProductRequest
 import com.musinsa.product.dto.ProductResponse
@@ -15,7 +16,9 @@ import com.musinsa.product.dto.UpdateProductRequest
 import com.musinsa.product.entity.Product
 import com.musinsa.product.entity.ProductBrand
 import com.musinsa.product.entity.ProductCategory
+import com.musinsa.product.entity.ProductImage
 import com.musinsa.product.entity.ProductOption
+import com.musinsa.product.image.DummyProductImage
 import com.musinsa.product.option.DummyProductOption
 import com.musinsa.product.repository.ProductBrandRepositoryFacade
 import com.musinsa.product.repository.ProductCategoryRepositoryFacade
@@ -65,6 +68,9 @@ class ProductServiceV1Test {
     private lateinit var productOptionConverter: ProductOptionConverter
 
     @Mock
+    private lateinit var productImageConverter: ProductImageConverter
+
+    @Mock
     private lateinit var updater: ProductUpdater
 
     @InjectMocks
@@ -75,16 +81,19 @@ class ProductServiceV1Test {
         // given
         val request: CreateProductRequest = DummyProduct.toCreateRequest()
         val dummyProductOptions: List<ProductOption> = listOf(DummyProductOption.toEntity())
+        val dummyProductImages: List<ProductImage> = listOf(DummyProductImage.toEntity())
         `when`(converter.toEntity(request = request)).thenReturn(dummyProduct)
         `when`(productBrandRepository.findById(id = request.productBrandId)).thenReturn(dummyProductBrand)
         `when`(productCategoryRepository.findById(id = request.productCategoryId)).thenReturn(dummyProductCategory)
         `when`(productOptionConverter.toEntityInBatch(requests = request.productOptions)).thenReturn(dummyProductOptions)
+        `when`(productImageConverter.toEntityInBatch(requests = request.productImages)).thenReturn(dummyProductImages)
         `when`(
             assembler.assemble(
                 product = dummyProduct,
                 productBrand = dummyProductBrand,
                 productCategory = dummyProductCategory,
                 productOptions = dummyProductOptions,
+                productImages = dummyProductImages
             )
         ).thenReturn(dummyProduct)
         `when`(productRepository.save(product = dummyProduct)).thenReturn(dummyProduct)
