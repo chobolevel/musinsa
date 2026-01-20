@@ -12,4 +12,4 @@ data class CreateProductImageRequest(
     val width: Int,
     @field:NotNull
     val sortOrder: Int,
-)
+) : ProductImageCommand

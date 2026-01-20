@@ -13,6 +13,7 @@ data class UpdateProductRequest(
     val saleStatus: ProductSaleStatus?,
     val sortOrder: Int?,
     val productOptions: List<ProductOptionCommand>?,
+    val productImages: List<ProductImageCommand>?,
     @field:Size(min = 1)
     val updateMask: List<ProductUpdateMask>
 )

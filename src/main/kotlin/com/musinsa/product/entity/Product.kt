@@ -1,6 +1,7 @@
 package com.musinsa.product.entity
 
 import com.musinsa.common.entity.Audit
+import com.musinsa.product.entity.QProductImage.productImage
 import com.musinsa.product.vo.ProductSaleStatus
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
@@ -112,6 +113,12 @@ class Product(
     fun deleteProductOptionInBatch(productOptionIds: List<Long>) {
         this.productOptions.removeIf { productOption ->
             productOption.id in productOptionIds
+        }
+    }
+
+    fun deleteProductImageInBatch(productImageIds: List<Long>) {
+        this.productImages.removeIf { productImage ->
+            productImage.id in productImageIds
         }
     }
 }
