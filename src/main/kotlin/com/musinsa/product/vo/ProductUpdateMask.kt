@@ -1,6 +1,6 @@
 package com.musinsa.product.vo
 
-enum class ProductUpdateMask(val fieldName: String,) {
+enum class ProductUpdateMask(val fieldName: String) {
     PRODUCT_BRAND("product_brand_id"),
     PRODUCT_CATEGORY("product_category_id"),
     NAME("name"),

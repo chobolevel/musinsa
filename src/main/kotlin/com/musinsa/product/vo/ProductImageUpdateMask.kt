@@ -1,8 +1,8 @@
 package com.musinsa.product.vo
 
-enum class ProductImageUpdateMask {
-    PATH,
-    WIDTH,
-    HEIGHT,
-    SORT_ORDER
+enum class ProductImageUpdateMask(val fieldName: String) {
+    PATH("path"),
+    WIDTH("width"),
+    HEIGHT("height"),
+    SORT_ORDER("sort_order")
 }
