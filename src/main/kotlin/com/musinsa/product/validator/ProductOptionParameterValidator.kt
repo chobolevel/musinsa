@@ -43,15 +43,9 @@ class ProductOptionParameterValidator(
                 }
 
                 ProductOptionUpdateMask.VALUE -> {
-                    if (request.values?.filterIsInstance<UpdateProductOptionValueRequest>().isNullOrEmpty()) {
-                        throw InvalidParameterException(
-                            errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[${ProductOptionUpdateMask.VALUE.fieldName}]은(는) 필수 값입니다."
-                        )
-                    }
                     request.values
-                        .filterIsInstance<UpdateProductOptionValueRequest>()
-                        .forEach { updateProductOptionValueRequest ->
+                        ?.filterIsInstance<UpdateProductOptionValueRequest>()
+                        ?.forEach { updateProductOptionValueRequest ->
                             productOptionValueParameterValidator.validate(request = updateProductOptionValueRequest)
                         }
                 }

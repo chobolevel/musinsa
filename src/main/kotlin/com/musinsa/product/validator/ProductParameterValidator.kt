@@ -72,29 +72,17 @@ class ProductParameterValidator(
                 }
 
                 ProductUpdateMask.OPTION -> {
-                    if (request.productOptions?.filterIsInstance<UpdateProductOptionRequest>().isNullOrEmpty()) {
-                        throw InvalidParameterException(
-                            errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[${ProductUpdateMask.OPTION.fieldName}]은(는) 필수 값입니다."
-                        )
-                    }
                     request.productOptions
-                        .filterIsInstance<UpdateProductOptionRequest>()
-                        .forEach { updateProductOptionRequest ->
+                        ?.filterIsInstance<UpdateProductOptionRequest>()
+                        ?.forEach { updateProductOptionRequest ->
                             productOptionParameterValidator.validate(request = updateProductOptionRequest)
                         }
                 }
 
                 ProductUpdateMask.IMAGE -> {
-                    if (request.productImages?.filterIsInstance<UpdateProductImageRequest>().isNullOrEmpty()) {
-                        throw InvalidParameterException(
-                            errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[${ProductUpdateMask.IMAGE.fieldName}]"
-                        )
-                    }
                     request.productImages
-                        .filterIsInstance<UpdateProductImageRequest>()
-                        .forEach { updateProductImageRequest ->
+                        ?.filterIsInstance<UpdateProductImageRequest>()
+                        ?.forEach { updateProductImageRequest ->
                             productImageParameterValidator.validate(request = updateProductImageRequest)
                         }
                 }
