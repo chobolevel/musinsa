@@ -2,13 +2,16 @@ package com.musinsa.snap.validator
 
 import com.musinsa.common.exception.ErrorCode
 import com.musinsa.common.exception.InvalidParameterException
+import com.musinsa.snap.dto.UpdateSnapImageRequest
 import com.musinsa.snap.dto.UpdateSnapRequest
 import com.musinsa.snap.vo.SnapUpdateMask
 import org.springframework.stereotype.Component
 import kotlin.jvm.Throws
 
 @Component
-class SnapParameterValidator {
+class SnapParameterValidator(
+    private val snapImageParameterValidator: SnapImageParameterValidator
+) {
 
     @Throws(InvalidParameterException::class)
     fun validate(request: UpdateSnapRequest) {
@@ -23,10 +26,9 @@ class SnapParameterValidator {
                     }
                 }
                 SnapUpdateMask.SNAP_IMAGE -> {
-                    if (request.snapImages.isNullOrEmpty()) {
-                        throw InvalidParameterException(
-                            errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[${SnapUpdateMask.SNAP_IMAGE.fieldName}]은(는) 필수 값입니다."
+                    request.snapImages?.filterIsInstance<UpdateSnapImageRequest>()?.forEach { updateSnapImageRequest ->
+                        snapImageParameterValidator.validate(
+                            request = updateSnapImageRequest,
                         )
                     }
                 }
