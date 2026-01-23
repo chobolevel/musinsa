@@ -70,6 +70,7 @@ object DummyProduct {
             saleStatus = null,
             sortOrder = null,
             productOptions = null,
+            productImages = null,
             updateMask = listOf(ProductUpdateMask.NAME)
         )
     }
