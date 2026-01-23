@@ -17,19 +17,17 @@ create table musinsa.users
   point_balance int          not null comment '포인트',
   is_deleted    bit          not null comment '삭제 여부',
   created_at    datetime     not null comment '생성 일자',
-  updated_at    datetime     not null comment '수정 일자',
-  constraint email
-    unique (email),
-  constraint name
-    unique (name),
-  constraint phone
-    unique (phone),
-  constraint username
-    unique (username),
-  constraint users
-    unique (social_id)
+  updated_at    datetime     not null comment '수정 일자'
 )
   comment '회원 테이블';
+
+create index users_social_id_sign_up_type_index
+  on musinsa.users (social_id, sign_up_type);
+
+create index users_username_sign_up_type_index
+  on musinsa.users (username, sign_up_type);
+
+
 
 create table musinsa.users_histories
 (
