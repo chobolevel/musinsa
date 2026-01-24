@@ -65,6 +65,10 @@ class Product(
     @OrderBy("sort_order asc")
     val productOptions: MutableList<ProductOption> = mutableListOf()
 
+    @NotAudited
+    @OneToMany(mappedBy = "product", cascade = [(CascadeType.ALL)], orphanRemoval = true)
+    val productInventories: MutableList<ProductInventory> = mutableListOf()
+
     /* ==============================
      * 생성 시 불변식 검증
      * ============================== */
@@ -100,6 +104,12 @@ class Product(
         if (!this.productOptions.contains(productOption)) {
             this.productOptions.add(productOption)
             productOption.assignProduct(product = this)
+        }
+    }
+
+    fun addProductInventory(productInventory: ProductInventory) {
+        if (!this.productInventories.contains(productInventory)) {
+            this.productInventories.add(productInventory)
         }
     }
 
