@@ -13,7 +13,10 @@ import com.musinsa.product.entity.Product
 import com.musinsa.product.entity.ProductBrand
 import com.musinsa.product.entity.ProductCategory
 import com.musinsa.product.entity.ProductImage
+import com.musinsa.product.entity.ProductInventory
+import com.musinsa.product.entity.ProductInventoryValue
 import com.musinsa.product.entity.ProductOption
+import com.musinsa.product.entity.ProductOptionValue
 import com.musinsa.product.repository.ProductBrandRepositoryFacade
 import com.musinsa.product.repository.ProductCategoryRepositoryFacade
 import com.musinsa.product.repository.ProductQueryFilter
@@ -51,6 +54,27 @@ class ProductServiceV1(
             productOptions = productOptions,
             productImages = productImages
         )
+
+        // TODO 로직 분리하기
+        val combinations: List<List<ProductOptionValue>> = productOptions.fold(listOf(emptyList())) { acc, productOption ->
+            acc.flatMap { prefix ->
+                productOption.productOptionValues.map { prefix + it }
+            }
+        }
+        val productInventories: List<ProductInventory> = combinations.map { productOptionValues ->
+            val productInventory = ProductInventory(
+                stock = 100
+            )
+            productInventory.assignProduct(product = product)
+            productOptionValues.forEach { productOptionValue ->
+                val productInventoryValue = ProductInventoryValue().also {
+                    it.assignProductOptionValue(productOptionValue = productOptionValue)
+                }
+                productInventory.addProductInventoryValue(productInventoryValue = productInventoryValue)
+            }
+            productInventory
+        }
+        productInventories.forEach { product.addProductInventory(it) }
 
         return productRepository.save(product = product).id!!
     }
