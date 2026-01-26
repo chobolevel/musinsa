@@ -3,6 +3,7 @@ package com.musinsa.product.inventory
 import com.musinsa.product.DummyProduct
 import com.musinsa.product.entity.Product
 import com.musinsa.product.entity.ProductInventory
+import com.musinsa.product.entity.ProductInventoryValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import kotlin.test.Test
@@ -22,5 +23,17 @@ class ProductInventoryEntityTest {
 
         // then
         assertThat(dummyProductInventory.product).isEqualTo(dummyProduct)
+    }
+
+    @Test
+    fun addProductInventoryValueTest() {
+        // given
+        val dummyProductInventoryValue: ProductInventoryValue = DummyProductInventoryValue.toEntity()
+
+        // when
+        dummyProductInventory.addProductInventoryValue(productInventoryValue = dummyProductInventoryValue)
+
+        // then
+        assertThat(dummyProductInventory.productInventoryValues.elementAt(0)).isEqualTo(dummyProductInventoryValue)
     }
 }
