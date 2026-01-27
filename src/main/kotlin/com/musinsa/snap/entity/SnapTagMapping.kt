@@ -1,6 +1,6 @@
 package com.musinsa.snap.entity
 
-import com.musinsa.common.entity.Audit
+import com.musinsa.common.entity.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
@@ -16,7 +16,7 @@ import jakarta.persistence.Table
 class SnapTagMapping(
     @Column(nullable = false)
     var order: Int
-) : Audit() {
+) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

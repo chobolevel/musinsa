@@ -1,6 +1,6 @@
 package com.musinsa.snap.entity
 
-import com.musinsa.common.entity.Audit
+import com.musinsa.common.entity.BaseEntity
 import com.musinsa.user.entity.User
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
@@ -24,7 +24,7 @@ import org.hibernate.envers.NotAudited
 class Snap(
     @Column(nullable = true)
     var content: String?
-) : Audit() {
+) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,6 @@
 package com.musinsa.snap.entity
 
-import com.musinsa.common.entity.Audit
+import com.musinsa.common.entity.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
@@ -26,7 +26,7 @@ class SnapImage(
     var height: Int,
     @Column(nullable = false)
     var sortOrder: Int,
-) : Audit() {
+) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

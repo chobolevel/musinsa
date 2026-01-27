@@ -1,6 +1,6 @@
 package com.musinsa.user.entity.follow
 
-import com.musinsa.common.entity.Audit
+import com.musinsa.common.entity.BaseEntity
 import com.musinsa.user.entity.User
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -14,7 +14,7 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "user_follows")
-class UserFollow : Audit() {
+class UserFollow : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

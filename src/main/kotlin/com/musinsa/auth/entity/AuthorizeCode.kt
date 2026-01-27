@@ -1,6 +1,6 @@
 package com.musinsa.auth.entity
 
-import com.musinsa.common.entity.Audit
+import com.musinsa.common.entity.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -15,7 +15,7 @@ import org.hibernate.envers.Audited
 class AuthorizeCode(
     @Column(nullable = false, length = 255)
     var code: String,
-) : Audit() {
+) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

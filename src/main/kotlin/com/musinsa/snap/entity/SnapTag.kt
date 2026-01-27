@@ -1,6 +1,6 @@
 package com.musinsa.snap.entity
 
-import com.musinsa.common.entity.Audit
+import com.musinsa.common.entity.BaseEntity
 import com.musinsa.snap.vo.SnapTagType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -21,7 +21,7 @@ class SnapTag(
     var type: SnapTagType,
     @Column(nullable = false, length = 100)
     var name: String,
-) : Audit() {
+) : BaseEntity() {
 
     @Id
     @Column(nullable = false, unique = true)

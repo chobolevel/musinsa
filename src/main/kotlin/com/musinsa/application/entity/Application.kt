@@ -2,7 +2,7 @@ package com.musinsa.application.entity
 
 import com.musinsa.application.entity.member.ApplicationMember
 import com.musinsa.application.vo.member.ApplicationMemberType
-import com.musinsa.common.entity.Audit
+import com.musinsa.common.entity.BaseEntity
 import com.musinsa.user.entity.User
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
@@ -25,7 +25,7 @@ class Application(
     var key: String,
     @Column(nullable = false, length = 255)
     var secretKey: String,
-) : Audit() {
+) : BaseEntity() {
 
     @Id
     @Column(nullable = false, unique = true)

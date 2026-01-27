@@ -1,6 +1,6 @@
 package com.musinsa.product.entity
 
-import com.musinsa.common.entity.Audit
+import com.musinsa.common.entity.BaseEntity
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -27,7 +27,7 @@ class ProductOption(
     var sortOrder: Int,
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     var isRequired: Boolean
-) : Audit() {
+) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

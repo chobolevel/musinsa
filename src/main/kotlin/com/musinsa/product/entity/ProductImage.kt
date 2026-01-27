@@ -1,6 +1,6 @@
 package com.musinsa.product.entity
 
-import com.musinsa.common.entity.Audit
+import com.musinsa.common.entity.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
@@ -27,7 +27,7 @@ class ProductImage(
     var height: Int,
     @Column(nullable = false)
     var sortOrder: Int,
-) : Audit() {
+) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

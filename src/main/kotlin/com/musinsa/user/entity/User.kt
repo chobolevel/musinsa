@@ -1,7 +1,7 @@
 package com.musinsa.user.entity
 
 import com.musinsa.application.entity.member.ApplicationMember
-import com.musinsa.common.entity.Audit
+import com.musinsa.common.entity.BaseEntity
 import com.musinsa.user.vo.UserGender
 import com.musinsa.user.vo.UserGrade
 import com.musinsa.user.vo.UserRole
@@ -56,7 +56,7 @@ class User(
     var role: UserRole,
     @Column(nullable = false)
     var pointBalance: Int = 0,
-) : Audit() {
+) : BaseEntity() {
 
     @Id
     @Column(nullable = false, unique = true)

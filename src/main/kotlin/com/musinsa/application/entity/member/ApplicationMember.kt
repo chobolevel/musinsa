@@ -2,7 +2,7 @@ package com.musinsa.application.entity.member
 
 import com.musinsa.application.entity.Application
 import com.musinsa.application.vo.member.ApplicationMemberType
-import com.musinsa.common.entity.Audit
+import com.musinsa.common.entity.BaseEntity
 import com.musinsa.user.entity.User
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -24,7 +24,7 @@ class ApplicationMember(
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     var type: ApplicationMemberType,
-) : Audit() {
+) : BaseEntity() {
 
     @Id
     @Column(nullable = false, unique = true)

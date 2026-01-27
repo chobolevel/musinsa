@@ -12,7 +12,7 @@ import java.time.OffsetDateTime
 @MappedSuperclass
 @EntityListeners(value = [AuditingEntityListener::class])
 @Audited
-class Audit {
+class BaseEntity {
 
     @Column(nullable = false)
     @CreatedDate

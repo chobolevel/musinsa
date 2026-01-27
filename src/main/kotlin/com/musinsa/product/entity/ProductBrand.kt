@@ -1,6 +1,6 @@
 package com.musinsa.product.entity
 
-import com.musinsa.common.entity.Audit
+import com.musinsa.common.entity.BaseEntity
 import com.musinsa.common.vo.NationType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -27,7 +27,7 @@ class ProductBrand(
     var nation: NationType,
     @Column(nullable = false, length = 255)
     var description: String,
-) : Audit() {
+) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
