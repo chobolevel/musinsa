@@ -1,5 +1,6 @@
 package com.musinsa.post
 
+import com.musinsa.post.dto.CreatePostRequest
 import com.musinsa.post.entity.Post
 
 object DummyPost {
@@ -16,5 +17,14 @@ object DummyPost {
         ).also { it.id = id }
     }
 
+    private val dummyCreateRequest: CreatePostRequest by lazy {
+        CreatePostRequest(
+            title = title,
+            content = content,
+        )
+    }
+
     fun toEntity(): Post = dummyPost
+
+    fun toCreateRequest(): CreatePostRequest = dummyCreateRequest
 }

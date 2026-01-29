@@ -5,5 +5,4 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.stereotype.Repository
 
 @Repository
-class PostCustomRepository: QuerydslRepositorySupport(Post::class.java) {
-}
+class PostCustomRepository : QuerydslRepositorySupport(Post::class.java)
