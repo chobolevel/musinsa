@@ -4,8 +4,8 @@ import com.musinsa.post.assembler.PostAssembler
 import com.musinsa.post.converter.PostConverter
 import com.musinsa.post.dto.CreatePostRequest
 import com.musinsa.post.entity.Post
-import com.musinsa.post.repository.PostRepositoryFacade
 import com.musinsa.post.service.impl.PostServiceV1
+import com.musinsa.post.store.PostStore
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
 import com.musinsa.user.entity.UserRepositoryFacade
@@ -33,7 +33,7 @@ class PostServiceV1Test {
     private lateinit var userRepositoryFacade: UserRepositoryFacade
 
     @Mock
-    private lateinit var postRepositoryFacade: PostRepositoryFacade
+    private lateinit var postStore: PostStore
 
     @Mock
     private lateinit var postAssembler: PostAssembler
@@ -54,7 +54,7 @@ class PostServiceV1Test {
                 user = dummyUser
             )
         ).thenReturn(dummyPost)
-        `when`(postRepositoryFacade.save(post = dummyPost)).thenReturn(dummyPost)
+        `when`(postStore.save(post = dummyPost)).thenReturn(dummyPost)
 
         // when
         val result: Long = postService.createPost(userId = dummyUserId, request = createRequest)
