@@ -69,6 +69,9 @@ dependencies {
     // jasypt
     implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5")
 
+    // jsoup
+    implementation("org.jsoup:jsoup:1.17.2")
+
     // db-mysql
     runtimeOnly("com.mysql:mysql-connector-j")
 

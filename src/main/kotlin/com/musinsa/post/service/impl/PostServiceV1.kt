@@ -1,5 +1,6 @@
 package com.musinsa.post.service.impl
 
+import com.musinsa.post.assembler.PostAssembler
 import com.musinsa.post.converter.PostConverter
 import com.musinsa.post.dto.CreatePostRequest
 import com.musinsa.post.entity.Post
@@ -15,13 +16,19 @@ class PostServiceV1(
     private val postConverter: PostConverter,
     private val userRepositoryFacade: UserRepositoryFacade,
     private val postRepositoryFacade: PostRepositoryFacade,
+    private val postAssembler: PostAssembler
 ) : PostService {
 
     @Transactional
     override fun createPost(userId: Long, request: CreatePostRequest): Long {
-        val post: Post = postConverter.toEntity(request = request)
+        val basePost: Post = postConverter.toEntity(request = request)
         val user: User = userRepositoryFacade.findById(id = userId)
-        post.assignUser(user = user)
+
+        val post: Post = postAssembler.assemble(
+            post = basePost,
+            user = user
+        )
+
         return postRepositoryFacade.save(post = post).id!!
     }
 }
