@@ -1,7 +1,10 @@
 package com.musinsa.post
 
 import com.musinsa.post.dto.CreatePostRequest
+import com.musinsa.post.dto.PostResponse
 import com.musinsa.post.entity.Post
+import com.musinsa.user.DummyUser
+import com.musinsa.user.entity.User
 
 object DummyPost {
     private const val id: Long = 1L
@@ -17,6 +20,19 @@ object DummyPost {
         ).also { it.id = id }
     }
 
+    private val dummyPostResponse: PostResponse by lazy {
+        val user: User = DummyUser.toEntity()
+        PostResponse(
+            id = id,
+            userId = user.id!!,
+            userName = user.name,
+            title = title,
+            content = content,
+            createdAt = createdAt,
+            updatedAt = updatedAt,
+        )
+    }
+
     private val dummyCreateRequest: CreatePostRequest by lazy {
         CreatePostRequest(
             title = title,
@@ -25,6 +41,8 @@ object DummyPost {
     }
 
     fun toEntity(): Post = dummyPost
+
+    fun toResponse(): PostResponse = dummyPostResponse
 
     fun toCreateRequest(): CreatePostRequest = dummyCreateRequest
 }
