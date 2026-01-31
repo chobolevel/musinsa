@@ -1,6 +1,8 @@
 package com.musinsa.post.reader
 
 import com.musinsa.common.dto.Pagination
+import com.musinsa.common.exception.DataNotFoundException
+import com.musinsa.common.exception.ErrorCode
 import com.musinsa.post.entity.Post
 import com.musinsa.post.entity.QPost.post
 import com.musinsa.post.repository.PostCustomRepository
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Component
 @Component
 class PostReader(
     private val repository: PostRepository,
-    private val customRepository: PostCustomRepository
+    private val customRepository: PostCustomRepository,
 ) {
 
     fun searchPosts(
@@ -33,9 +35,16 @@ class PostReader(
         )
     }
 
+    fun findById(id: Long): Post {
+        return repository.findByIdAndIsDeletedFalse(id) ?: throw DataNotFoundException(
+            errorCode = ErrorCode.POST_NOT_FOUND,
+            message = ErrorCode.POST_NOT_FOUND.defaultMessage
+        )
+    }
+
     private fun List<PostOrderType>.toOrderSpecifiers(): Array<OrderSpecifier<*>> {
         return this.map {
-            when(it) {
+            when (it) {
                 PostOrderType.CREATED_AT_ASC -> post.createdAt.asc()
                 PostOrderType.CREATED_AT_DESC -> post.createdAt.desc()
                 PostOrderType.UPDATED_AT_ASC -> post.updatedAt.asc()

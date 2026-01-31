@@ -88,14 +88,18 @@ class PostServiceV1Test {
             size = 20
         )
         val orderTypes: List<PostOrderType> = emptyList()
-        `when`(postReader.searchPosts(
-            queryFilter = queryFilter,
-            pagination = pagination,
-            orderTypes = orderTypes
-        )).thenReturn(dummyPosts)
-        `when`(postReader.searchPostsCount(
-            queryFilter = queryFilter
-        )).thenReturn(dummyPosts.size.toLong())
+        `when`(
+            postReader.searchPosts(
+                queryFilter = queryFilter,
+                pagination = pagination,
+                orderTypes = orderTypes
+            )
+        ).thenReturn(dummyPosts)
+        `when`(
+            postReader.searchPostsCount(
+                queryFilter = queryFilter
+            )
+        ).thenReturn(dummyPosts.size.toLong())
         `when`(postConverter.toResponseInBatch(posts = dummyPosts)).thenReturn(dummyPostResponses)
 
         // when
@@ -110,5 +114,19 @@ class PostServiceV1Test {
         assertThat(result.totalCount).isEqualTo(dummyPostResponses.size.toLong())
         assertThat(result.page).isEqualTo(pagination.page)
         assertThat(result.size).isEqualTo(pagination.size)
+    }
+
+    @Test
+    fun getPostTest() {
+        // given
+        val dummyPostId: Long = dummyPost.id!!
+        `when`(postReader.findById(id = dummyPostId)).thenReturn(dummyPost)
+        `when`(postConverter.toResponse(post = dummyPost)).thenReturn(dummyPostResponse)
+
+        // when
+        val result: PostResponse = postService.getPost(postId = dummyPostId)
+
+        // then
+        assertThat(result).isEqualTo(dummyPostResponse)
     }
 }

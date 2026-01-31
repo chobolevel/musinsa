@@ -5,6 +5,7 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.post.assembler.PostAssembler
 import com.musinsa.post.converter.PostConverter
 import com.musinsa.post.dto.CreatePostRequest
+import com.musinsa.post.dto.PostResponse
 import com.musinsa.post.entity.Post
 import com.musinsa.post.reader.PostQueryFilter
 import com.musinsa.post.reader.PostReader
@@ -58,5 +59,11 @@ class PostServiceV1(
             data = postConverter.toResponseInBatch(posts = posts),
             totalCount = totalCount
         )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getPost(postId: Long): PostResponse {
+        val post: Post = postReader.findById(id = postId)
+        return postConverter.toResponse(post = post)
     }
 }

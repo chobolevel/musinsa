@@ -1,7 +1,6 @@
 package com.musinsa.post.reader
 
 import com.musinsa.post.entity.QPost.post
-import com.musinsa.snap.entity.QSnap.snap
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.Expressions
 

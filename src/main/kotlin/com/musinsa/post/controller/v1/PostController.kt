@@ -3,10 +3,11 @@ package com.musinsa.post.controller.v1
 import com.musinsa.common.annotation.HasAuthorityUser
 import com.musinsa.common.dto.CommonResponse
 import com.musinsa.common.dto.Pagination
-import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.dto.PaginationRequest
+import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.extension.getUserId
 import com.musinsa.post.dto.CreatePostRequest
+import com.musinsa.post.dto.PostResponse
 import com.musinsa.post.dto.PostSearchRequest
 import com.musinsa.post.reader.PostQueryFilter
 import com.musinsa.post.service.PostService
@@ -14,6 +15,7 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -58,6 +60,12 @@ class PostController(
             ),
             orderTypes = request.orderTypes ?: emptyList()
         )
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
+
+    @GetMapping("/posts/{postId}")
+    fun getPost(@PathVariable postId: Long): ResponseEntity<CommonResponse> {
+        val result: PostResponse = service.getPost(postId = postId)
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 }

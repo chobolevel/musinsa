@@ -43,4 +43,7 @@ enum class ErrorCode(val defaultMessage: String) {
 
     // PRODUCT
     PRODUCT_NOT_FOUND("상품을 찾을 수 없습니다."),
+
+    // POST
+    POST_NOT_FOUND("게시글을 찾을 수 없습니다."),
 }
