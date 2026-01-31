@@ -10,8 +10,8 @@ import com.musinsa.user.entity.User
 
 object DummyPost {
     private const val id: Long = 1L
-    private const val title: String = "title"
-    private const val content: String = "content"
+    private const val title: String = "게시글 제목입니다"
+    private const val content: String = "게시글 내용입니다. 어떤 내용을 작성해볼까요? 기술 블로그로 사용해볼까요?"
     private const val createdAt: Long = 0L
     private const val updatedAt: Long = 0L
 
@@ -44,7 +44,7 @@ object DummyPost {
 
     private val dummyUpdateRequest: UpdatePostRequest by lazy {
         UpdatePostRequest(
-            title = "새로운 제목",
+            title = "변경할 게시글 제목",
             content = null,
             updateMask = listOf(PostUpdateMask.TITLE)
         )

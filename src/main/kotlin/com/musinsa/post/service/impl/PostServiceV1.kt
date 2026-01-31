@@ -89,4 +89,15 @@ class PostServiceV1(
         )
         return postId
     }
+
+    @Transactional
+    override fun deletePost(userId: Long, postId: Long): Boolean {
+        val post: Post = postReader.findById(id = postId)
+        postBusinessValidator.validateWriter(
+            userId = userId,
+            post = post
+        )
+        post.delete()
+        return true
+    }
 }

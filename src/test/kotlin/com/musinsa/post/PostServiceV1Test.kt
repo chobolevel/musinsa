@@ -163,4 +163,21 @@ class PostServiceV1Test {
         // then
         assertThat(result).isEqualTo(dummyPostId)
     }
+
+    @Test
+    fun deletePostTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummyPostId: Long = dummyPost.id!!
+        `when`(postReader.findById(id = dummyPostId)).thenReturn(dummyPost)
+
+        // when
+        val result: Boolean = postService.deletePost(
+            userId = dummyUserId,
+            postId = dummyPostId
+        )
+
+        // then
+        assertThat(result).isTrue()
+    }
 }

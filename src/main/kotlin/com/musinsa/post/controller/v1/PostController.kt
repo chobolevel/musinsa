@@ -16,6 +16,7 @@ import com.musinsa.post.validator.PostParameterValidator
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -86,6 +87,19 @@ class PostController(
             userId = principal.getUserId(),
             postId = postId,
             request = request
+        )
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
+
+    @DeleteMapping("/posts/{postId}")
+    @HasAuthorityUser
+    fun deletePost(
+        principal: Principal,
+        @PathVariable postId: Long,
+    ): ResponseEntity<CommonResponse> {
+        val result: Boolean = service.deletePost(
+            userId = principal.getUserId(),
+            postId = postId
         )
         return ResponseEntity.ok(CommonResponse(data = result))
     }
