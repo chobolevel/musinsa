@@ -40,6 +40,8 @@ class PostController(
         return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse(data = result))
     }
 
+    // 요청 DTO는 IS A 관계가 아니므로 상속보다는 합성(composition)이 적합
+    // 의미 관계 명확하고 확장/유지보수 측면에서도 안전
     @GetMapping("/posts")
     fun getPosts(
         request: PostSearchRequest,
