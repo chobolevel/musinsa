@@ -6,11 +6,14 @@ import com.musinsa.post.assembler.PostAssembler
 import com.musinsa.post.converter.PostConverter
 import com.musinsa.post.dto.CreatePostRequest
 import com.musinsa.post.dto.PostResponse
+import com.musinsa.post.dto.UpdatePostRequest
 import com.musinsa.post.entity.Post
 import com.musinsa.post.reader.PostQueryFilter
 import com.musinsa.post.reader.PostReader
 import com.musinsa.post.service.PostService
 import com.musinsa.post.store.PostStore
+import com.musinsa.post.updater.PostUpdater
+import com.musinsa.post.validator.PostBusinessValidator
 import com.musinsa.post.vo.PostOrderType
 import com.musinsa.user.entity.User
 import com.musinsa.user.entity.UserRepositoryFacade
@@ -23,7 +26,9 @@ class PostServiceV1(
     private val userRepositoryFacade: UserRepositoryFacade,
     private val postStore: PostStore,
     private val postReader: PostReader,
-    private val postAssembler: PostAssembler
+    private val postAssembler: PostAssembler,
+    private val postUpdater: PostUpdater,
+    private val postBusinessValidator: PostBusinessValidator,
 ) : PostService {
 
     @Transactional
@@ -65,5 +70,23 @@ class PostServiceV1(
     override fun getPost(postId: Long): PostResponse {
         val post: Post = postReader.findById(id = postId)
         return postConverter.toResponse(post = post)
+    }
+
+    @Transactional
+    override fun updatePost(
+        userId: Long,
+        postId: Long,
+        request: UpdatePostRequest
+    ): Long {
+        val post: Post = postReader.findById(id = postId)
+        postBusinessValidator.validateWriter(
+            userId = userId,
+            post = post
+        )
+        postUpdater.markAsUpdate(
+            request = request,
+            post = post
+        )
+        return postId
     }
 }

@@ -6,11 +6,14 @@ import com.musinsa.post.assembler.PostAssembler
 import com.musinsa.post.converter.PostConverter
 import com.musinsa.post.dto.CreatePostRequest
 import com.musinsa.post.dto.PostResponse
+import com.musinsa.post.dto.UpdatePostRequest
 import com.musinsa.post.entity.Post
 import com.musinsa.post.reader.PostQueryFilter
 import com.musinsa.post.reader.PostReader
 import com.musinsa.post.service.impl.PostServiceV1
 import com.musinsa.post.store.PostStore
+import com.musinsa.post.updater.PostUpdater
+import com.musinsa.post.validator.PostBusinessValidator
 import com.musinsa.post.vo.PostOrderType
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
@@ -48,6 +51,12 @@ class PostServiceV1Test {
 
     @Mock
     private lateinit var postAssembler: PostAssembler
+
+    @Mock
+    private lateinit var postUpdater: PostUpdater
+
+    @Mock
+    private lateinit var postBusinessValidator: PostBusinessValidator
 
     @InjectMocks
     private lateinit var postService: PostServiceV1
@@ -128,5 +137,30 @@ class PostServiceV1Test {
 
         // then
         assertThat(result).isEqualTo(dummyPostResponse)
+    }
+
+    @Test
+    fun updatePostTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummyPostId: Long = dummyPost.id!!
+        val updateRequest: UpdatePostRequest = DummyPost.toUpdateRequest()
+        `when`(postReader.findById(id = dummyPostId)).thenReturn(dummyPost)
+        `when`(
+            postUpdater.markAsUpdate(
+                request = updateRequest,
+                post = dummyPost
+            )
+        ).thenReturn(dummyPost)
+
+        // when
+        val result: Long = postService.updatePost(
+            userId = dummyUserId,
+            postId = dummyPostId,
+            request = updateRequest
+        )
+
+        // then
+        assertThat(result).isEqualTo(dummyPostId)
     }
 }

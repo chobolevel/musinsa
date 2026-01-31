@@ -2,7 +2,9 @@ package com.musinsa.post
 
 import com.musinsa.post.dto.CreatePostRequest
 import com.musinsa.post.dto.PostResponse
+import com.musinsa.post.dto.UpdatePostRequest
 import com.musinsa.post.entity.Post
+import com.musinsa.post.vo.PostUpdateMask
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
 
@@ -40,9 +42,19 @@ object DummyPost {
         )
     }
 
+    private val dummyUpdateRequest: UpdatePostRequest by lazy {
+        UpdatePostRequest(
+            title = "새로운 제목",
+            content = null,
+            updateMask = listOf(PostUpdateMask.TITLE)
+        )
+    }
+
     fun toEntity(): Post = dummyPost
 
     fun toResponse(): PostResponse = dummyPostResponse
 
     fun toCreateRequest(): CreatePostRequest = dummyCreateRequest
+
+    fun toUpdateRequest(): UpdatePostRequest = dummyUpdateRequest
 }

@@ -9,14 +9,17 @@ import com.musinsa.common.extension.getUserId
 import com.musinsa.post.dto.CreatePostRequest
 import com.musinsa.post.dto.PostResponse
 import com.musinsa.post.dto.PostSearchRequest
+import com.musinsa.post.dto.UpdatePostRequest
 import com.musinsa.post.reader.PostQueryFilter
 import com.musinsa.post.service.PostService
+import com.musinsa.post.validator.PostParameterValidator
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -25,7 +28,8 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api/v1")
 class PostController(
-    private val service: PostService
+    private val service: PostService,
+    private val postParameterValidator: PostParameterValidator,
 ) {
 
     @PostMapping("/posts")
@@ -66,6 +70,23 @@ class PostController(
     @GetMapping("/posts/{postId}")
     fun getPost(@PathVariable postId: Long): ResponseEntity<CommonResponse> {
         val result: PostResponse = service.getPost(postId = postId)
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
+
+    @PutMapping("/posts/{postId}")
+    @HasAuthorityUser
+    fun updatePost(
+        principal: Principal,
+        @PathVariable postId: Long,
+        @Valid @RequestBody
+        request: UpdatePostRequest
+    ): ResponseEntity<CommonResponse> {
+        postParameterValidator.validate(request = request)
+        val result: Long = service.updatePost(
+            userId = principal.getUserId(),
+            postId = postId,
+            request = request
+        )
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 }

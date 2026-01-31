@@ -34,6 +34,14 @@ class Post(
     var isDeleted: Boolean = false
 
     /* ==============================
+     * 생성 시 불변식 검증
+     * ============================== */
+    init {
+        require(title.length > 5) { "제목(title)은 5자 이상이어야 합니다." }
+        require(content.length > 20) { "내용(content)은 최소 20자 이상이어야 합니다." }
+    }
+
+    /* ==============================
      * 연관관계 편의 메서드
      * ============================== */
     fun assignUser(user: User) {

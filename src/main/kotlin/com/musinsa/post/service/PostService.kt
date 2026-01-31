@@ -4,6 +4,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.post.dto.CreatePostRequest
 import com.musinsa.post.dto.PostResponse
+import com.musinsa.post.dto.UpdatePostRequest
 import com.musinsa.post.reader.PostQueryFilter
 import com.musinsa.post.vo.PostOrderType
 
@@ -18,4 +19,6 @@ interface PostService {
     ): PaginationResponse
 
     fun getPost(postId: Long): PostResponse
+
+    fun updatePost(userId: Long, postId: Long, request: UpdatePostRequest): Long
 }
