@@ -16,6 +16,7 @@ import com.musinsa.snap.repository.SnapQueryFilter
 import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.repository.SnapTagRepositoryFacade
 import com.musinsa.snap.service.impl.SnapServiceV1
+import com.musinsa.snap.store.SnapStore
 import com.musinsa.snap.tag.DummySnapTag
 import com.musinsa.snap.updater.SnapUpdater
 import com.musinsa.snap.validator.SnapBusinessValidator
@@ -62,6 +63,9 @@ class SnapServiceV1Test {
     private lateinit var snapTagRepository: SnapTagRepositoryFacade
 
     @Mock
+    private lateinit var snapStore: SnapStore
+
+    @Mock
     private lateinit var assembler: SnapAssembler
 
     @Mock
@@ -92,7 +96,7 @@ class SnapServiceV1Test {
                 snapImages = dummySnapImages
             )
         ).thenReturn(dummySnap)
-        `when`(snapRepository.save(snap = dummySnap)).thenReturn(dummySnap)
+        `when`(snapStore.save(snap = dummySnap)).thenReturn(dummySnap)
 
         // when
         val result: Long = service.createSnap(userId = dummyUserId, request = dummyRequest)

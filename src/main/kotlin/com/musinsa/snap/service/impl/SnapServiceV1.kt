@@ -15,6 +15,7 @@ import com.musinsa.snap.repository.SnapQueryFilter
 import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.repository.SnapTagRepositoryFacade
 import com.musinsa.snap.service.SnapService
+import com.musinsa.snap.store.SnapStore
 import com.musinsa.snap.updater.SnapUpdater
 import com.musinsa.snap.validator.SnapBusinessValidator
 import com.musinsa.snap.vo.SnapOrderType
@@ -30,6 +31,7 @@ class SnapServiceV1(
     private val userRepository: UserRepositoryFacade,
     private val snapRepository: SnapRepositoryFacade,
     private val snapTagRepository: SnapTagRepositoryFacade,
+    private val snapStore: SnapStore,
     private val assembler: SnapAssembler,
     private val validator: SnapBusinessValidator,
     private val updater: SnapUpdater
@@ -49,7 +51,7 @@ class SnapServiceV1(
             snapImages = snapImages,
         )
 
-        return snapRepository.save(snap = snap).id!!
+        return snapStore.save(snap = snap).id!!
     }
 
     @Transactional(readOnly = true)
