@@ -8,9 +8,9 @@ import com.musinsa.snap.converter.SnapLikeConverter
 import com.musinsa.snap.dto.SnapLikeResponse
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapLike
+import com.musinsa.snap.reader.SnapReader
 import com.musinsa.snap.repository.SnapLikeQueryFilter
 import com.musinsa.snap.repository.SnapLikeRepositoryFacade
-import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.service.impl.SnapLikeServiceV1
 import com.musinsa.snap.vo.SnapLikeOrderType
 import com.musinsa.user.DummyUser
@@ -50,7 +50,7 @@ class SnapLikeServiceV1Test {
     private lateinit var userRepository: UserRepositoryFacade
 
     @Mock
-    private lateinit var snapRepository: SnapRepositoryFacade
+    private lateinit var snapReader: SnapReader
 
     @InjectMocks
     private lateinit var service: SnapLikeServiceV1

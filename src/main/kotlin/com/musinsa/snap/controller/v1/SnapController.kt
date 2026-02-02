@@ -8,7 +8,7 @@ import com.musinsa.common.extension.getUserId
 import com.musinsa.snap.dto.CreateSnapRequest
 import com.musinsa.snap.dto.SnapResponse
 import com.musinsa.snap.dto.UpdateSnapRequest
-import com.musinsa.snap.repository.SnapQueryFilter
+import com.musinsa.snap.reader.SnapQueryFilter
 import com.musinsa.snap.service.SnapService
 import com.musinsa.snap.validator.SnapParameterValidator
 import com.musinsa.snap.vo.SnapOrderType

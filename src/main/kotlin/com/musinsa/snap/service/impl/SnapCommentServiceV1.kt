@@ -9,9 +9,9 @@ import com.musinsa.snap.dto.SnapCommentResponse
 import com.musinsa.snap.dto.UpdateSnapCommentRequest
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapComment
+import com.musinsa.snap.reader.SnapReader
 import com.musinsa.snap.repository.SnapCommentQueryFilter
 import com.musinsa.snap.repository.SnapCommentRepositoryFacade
-import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.service.SnapCommentService
 import com.musinsa.snap.updater.SnapCommentUpdater
 import com.musinsa.snap.validator.SnapCommentBusinessValidator
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional
 class SnapCommentServiceV1(
     private val repository: SnapCommentRepositoryFacade,
     private val userRepository: UserRepositoryFacade,
-    private val snapRepository: SnapRepositoryFacade,
+    private val snapReader: SnapReader,
     private val converter: SnapCommentConverter,
     private val assembler: SnapCommentAssembler,
     private val validator: SnapCommentBusinessValidator,
@@ -43,7 +43,7 @@ class SnapCommentServiceV1(
             repository.findById(id = parentId)
         }
         val user: User = userRepository.findById(id = userId)
-        val snap: Snap = snapRepository.findById(id = snapId)
+        val snap: Snap = snapReader.findById(id = snapId)
 
         val snapComment: SnapComment = assembler.assemble(
             snapComment = baseSnapComment,

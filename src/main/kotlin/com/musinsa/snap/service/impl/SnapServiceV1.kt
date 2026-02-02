@@ -11,8 +11,8 @@ import com.musinsa.snap.dto.UpdateSnapRequest
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapImage
 import com.musinsa.snap.entity.SnapTag
-import com.musinsa.snap.repository.SnapQueryFilter
-import com.musinsa.snap.repository.SnapRepositoryFacade
+import com.musinsa.snap.reader.SnapQueryFilter
+import com.musinsa.snap.reader.SnapReader
 import com.musinsa.snap.repository.SnapTagRepositoryFacade
 import com.musinsa.snap.service.SnapService
 import com.musinsa.snap.store.SnapStore
@@ -29,8 +29,8 @@ class SnapServiceV1(
     private val converter: SnapConverter,
     private val snapImageConverter: SnapImageConverter,
     private val userRepository: UserRepositoryFacade,
-    private val snapRepository: SnapRepositoryFacade,
     private val snapTagRepository: SnapTagRepositoryFacade,
+    private val snapReader: SnapReader,
     private val snapStore: SnapStore,
     private val assembler: SnapAssembler,
     private val validator: SnapBusinessValidator,
@@ -60,12 +60,12 @@ class SnapServiceV1(
         pagination: Pagination,
         orderTypes: List<SnapOrderType>
     ): PaginationResponse {
-        val snaps: List<Snap> = snapRepository.searchSnaps(
+        val snaps: List<Snap> = snapReader.searchSnaps(
             queryFilter = queryFilter,
             pagination = pagination,
             orderTypes = orderTypes
         )
-        val totalCount: Long = snapRepository.searchSnapsCount(queryFilter = queryFilter)
+        val totalCount: Long = snapReader.searchSnapsCount(queryFilter = queryFilter)
         return PaginationResponse(
             page = pagination.page,
             size = pagination.size,
@@ -76,13 +76,13 @@ class SnapServiceV1(
 
     @Transactional(readOnly = true)
     override fun getSnap(id: Long): SnapResponse {
-        val snap: Snap = snapRepository.findById(id = id)
+        val snap: Snap = snapReader.findById(id = id)
         return converter.toResponse(snap = snap)
     }
 
     @Transactional
     override fun updateSnap(userId: Long, snapId: Long, request: UpdateSnapRequest): Long {
-        val snap: Snap = snapRepository.findById(id = snapId)
+        val snap: Snap = snapReader.findById(id = snapId)
         validator.validateWriter(
             userId = userId,
             snap = snap
@@ -96,7 +96,7 @@ class SnapServiceV1(
 
     @Transactional
     override fun deleteSnap(userId: Long, snapId: Long): Boolean {
-        val snap: Snap = snapRepository.findById(id = snapId)
+        val snap: Snap = snapReader.findById(id = snapId)
         validator.validateWriter(
             userId = userId,
             snap = snap

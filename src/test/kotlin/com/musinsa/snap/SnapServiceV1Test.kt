@@ -12,8 +12,8 @@ import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapImage
 import com.musinsa.snap.entity.SnapTag
 import com.musinsa.snap.image.DummySnapImage
-import com.musinsa.snap.repository.SnapQueryFilter
-import com.musinsa.snap.repository.SnapRepositoryFacade
+import com.musinsa.snap.reader.SnapQueryFilter
+import com.musinsa.snap.reader.SnapReader
 import com.musinsa.snap.repository.SnapTagRepositoryFacade
 import com.musinsa.snap.service.impl.SnapServiceV1
 import com.musinsa.snap.store.SnapStore
@@ -57,10 +57,10 @@ class SnapServiceV1Test {
     private lateinit var userRepository: UserRepositoryFacade
 
     @Mock
-    private lateinit var snapRepository: SnapRepositoryFacade
+    private lateinit var snapTagRepository: SnapTagRepositoryFacade
 
     @Mock
-    private lateinit var snapTagRepository: SnapTagRepositoryFacade
+    private lateinit var snapReader: SnapReader
 
     @Mock
     private lateinit var snapStore: SnapStore
@@ -120,14 +120,14 @@ class SnapServiceV1Test {
         val dummySnaps: List<Snap> = listOf(dummySnap)
         val dummySnapResponses: List<SnapResponse> = listOf(dummySnapResponse)
         `when`(
-            snapRepository.searchSnaps(
+            snapReader.searchSnaps(
                 queryFilter = dummyQueryFilter,
                 pagination = dummyPagination,
                 orderTypes = dummyOrderTypes
             )
         ).thenReturn(dummySnaps)
         `when`(
-            snapRepository.searchSnapsCount(
+            snapReader.searchSnapsCount(
                 queryFilter = dummyQueryFilter,
             )
         ).thenReturn(dummySnaps.size.toLong())
@@ -151,7 +151,7 @@ class SnapServiceV1Test {
     fun getSnapTest() {
         // given
         val dummySnapId: Long = dummySnap.id!!
-        `when`(snapRepository.findById(id = dummySnapId)).thenReturn(dummySnap)
+        `when`(snapReader.findById(id = dummySnapId)).thenReturn(dummySnap)
         `when`(converter.toResponse(snap = dummySnap)).thenReturn(dummySnapResponse)
 
         // when
@@ -168,7 +168,7 @@ class SnapServiceV1Test {
         val dummySnapId: Long = dummySnap.id!!
         val dummyRequest: UpdateSnapRequest = DummySnap.toUpdateRequest()
         dummySnap.assignWriter(user = dummyUser)
-        `when`(snapRepository.findById(id = dummySnapId)).thenReturn(dummySnap)
+        `when`(snapReader.findById(id = dummySnapId)).thenReturn(dummySnap)
         `when`(
             updater.markAsUpdate(
                 request = dummyRequest,
@@ -193,7 +193,7 @@ class SnapServiceV1Test {
         val dummyUserId: Long = dummyUser.id!!
         val dummySnapId: Long = dummySnap.id!!
         dummySnap.assignWriter(user = dummyUser)
-        `when`(snapRepository.findById(id = dummySnapId)).thenReturn(dummySnap)
+        `when`(snapReader.findById(id = dummySnapId)).thenReturn(dummySnap)
 
         // when
         val result: Boolean = service.deleteSnap(

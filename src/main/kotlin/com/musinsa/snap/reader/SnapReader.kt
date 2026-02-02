@@ -1,31 +1,28 @@
-package com.musinsa.snap.repository
+package com.musinsa.snap.reader
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.exception.DataNotFoundException
 import com.musinsa.common.exception.ErrorCode
 import com.musinsa.snap.entity.QSnap.snap
 import com.musinsa.snap.entity.Snap
+import com.musinsa.snap.repository.SnapCustomRepository
+import com.musinsa.snap.repository.SnapRepository
 import com.musinsa.snap.vo.SnapOrderType
 import com.querydsl.core.types.OrderSpecifier
 import org.springframework.stereotype.Component
-import kotlin.jvm.Throws
 
 @Component
-class SnapRepositoryFacade(
-    private val repository: SnapRepository,
-    private val customRepository: SnapCustomRepository
+class SnapReader(
+    private val snapRepository: SnapRepository,
+    private val snapCustomRepository: SnapCustomRepository
 ) {
-
-    fun save(snap: Snap): Snap {
-        return repository.save(snap)
-    }
 
     fun searchSnaps(
         queryFilter: SnapQueryFilter,
         pagination: Pagination,
         orderTypes: List<SnapOrderType>
     ): List<Snap> {
-        return customRepository.searchSnaps(
+        return snapCustomRepository.searchSnaps(
             booleanExpressions = queryFilter.toBooleanExpressions(),
             pagination = pagination,
             orderSpecifiers = orderTypes.toOrderSpecifiers()
@@ -35,12 +32,11 @@ class SnapRepositoryFacade(
     fun searchSnapsCount(
         queryFilter: SnapQueryFilter,
     ): Long {
-        return customRepository.searchSnapsCount(booleanExpressions = queryFilter.toBooleanExpressions())
+        return snapCustomRepository.searchSnapsCount(booleanExpressions = queryFilter.toBooleanExpressions())
     }
 
-    @Throws(DataNotFoundException::class)
     fun findById(id: Long): Snap {
-        return repository.findByIdAndIsDeletedFalse(id = id) ?: throw DataNotFoundException(
+        return snapRepository.findByIdAndIsDeletedFalse(id = id) ?: throw DataNotFoundException(
             errorCode = ErrorCode.SNAP_NOT_FOUND,
             message = ErrorCode.SNAP_NOT_FOUND.defaultMessage
         )

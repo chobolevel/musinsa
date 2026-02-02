@@ -10,9 +10,9 @@ import com.musinsa.snap.dto.SnapCommentResponse
 import com.musinsa.snap.dto.UpdateSnapCommentRequest
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapComment
+import com.musinsa.snap.reader.SnapReader
 import com.musinsa.snap.repository.SnapCommentQueryFilter
 import com.musinsa.snap.repository.SnapCommentRepositoryFacade
-import com.musinsa.snap.repository.SnapRepositoryFacade
 import com.musinsa.snap.service.impl.SnapCommentServiceV1
 import com.musinsa.snap.updater.SnapCommentUpdater
 import com.musinsa.snap.validator.SnapCommentBusinessValidator
@@ -50,7 +50,7 @@ class SnapCommentServiceV1Test {
     private lateinit var userRepository: UserRepositoryFacade
 
     @Mock
-    private lateinit var snapRepository: SnapRepositoryFacade
+    private lateinit var snapReader: SnapReader
 
     @Mock
     private lateinit var converter: SnapCommentConverter
@@ -76,7 +76,7 @@ class SnapCommentServiceV1Test {
         `when`(converter.toEntity(request = dummyRequest)).thenReturn(dummySnapComment)
         `when`(repository.findById(id = dummyRequest.parentId!!)).thenReturn(dummyParentSnapComment)
         `when`(userRepository.findById(id = dummyUserId)).thenReturn(dummyUser)
-        `when`(snapRepository.findById(id = dummySnapId)).thenReturn(dummySnap)
+        `when`(snapReader.findById(id = dummySnapId)).thenReturn(dummySnap)
         `when`(
             assembler.assemble(
                 snapComment = dummySnapComment,
