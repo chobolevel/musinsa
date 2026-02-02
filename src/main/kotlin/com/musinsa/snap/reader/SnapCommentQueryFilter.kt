@@ -1,6 +1,6 @@
-package com.musinsa.snap.repository
+package com.musinsa.snap.reader
 
-import com.musinsa.snap.entity.QSnapComment.snapComment
+import com.musinsa.snap.entity.QSnapComment
 import com.querydsl.core.types.dsl.BooleanExpression
 
 class SnapCommentQueryFilter(
@@ -10,9 +10,9 @@ class SnapCommentQueryFilter(
 
     fun toBooleanExpressions(): Array<BooleanExpression> {
         return listOfNotNull(
-            snapId?.let { snapComment.snap.id.eq(it) },
-            userId?.let { snapComment.writer.id.eq(it) },
-            snapComment.isDeleted.isFalse
+            snapId?.let { QSnapComment.snapComment.snap.id.eq(it) },
+            userId?.let { QSnapComment.snapComment.writer.id.eq(it) },
+            QSnapComment.snapComment.isDeleted.isFalse
         ).toTypedArray()
     }
 }

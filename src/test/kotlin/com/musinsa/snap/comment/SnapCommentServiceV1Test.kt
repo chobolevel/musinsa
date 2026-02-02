@@ -10,10 +10,11 @@ import com.musinsa.snap.dto.SnapCommentResponse
 import com.musinsa.snap.dto.UpdateSnapCommentRequest
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapComment
+import com.musinsa.snap.reader.SnapCommentQueryFilter
+import com.musinsa.snap.reader.SnapCommentReader
 import com.musinsa.snap.reader.SnapReader
-import com.musinsa.snap.repository.SnapCommentQueryFilter
-import com.musinsa.snap.repository.SnapCommentRepositoryFacade
 import com.musinsa.snap.service.impl.SnapCommentServiceV1
+import com.musinsa.snap.store.SnapCommentStore
 import com.musinsa.snap.updater.SnapCommentUpdater
 import com.musinsa.snap.validator.SnapCommentBusinessValidator
 import com.musinsa.snap.vo.SnapCommentOrderType
@@ -44,7 +45,10 @@ class SnapCommentServiceV1Test {
     private val dummySnapCommentResponse: SnapCommentResponse = DummySnapComment.toResponse()
 
     @Mock
-    private lateinit var repository: SnapCommentRepositoryFacade
+    private lateinit var snapCommentStore: SnapCommentStore
+
+    @Mock
+    private lateinit var snapCommentReader: SnapCommentReader
 
     @Mock
     private lateinit var userRepository: UserRepositoryFacade
@@ -74,7 +78,7 @@ class SnapCommentServiceV1Test {
         val dummySnapId: Long = dummySnap.id!!
         val dummyRequest: CreateSnapCommentRequest = DummySnapComment.toCreateRequest()
         `when`(converter.toEntity(request = dummyRequest)).thenReturn(dummySnapComment)
-        `when`(repository.findById(id = dummyRequest.parentId!!)).thenReturn(dummyParentSnapComment)
+        `when`(snapCommentReader.findById(id = dummyRequest.parentId!!)).thenReturn(dummyParentSnapComment)
         `when`(userRepository.findById(id = dummyUserId)).thenReturn(dummyUser)
         `when`(snapReader.findById(id = dummySnapId)).thenReturn(dummySnap)
         `when`(
@@ -85,7 +89,7 @@ class SnapCommentServiceV1Test {
                 writer = dummyUser
             )
         ).thenReturn(dummySnapComment)
-        `when`(repository.save(snapComment = dummySnapComment)).thenReturn(dummySnapComment)
+        `when`(snapCommentStore.save(snapComment = dummySnapComment)).thenReturn(dummySnapComment)
 
         // when
         val result: Long = service.createSnapComment(
@@ -113,14 +117,14 @@ class SnapCommentServiceV1Test {
         val dummySnapComments: List<SnapComment> = listOf(dummySnapComment)
         val dummySnapCommentResponses: List<SnapCommentResponse> = listOf(dummySnapCommentResponse)
         `when`(
-            repository.searchSnapComments(
+            snapCommentReader.searchSnapComments(
                 queryFilter = dummyQueryFilter,
                 pagination = dummyPagination,
                 orderTypes = dummyOrderTypes
             )
         ).thenReturn(dummySnapComments)
         `when`(
-            repository.searchSnapCommentsCount(
+            snapCommentReader.searchSnapCommentsCount(
                 queryFilter = dummyQueryFilter,
             )
         ).thenReturn(dummySnapComments.size.toLong())
@@ -144,7 +148,7 @@ class SnapCommentServiceV1Test {
     fun getSnapCommentTest() {
         // given
         val dummySnapCommentId: Long = dummySnapComment.id!!
-        `when`(repository.findById(id = dummySnapCommentId)).thenReturn(dummySnapComment)
+        `when`(snapCommentReader.findById(id = dummySnapCommentId)).thenReturn(dummySnapComment)
         `when`(converter.toResponse(snapComment = dummySnapComment)).thenReturn(dummySnapCommentResponse)
 
         // when
@@ -161,7 +165,7 @@ class SnapCommentServiceV1Test {
         val dummySnapCommentId: Long = dummySnapComment.id!!
         val dummyRequest: UpdateSnapCommentRequest = DummySnapComment.toUpdateRequest()
         dummySnapComment.assignWriter(user = dummyUser)
-        `when`(repository.findById(id = dummySnapCommentId)).thenReturn(dummySnapComment)
+        `when`(snapCommentReader.findById(id = dummySnapCommentId)).thenReturn(dummySnapComment)
         `when`(
             updater.markAsUpdate(
                 request = dummyRequest,
@@ -186,7 +190,7 @@ class SnapCommentServiceV1Test {
         val dummyUserId: Long = dummyUser.id!!
         val dummySnapCommentId: Long = dummySnapComment.id!!
         dummySnapComment.assignWriter(user = dummyUser)
-        `when`(repository.findById(id = dummySnapCommentId)).thenReturn(dummySnapComment)
+        `when`(snapCommentReader.findById(id = dummySnapCommentId)).thenReturn(dummySnapComment)
 
         // when
         val result: Boolean = service.deleteSnapComment(

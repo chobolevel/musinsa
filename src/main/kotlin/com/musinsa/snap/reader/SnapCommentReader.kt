@@ -1,31 +1,27 @@
-package com.musinsa.snap.repository
+package com.musinsa.snap.reader
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.exception.DataNotFoundException
 import com.musinsa.common.exception.ErrorCode
 import com.musinsa.snap.entity.QSnapComment.snapComment
 import com.musinsa.snap.entity.SnapComment
+import com.musinsa.snap.repository.SnapCommentCustomRepository
+import com.musinsa.snap.repository.SnapCommentRepository
 import com.musinsa.snap.vo.SnapCommentOrderType
 import com.querydsl.core.types.OrderSpecifier
 import org.springframework.stereotype.Component
-import kotlin.jvm.Throws
 
 @Component
-class SnapCommentRepositoryFacade(
-    private val repository: SnapCommentRepository,
-    private val customRepository: SnapCommentCustomRepository
+class SnapCommentReader(
+    private val snapCommentRepository: SnapCommentRepository,
+    private val snapCommentCustomRepository: SnapCommentCustomRepository
 ) {
-
-    fun save(snapComment: SnapComment): SnapComment {
-        return repository.save(snapComment)
-    }
-
     fun searchSnapComments(
         queryFilter: SnapCommentQueryFilter,
         pagination: Pagination,
         orderTypes: List<SnapCommentOrderType>
     ): List<SnapComment> {
-        return customRepository.searchSnapComments(
+        return snapCommentCustomRepository.searchSnapComments(
             booleanExpressions = queryFilter.toBooleanExpressions(),
             pagination = pagination,
             orderSpecifiers = orderTypes.toOrderSpecifiers()
@@ -35,14 +31,13 @@ class SnapCommentRepositoryFacade(
     fun searchSnapCommentsCount(
         queryFilter: SnapCommentQueryFilter,
     ): Long {
-        return customRepository.searchSnapCommentsCount(
+        return snapCommentCustomRepository.searchSnapCommentsCount(
             booleanExpressions = queryFilter.toBooleanExpressions(),
         )
     }
 
-    @Throws(DataNotFoundException::class)
     fun findById(id: Long): SnapComment {
-        return repository.findByIdAndIsDeletedFalse(id = id) ?: throw DataNotFoundException(
+        return snapCommentRepository.findByIdAndIsDeletedFalse(id = id) ?: throw DataNotFoundException(
             errorCode = ErrorCode.SNAP_COMMENT_NOT_FOUND,
             message = ErrorCode.SNAP_COMMENT_NOT_FOUND.defaultMessage
         )

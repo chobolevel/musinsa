@@ -5,7 +5,7 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.dto.CreateSnapCommentRequest
 import com.musinsa.snap.dto.SnapCommentResponse
 import com.musinsa.snap.dto.UpdateSnapCommentRequest
-import com.musinsa.snap.repository.SnapCommentQueryFilter
+import com.musinsa.snap.reader.SnapCommentQueryFilter
 import com.musinsa.snap.vo.SnapCommentOrderType
 
 interface SnapCommentService {

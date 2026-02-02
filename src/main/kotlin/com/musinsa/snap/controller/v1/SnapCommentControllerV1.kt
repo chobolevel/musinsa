@@ -8,7 +8,7 @@ import com.musinsa.common.extension.getUserId
 import com.musinsa.snap.dto.CreateSnapCommentRequest
 import com.musinsa.snap.dto.SnapCommentResponse
 import com.musinsa.snap.dto.UpdateSnapCommentRequest
-import com.musinsa.snap.repository.SnapCommentQueryFilter
+import com.musinsa.snap.reader.SnapCommentQueryFilter
 import com.musinsa.snap.service.SnapCommentService
 import com.musinsa.snap.validator.SnapCommentParameterValidator
 import com.musinsa.snap.vo.SnapCommentOrderType

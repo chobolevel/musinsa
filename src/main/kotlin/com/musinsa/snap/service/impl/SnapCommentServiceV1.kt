@@ -9,10 +9,11 @@ import com.musinsa.snap.dto.SnapCommentResponse
 import com.musinsa.snap.dto.UpdateSnapCommentRequest
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapComment
+import com.musinsa.snap.reader.SnapCommentQueryFilter
+import com.musinsa.snap.reader.SnapCommentReader
 import com.musinsa.snap.reader.SnapReader
-import com.musinsa.snap.repository.SnapCommentQueryFilter
-import com.musinsa.snap.repository.SnapCommentRepositoryFacade
 import com.musinsa.snap.service.SnapCommentService
+import com.musinsa.snap.store.SnapCommentStore
 import com.musinsa.snap.updater.SnapCommentUpdater
 import com.musinsa.snap.validator.SnapCommentBusinessValidator
 import com.musinsa.snap.vo.SnapCommentOrderType
@@ -23,7 +24,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class SnapCommentServiceV1(
-    private val repository: SnapCommentRepositoryFacade,
+    private val snapCommentStore: SnapCommentStore,
+    private val snapCommentReader: SnapCommentReader,
     private val userRepository: UserRepositoryFacade,
     private val snapReader: SnapReader,
     private val converter: SnapCommentConverter,
@@ -40,7 +42,7 @@ class SnapCommentServiceV1(
     ): Long {
         val baseSnapComment: SnapComment = converter.toEntity(request = request)
         val parentSnapComment: SnapComment? = request.parentId?.let { parentId ->
-            repository.findById(id = parentId)
+            snapCommentReader.findById(id = parentId)
         }
         val user: User = userRepository.findById(id = userId)
         val snap: Snap = snapReader.findById(id = snapId)
@@ -52,7 +54,7 @@ class SnapCommentServiceV1(
             writer = user,
         )
 
-        return repository.save(snapComment = snapComment).id!!
+        return snapCommentStore.save(snapComment = snapComment).id!!
     }
 
     @Transactional(readOnly = true)
@@ -61,12 +63,12 @@ class SnapCommentServiceV1(
         pagination: Pagination,
         orderTypes: List<SnapCommentOrderType>
     ): PaginationResponse {
-        val snapComments: List<SnapComment> = repository.searchSnapComments(
+        val snapComments: List<SnapComment> = snapCommentReader.searchSnapComments(
             queryFilter = queryFilter,
             pagination = pagination,
             orderTypes = orderTypes
         )
-        val totalCount: Long = repository.searchSnapCommentsCount(queryFilter = queryFilter)
+        val totalCount: Long = snapCommentReader.searchSnapCommentsCount(queryFilter = queryFilter)
         return PaginationResponse(
             page = pagination.page,
             size = pagination.size,
@@ -77,7 +79,7 @@ class SnapCommentServiceV1(
 
     @Transactional(readOnly = true)
     override fun getSnapComment(snapCommentId: Long): SnapCommentResponse {
-        val snapComment: SnapComment = repository.findById(id = snapCommentId)
+        val snapComment: SnapComment = snapCommentReader.findById(id = snapCommentId)
         return converter.toResponse(snapComment = snapComment)
     }
 
@@ -87,7 +89,7 @@ class SnapCommentServiceV1(
         snapCommentId: Long,
         request: UpdateSnapCommentRequest
     ): Long {
-        val snapComment: SnapComment = repository.findById(id = snapCommentId)
+        val snapComment: SnapComment = snapCommentReader.findById(id = snapCommentId)
         validator.validateWriter(
             userId = userId,
             snapComment = snapComment,
@@ -101,7 +103,7 @@ class SnapCommentServiceV1(
 
     @Transactional
     override fun deleteSnapComment(userId: Long, snapCommentId: Long): Boolean {
-        val snapComment: SnapComment = repository.findById(id = snapCommentId)
+        val snapComment: SnapComment = snapCommentReader.findById(id = snapCommentId)
         validator.validateWriter(
             userId = userId,
             snapComment = snapComment,
