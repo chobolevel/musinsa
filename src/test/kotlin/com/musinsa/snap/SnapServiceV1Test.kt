@@ -14,7 +14,7 @@ import com.musinsa.snap.entity.SnapTag
 import com.musinsa.snap.image.DummySnapImage
 import com.musinsa.snap.reader.SnapQueryFilter
 import com.musinsa.snap.reader.SnapReader
-import com.musinsa.snap.repository.SnapTagRepositoryFacade
+import com.musinsa.snap.reader.SnapTagReader
 import com.musinsa.snap.service.impl.SnapServiceV1
 import com.musinsa.snap.store.SnapStore
 import com.musinsa.snap.tag.DummySnapTag
@@ -57,10 +57,10 @@ class SnapServiceV1Test {
     private lateinit var userRepository: UserRepositoryFacade
 
     @Mock
-    private lateinit var snapTagRepository: SnapTagRepositoryFacade
+    private lateinit var snapReader: SnapReader
 
     @Mock
-    private lateinit var snapReader: SnapReader
+    private lateinit var snapTagReader: SnapTagReader
 
     @Mock
     private lateinit var snapStore: SnapStore
@@ -87,7 +87,7 @@ class SnapServiceV1Test {
         `when`(converter.toEntity(request = dummyRequest)).thenReturn(dummySnap)
         `when`(snapImageConverter.toEntityInBatch(requests = dummyRequest.snapImages)).thenReturn(dummySnapImages)
         `when`(userRepository.findById(id = dummyUserId)).thenReturn(dummyUser)
-        `when`(snapTagRepository.findByIds(ids = dummyRequest.snapTagIds)).thenReturn(dummySnapTags)
+        `when`(snapTagReader.findByIds(ids = dummyRequest.snapTagIds)).thenReturn(dummySnapTags)
         `when`(
             assembler.assemble(
                 snap = dummySnap,

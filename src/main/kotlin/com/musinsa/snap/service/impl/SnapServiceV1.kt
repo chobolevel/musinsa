@@ -13,7 +13,7 @@ import com.musinsa.snap.entity.SnapImage
 import com.musinsa.snap.entity.SnapTag
 import com.musinsa.snap.reader.SnapQueryFilter
 import com.musinsa.snap.reader.SnapReader
-import com.musinsa.snap.repository.SnapTagRepositoryFacade
+import com.musinsa.snap.reader.SnapTagReader
 import com.musinsa.snap.service.SnapService
 import com.musinsa.snap.store.SnapStore
 import com.musinsa.snap.updater.SnapUpdater
@@ -29,8 +29,8 @@ class SnapServiceV1(
     private val converter: SnapConverter,
     private val snapImageConverter: SnapImageConverter,
     private val userRepository: UserRepositoryFacade,
-    private val snapTagRepository: SnapTagRepositoryFacade,
     private val snapReader: SnapReader,
+    private val snapTagReader: SnapTagReader,
     private val snapStore: SnapStore,
     private val assembler: SnapAssembler,
     private val validator: SnapBusinessValidator,
@@ -41,7 +41,7 @@ class SnapServiceV1(
     override fun createSnap(userId: Long, request: CreateSnapRequest): Long {
         val baseSnap: Snap = converter.toEntity(request = request)
         val user: User = userRepository.findById(id = userId)
-        val snapTags: List<SnapTag> = snapTagRepository.findByIds(ids = request.snapTagIds)
+        val snapTags: List<SnapTag> = snapTagReader.findByIds(ids = request.snapTagIds)
         val snapImages: List<SnapImage> = snapImageConverter.toEntityInBatch(requests = request.snapImages)
 
         val snap: Snap = assembler.assemble(

@@ -5,7 +5,7 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.snap.dto.CreateSnapTagRequest
 import com.musinsa.snap.dto.SnapTagResponse
 import com.musinsa.snap.dto.UpdateSnapTagRequest
-import com.musinsa.snap.repository.SnapTagQueryFilter
+import com.musinsa.snap.reader.SnapTagQueryFilter
 import com.musinsa.snap.vo.SnapTagOrderType
 
 interface SnapTagService {

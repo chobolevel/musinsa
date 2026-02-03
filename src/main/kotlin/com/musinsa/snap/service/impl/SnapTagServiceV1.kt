@@ -7,9 +7,10 @@ import com.musinsa.snap.dto.CreateSnapTagRequest
 import com.musinsa.snap.dto.SnapTagResponse
 import com.musinsa.snap.dto.UpdateSnapTagRequest
 import com.musinsa.snap.entity.SnapTag
-import com.musinsa.snap.repository.SnapTagQueryFilter
-import com.musinsa.snap.repository.SnapTagRepositoryFacade
+import com.musinsa.snap.reader.SnapTagQueryFilter
+import com.musinsa.snap.reader.SnapTagReader
 import com.musinsa.snap.service.SnapTagService
+import com.musinsa.snap.store.SnapTagStore
 import com.musinsa.snap.updater.SnapTagUpdater
 import com.musinsa.snap.vo.SnapTagOrderType
 import org.springframework.stereotype.Service
@@ -17,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class SnapTagServiceV1(
-    private val repository: SnapTagRepositoryFacade,
+    private val snapTagStore: SnapTagStore,
+    private val snapTagReader: SnapTagReader,
     private val converter: SnapTagConverter,
     private val updater: SnapTagUpdater
 ) : SnapTagService {
@@ -25,7 +27,7 @@ class SnapTagServiceV1(
     @Transactional
     override fun createSnapTag(request: CreateSnapTagRequest): Long {
         val snapTag: SnapTag = converter.toEntity(request = request)
-        return repository.save(snapTag = snapTag).id!!
+        return snapTagStore.save(snapTag = snapTag).id!!
     }
 
     override fun getSnapTags(
@@ -33,12 +35,12 @@ class SnapTagServiceV1(
         pagination: Pagination,
         orderTypes: List<SnapTagOrderType>
     ): PaginationResponse {
-        val snapTags: List<SnapTag> = repository.searchSnapTags(
+        val snapTags: List<SnapTag> = snapTagReader.searchSnapTags(
             queryFilter = queryFilter,
             pagination = pagination,
             orderTypes = orderTypes
         )
-        val totalCount: Long = repository.searchSnapTagsCount(
+        val totalCount: Long = snapTagReader.searchSnapTagsCount(
             queryFilter = queryFilter,
         )
         return PaginationResponse(
@@ -50,7 +52,7 @@ class SnapTagServiceV1(
     }
 
     override fun getSnapTag(id: Long): SnapTagResponse {
-        val snapTag: SnapTag = repository.findById(id = id)
+        val snapTag: SnapTag = snapTagReader.findById(id = id)
         return converter.toResponse(snapTag)
     }
 
@@ -59,14 +61,14 @@ class SnapTagServiceV1(
         snapTagId: Long,
         request: UpdateSnapTagRequest
     ): Long {
-        val snapTag: SnapTag = repository.findById(id = snapTagId)
+        val snapTag: SnapTag = snapTagReader.findById(id = snapTagId)
         updater.markAsUpdate(request = request, entity = snapTag)
         return snapTagId
     }
 
     @Transactional
     override fun deleteSnapTag(snapTagId: Long): Boolean {
-        val snapTag: SnapTag = repository.findById(id = snapTagId)
+        val snapTag: SnapTag = snapTagReader.findById(id = snapTagId)
         snapTag.delete()
         return snapTag.isDeleted
     }

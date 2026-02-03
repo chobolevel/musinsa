@@ -7,9 +7,10 @@ import com.musinsa.snap.dto.CreateSnapTagRequest
 import com.musinsa.snap.dto.SnapTagResponse
 import com.musinsa.snap.dto.UpdateSnapTagRequest
 import com.musinsa.snap.entity.SnapTag
-import com.musinsa.snap.repository.SnapTagQueryFilter
-import com.musinsa.snap.repository.SnapTagRepositoryFacade
+import com.musinsa.snap.reader.SnapTagQueryFilter
+import com.musinsa.snap.reader.SnapTagReader
 import com.musinsa.snap.service.impl.SnapTagServiceV1
+import com.musinsa.snap.store.SnapTagStore
 import com.musinsa.snap.updater.SnapTagUpdater
 import com.musinsa.snap.vo.SnapTagOrderType
 import org.assertj.core.api.Assertions.assertThat
@@ -30,7 +31,10 @@ class SnapTagServiceV1Test {
     private val dummySnapTagResponse: SnapTagResponse = DummySnapTag.toResponse()
 
     @Mock
-    private lateinit var repository: SnapTagRepositoryFacade
+    private lateinit var snapTagStore: SnapTagStore
+
+    @Mock
+    private lateinit var snapTagReader: SnapTagReader
 
     @Mock
     private lateinit var converter: SnapTagConverter
@@ -46,7 +50,7 @@ class SnapTagServiceV1Test {
         // given
         val dummyRequest: CreateSnapTagRequest = DummySnapTag.toCreateRequest()
         `when`(converter.toEntity(request = dummyRequest)).thenReturn(dummySnapTag)
-        `when`(repository.save(snapTag = dummySnapTag)).thenReturn(dummySnapTag)
+        `when`(snapTagStore.save(snapTag = dummySnapTag)).thenReturn(dummySnapTag)
 
         // when
         val result: Long = service.createSnapTag(request = dummyRequest)
@@ -69,14 +73,14 @@ class SnapTagServiceV1Test {
         val dummySnapTags: List<SnapTag> = listOf(dummySnapTag)
         val dummySnapTagResponses: List<SnapTagResponse> = listOf(dummySnapTagResponse)
         `when`(
-            repository.searchSnapTags(
+            snapTagReader.searchSnapTags(
                 queryFilter = queryFilter,
                 pagination = pagination,
                 orderTypes = orderTypes
             )
         ).thenReturn(dummySnapTags)
         `when`(
-            repository.searchSnapTagsCount(
+            snapTagReader.searchSnapTagsCount(
                 queryFilter = queryFilter,
             )
         ).thenReturn(dummySnapTags.size.toLong())
@@ -100,7 +104,7 @@ class SnapTagServiceV1Test {
     fun getSnapTagTest() {
         // given
         val dummySnapTagId: Long = dummySnapTag.id!!
-        `when`(repository.findById(id = dummySnapTagId)).thenReturn(dummySnapTag)
+        `when`(snapTagReader.findById(id = dummySnapTagId)).thenReturn(dummySnapTag)
         `when`(converter.toResponse(entity = dummySnapTag)).thenReturn(dummySnapTagResponse)
 
         // when
@@ -115,7 +119,7 @@ class SnapTagServiceV1Test {
         // given
         val dummySnapTagId: Long = dummySnapTag.id!!
         val request: UpdateSnapTagRequest = DummySnapTag.toUpdateRequest()
-        `when`(repository.findById(id = dummySnapTagId)).thenReturn(dummySnapTag)
+        `when`(snapTagReader.findById(id = dummySnapTagId)).thenReturn(dummySnapTag)
         `when`(updater.markAsUpdate(request = request, entity = dummySnapTag)).thenReturn(dummySnapTag)
 
         // when
@@ -129,7 +133,7 @@ class SnapTagServiceV1Test {
     fun deleteSnapTagTest() {
         // given
         val dummySnapTagId: Long = dummySnapTag.id!!
-        `when`(repository.findById(id = dummySnapTagId)).thenReturn(dummySnapTag)
+        `when`(snapTagReader.findById(id = dummySnapTagId)).thenReturn(dummySnapTag)
 
         // when
         val result: Boolean = service.deleteSnapTag(snapTagId = dummySnapTagId)

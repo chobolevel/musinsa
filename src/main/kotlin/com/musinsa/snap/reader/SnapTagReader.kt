@@ -1,31 +1,28 @@
-package com.musinsa.snap.repository
+package com.musinsa.snap.reader
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.exception.DataNotFoundException
 import com.musinsa.common.exception.ErrorCode
 import com.musinsa.snap.entity.QSnapTag.snapTag
 import com.musinsa.snap.entity.SnapTag
+import com.musinsa.snap.repository.SnapTagCustomRepository
+import com.musinsa.snap.repository.SnapTagRepository
 import com.musinsa.snap.vo.SnapTagOrderType
 import com.querydsl.core.types.OrderSpecifier
 import org.springframework.stereotype.Component
-import kotlin.jvm.Throws
 
 @Component
-class SnapTagRepositoryFacade(
-    private val repository: SnapTagRepository,
-    private val customRepository: SnapTagCustomRepository
+class SnapTagReader(
+    private val snapTagRepository: SnapTagRepository,
+    private val snapTagCustomRepository: SnapTagCustomRepository
 ) {
-
-    fun save(snapTag: SnapTag): SnapTag {
-        return repository.save(snapTag)
-    }
 
     fun searchSnapTags(
         queryFilter: SnapTagQueryFilter,
         pagination: Pagination,
         orderTypes: List<SnapTagOrderType>
     ): List<SnapTag> {
-        return customRepository.searchSnapTags(
+        return snapTagCustomRepository.searchSnapTags(
             booleanExpressions = queryFilter.toBooleanExpressions(),
             pagination = pagination,
             orderSpecifiers = orderTypes.toOrderSpecifiers()
@@ -33,16 +30,15 @@ class SnapTagRepositoryFacade(
     }
 
     fun searchSnapTagsCount(queryFilter: SnapTagQueryFilter): Long {
-        return customRepository.searchSnapTagsCount(booleanExpressions = queryFilter.toBooleanExpressions())
+        return snapTagCustomRepository.searchSnapTagsCount(booleanExpressions = queryFilter.toBooleanExpressions())
     }
 
     fun findByIds(ids: List<Long>): List<SnapTag> {
-        return repository.findByIdInAndIsDeletedFalse(ids = ids)
+        return snapTagRepository.findByIdInAndIsDeletedFalse(ids = ids)
     }
 
-    @Throws(DataNotFoundException::class)
     fun findById(id: Long): SnapTag {
-        return repository.findByIdAndIsDeletedFalse(id = id) ?: throw DataNotFoundException(
+        return snapTagRepository.findByIdAndIsDeletedFalse(id = id) ?: throw DataNotFoundException(
             errorCode = ErrorCode.SNAP_TAG_NOT_FOUND,
             message = ErrorCode.SNAP_TAG_NOT_FOUND.defaultMessage
         )

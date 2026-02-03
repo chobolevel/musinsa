@@ -7,7 +7,7 @@ import com.musinsa.snap.dto.UpdateSnapRequest
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapImage
 import com.musinsa.snap.entity.SnapTag
-import com.musinsa.snap.repository.SnapTagRepositoryFacade
+import com.musinsa.snap.reader.SnapTagReader
 import com.musinsa.snap.vo.SnapUpdateMask
 import org.springframework.stereotype.Component
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
 class SnapUpdater(
     private val snapImageUpdater: SnapImageUpdater,
     private val snapImageConverter: SnapImageConverter,
-    private val snapTagRepository: SnapTagRepositoryFacade
+    private val snapTagReader: SnapTagReader
 ) {
 
     fun markAsUpdate(request: UpdateSnapRequest, snap: Snap): Snap {
@@ -28,7 +28,7 @@ class SnapUpdater(
                     request.snapTagIds?.forEach { snapTagId ->
                         val savedSnapTag: SnapTag? = savedSnapTagMap[snapTagId]
                         if (savedSnapTag == null) {
-                            val snapTag: SnapTag = snapTagRepository.findById(id = snapTagId)
+                            val snapTag: SnapTag = snapTagReader.findById(id = snapTagId)
                             snap.addSnapTag(snapTag = snapTag)
                         }
                     }
