@@ -2,7 +2,7 @@ package com.musinsa.snap.service
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
-import com.musinsa.snap.repository.SnapLikeQueryFilter
+import com.musinsa.snap.reader.SnapLikeQueryFilter
 import com.musinsa.snap.vo.SnapLikeOrderType
 
 interface SnapLikeService {

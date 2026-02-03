@@ -5,7 +5,7 @@ import com.musinsa.common.dto.CommonResponse
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.extension.getUserId
-import com.musinsa.snap.repository.SnapLikeQueryFilter
+import com.musinsa.snap.reader.SnapLikeQueryFilter
 import com.musinsa.snap.service.SnapLikeService
 import com.musinsa.snap.vo.SnapLikeOrderType
 import org.springframework.http.HttpStatus

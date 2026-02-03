@@ -8,10 +8,11 @@ import com.musinsa.snap.converter.SnapLikeConverter
 import com.musinsa.snap.dto.SnapLikeResponse
 import com.musinsa.snap.entity.Snap
 import com.musinsa.snap.entity.SnapLike
+import com.musinsa.snap.reader.SnapLikeQueryFilter
+import com.musinsa.snap.reader.SnapLikeReader
 import com.musinsa.snap.reader.SnapReader
-import com.musinsa.snap.repository.SnapLikeQueryFilter
-import com.musinsa.snap.repository.SnapLikeRepositoryFacade
 import com.musinsa.snap.service.impl.SnapLikeServiceV1
+import com.musinsa.snap.store.SnapLikeStore
 import com.musinsa.snap.vo.SnapLikeOrderType
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
@@ -38,7 +39,10 @@ class SnapLikeServiceV1Test {
     private val dummySnapLikeResponse: SnapLikeResponse = DummySnapLike.toResponse()
 
     @Mock
-    private lateinit var repository: SnapLikeRepositoryFacade
+    private lateinit var snapLikeStore: SnapLikeStore
+
+    @Mock
+    private lateinit var snapLikeReader: SnapLikeReader
 
     @Mock
     private lateinit var converter: SnapLikeConverter
@@ -70,14 +74,14 @@ class SnapLikeServiceV1Test {
         val dummySnapLikes: List<SnapLike> = listOf(dummySnapLike)
         val dummySnapLikeResponses: List<SnapLikeResponse> = listOf(dummySnapLikeResponse)
         `when`(
-            repository.searchSnapLikes(
+            snapLikeReader.searchSnapLikes(
                 queryFilter = dummyQueryFilter,
                 pagination = dummyPagination,
                 orderTypes = dummyOrderTypes
             )
         ).thenReturn(dummySnapLikes)
         `when`(
-            repository.searchSnapLikesCount(
+            snapLikeReader.searchSnapLikesCount(
                 queryFilter = dummyQueryFilter,
             )
         ).thenReturn(dummySnapLikes.size.toLong())
