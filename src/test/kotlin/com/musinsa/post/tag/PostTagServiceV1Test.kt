@@ -1,10 +1,16 @@
 package com.musinsa.post.tag
 
+import com.musinsa.common.dto.Pagination
+import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.post.converter.PostTagConverter
 import com.musinsa.post.dto.CreatePostTagRequest
+import com.musinsa.post.dto.PostTagResponse
 import com.musinsa.post.entity.PostTag
+import com.musinsa.post.reader.PostTagQueryFilter
+import com.musinsa.post.reader.PostTagReader
 import com.musinsa.post.service.impl.PostTagServiceV1
 import com.musinsa.post.store.PostTagStore
+import com.musinsa.post.vo.PostTagOrderType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
@@ -20,11 +26,16 @@ class PostTagServiceV1Test {
 
     private val dummyPostTag: PostTag = DummyPostTag.toEntity()
 
+    private val dummyPostTagResponse: PostTagResponse = DummyPostTag.toResponse()
+
+    @Mock
+    private lateinit var postTagConverter: PostTagConverter
+
     @Mock
     private lateinit var postTagStore: PostTagStore
 
     @Mock
-    private lateinit var postTagConverter: PostTagConverter
+    private lateinit var postTagReader: PostTagReader
 
     @InjectMocks
     private lateinit var postTagService: PostTagServiceV1
@@ -41,5 +52,46 @@ class PostTagServiceV1Test {
 
         // then
         assertThat(result).isEqualTo(dummyPostTag.id)
+    }
+
+    @Test
+    fun getPostTagsTest() {
+        // given
+        val dummyPostTags: List<PostTag> = listOf(dummyPostTag)
+        val dummyPostTagResponses: List<PostTagResponse> = listOf(dummyPostTagResponse)
+        val queryFilter = PostTagQueryFilter(
+            name = null
+        )
+        val pagination = Pagination(
+            page = 1,
+            size = 20
+        )
+        val orderTypes: List<PostTagOrderType> = emptyList()
+        `when`(
+            postTagReader.searchPostTags(
+                queryFilter = queryFilter,
+                pagination = pagination,
+                orderTypes = orderTypes
+            )
+        ).thenReturn(dummyPostTags)
+        `when`(
+            postTagReader.searchPostTagsCount(
+                queryFilter = queryFilter,
+            )
+        ).thenReturn(dummyPostTags.size.toLong())
+        `when`(postTagConverter.toResponseInBatch(postTags = dummyPostTags)).thenReturn(dummyPostTagResponses)
+
+        // when
+        val result: PaginationResponse = postTagService.getPostTags(
+            queryFilter = queryFilter,
+            pagination = pagination,
+            orderTypes = orderTypes
+        )
+
+        // then
+        assertThat(result.page).isEqualTo(pagination.page)
+        assertThat(result.size).isEqualTo(pagination.size)
+        assertThat(result.data).isEqualTo(dummyPostTagResponses)
+        assertThat(result.totalCount).isEqualTo(dummyPostTagResponses.size.toLong())
     }
 }

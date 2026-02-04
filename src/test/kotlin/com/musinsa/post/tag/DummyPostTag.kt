@@ -1,6 +1,7 @@
 package com.musinsa.post.tag
 
 import com.musinsa.post.dto.CreatePostTagRequest
+import com.musinsa.post.dto.PostTagResponse
 import com.musinsa.post.entity.PostTag
 
 object DummyPostTag {
@@ -17,6 +18,16 @@ object DummyPostTag {
         ).also { it.id = id }
     }
 
+    private val dummyPostTagResponse: PostTagResponse by lazy {
+        PostTagResponse(
+            id = id,
+            name = name,
+            sortOrder = sortOrder,
+            createdAt = createdAt,
+            updatedAt = updatedAt,
+        )
+    }
+
     private val dummyCreateRequest: CreatePostTagRequest by lazy {
         CreatePostTagRequest(
             name = name,
@@ -25,6 +36,8 @@ object DummyPostTag {
     }
 
     fun toEntity(): PostTag = dummyPostTag
+
+    fun toResponse(): PostTagResponse = dummyPostTagResponse
 
     fun toCreateRequest(): CreatePostTagRequest = dummyCreateRequest
 }
