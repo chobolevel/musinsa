@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/admin")
 class AdminPostTagController(
     private val postTagService: PostTagService,
-    tagService: PostTagService
 ) {
 
     @PostMapping("/post-tags")
