@@ -3,6 +3,7 @@ package com.musinsa.post.service
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.post.dto.CreatePostTagRequest
+import com.musinsa.post.dto.PostTagResponse
 import com.musinsa.post.reader.PostTagQueryFilter
 import com.musinsa.post.vo.PostTagOrderType
 
@@ -15,4 +16,6 @@ interface PostTagService {
         pagination: Pagination,
         orderTypes: List<PostTagOrderType>
     ): PaginationResponse
+
+    fun getPostTag(postTagId: Long): PostTagResponse
 }

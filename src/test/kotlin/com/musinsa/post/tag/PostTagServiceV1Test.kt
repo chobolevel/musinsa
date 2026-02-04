@@ -94,4 +94,18 @@ class PostTagServiceV1Test {
         assertThat(result.data).isEqualTo(dummyPostTagResponses)
         assertThat(result.totalCount).isEqualTo(dummyPostTagResponses.size.toLong())
     }
+
+    @Test
+    fun getPostTagTest() {
+        // given
+        val dummyPostTagId: Long = dummyPostTag.id!!
+        `when`(postTagReader.findById(id = dummyPostTagId)).thenReturn(dummyPostTag)
+        `when`(postTagConverter.toResponse(postTag = dummyPostTag)).thenReturn(dummyPostTagResponse)
+
+        // when
+        val result: PostTagResponse = postTagService.getPostTag(postTagId = dummyPostTagId)
+
+        // then
+        assertThat(result.id).isEqualTo(dummyPostTagId)
+    }
 }

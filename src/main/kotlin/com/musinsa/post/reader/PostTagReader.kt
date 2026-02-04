@@ -1,6 +1,8 @@
 package com.musinsa.post.reader
 
 import com.musinsa.common.dto.Pagination
+import com.musinsa.common.exception.DataNotFoundException
+import com.musinsa.common.exception.ErrorCode
 import com.musinsa.post.entity.PostTag
 import com.musinsa.post.entity.QPostTag.postTag
 import com.musinsa.post.repository.PostTagCustomRepository
@@ -30,6 +32,13 @@ class PostTagReader(
     fun searchPostTagsCount(queryFilter: PostTagQueryFilter): Long {
         return postTagCustomRepository.searchPostTagsCount(
             booleanExpressions = queryFilter.toBooleanExpressions(),
+        )
+    }
+
+    fun findById(id: Long): PostTag {
+        return postTagRepository.findByIdAndIsDeletedFalse(id) ?: throw DataNotFoundException(
+            errorCode = ErrorCode.POST_TAG_NOT_FOUND,
+            message = ErrorCode.POST_TAG_NOT_FOUND.defaultMessage
         )
     }
 

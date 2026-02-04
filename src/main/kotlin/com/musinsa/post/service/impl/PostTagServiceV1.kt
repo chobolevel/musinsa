@@ -4,6 +4,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.post.converter.PostTagConverter
 import com.musinsa.post.dto.CreatePostTagRequest
+import com.musinsa.post.dto.PostTagResponse
 import com.musinsa.post.entity.PostTag
 import com.musinsa.post.reader.PostTagQueryFilter
 import com.musinsa.post.reader.PostTagReader
@@ -44,5 +45,11 @@ class PostTagServiceV1(
             data = postTagConverter.toResponseInBatch(postTags = postTags),
             totalCount = totalCount
         )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getPostTag(postTagId: Long): PostTagResponse {
+        val postTag: PostTag = postTagReader.findById(id = postTagId)
+        return postTagConverter.toResponse(postTag = postTag)
     }
 }
