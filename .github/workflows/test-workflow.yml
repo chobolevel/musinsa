@@ -34,7 +34,7 @@ jobs:
     name: Lint
     steps:
       - name: Lint
-        run: ./gradlew ktlintMainSourceSetCheck
+        run: ./gradlew ktlintCheck
 
   unit-test:
     needs: [init, lint]
