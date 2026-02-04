@@ -4,10 +4,11 @@ on:
   pull_request:
     branches:
       - main
+
 jobs:
   init:
     runs-on: ubuntu-latest
-    name: Unit Test
+    name: Init Environment
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
