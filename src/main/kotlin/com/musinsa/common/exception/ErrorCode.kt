@@ -47,4 +47,7 @@ enum class ErrorCode(val defaultMessage: String) {
     // POST
     POST_NOT_FOUND("게시글을 찾을 수 없습니다."),
     ACCESSIBLE_ONLY_WRITER_ON_POST("게시글 작성자만 접근할 수 있습니다."),
+
+    // POST TAG
+    POST_TAG_NOT_FOUND("게시글 태그를 찾을 수 없습니다."),
 }
