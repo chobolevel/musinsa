@@ -13,6 +13,8 @@ import jakarta.persistence.Table
 class PostTag(
     @Column(nullable = false, length = 100)
     var name: String,
+    @Column(nullable = false)
+    var sortOrder: Int
 ) : BaseEntity() {
 
     @Id

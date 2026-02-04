@@ -9,7 +9,8 @@ class PostTagConverter {
 
     fun toEntity(request: CreatePostTagRequest): PostTag {
         return PostTag(
-            name = request.name
+            name = request.name,
+            sortOrder = request.sortOrder ?: 10,
         )
     }
 }
