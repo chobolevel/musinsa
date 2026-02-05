@@ -21,4 +21,6 @@ interface PostTagService {
     fun getPostTag(postTagId: Long): PostTagResponse
 
     fun updatePostTag(postTagId: Long, request: UpdatePostTagRequest): Long
+
+    fun deletePostTag(postTagId: Long): Boolean
 }

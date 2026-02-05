@@ -8,6 +8,7 @@ import com.musinsa.post.service.PostTagService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -42,6 +43,13 @@ class AdminPostTagController(
             postTagId = postTagId,
             request = request
         )
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
+
+    @DeleteMapping("/post-tags/{postTagId}")
+    @HasAuthorityAdmin
+    fun deletePostTag(@PathVariable postTagId: Long): ResponseEntity<CommonResponse> {
+        val result: Boolean = postTagService.deletePostTag(postTagId = postTagId)
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 }

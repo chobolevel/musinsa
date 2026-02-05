@@ -136,4 +136,17 @@ class PostTagServiceV1Test {
         // then
         assertThat(result).isEqualTo(dummyPostTagId)
     }
+
+    @Test
+    fun deletePostTagTest() {
+        // given
+        val dummyPostTagId: Long = dummyPostTag.id!!
+        `when`(postTagReader.findById(id = dummyPostTagId)).thenReturn(dummyPostTag)
+
+        // when
+        val result: Boolean = postTagService.deletePostTag(postTagId = dummyPostTagId)
+
+        // then
+        assertThat(result).isTrue
+    }
 }

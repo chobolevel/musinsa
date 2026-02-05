@@ -68,4 +68,11 @@ class PostTagServiceV1(
         )
         return postTagId
     }
+
+    @Transactional
+    override fun deletePostTag(postTagId: Long): Boolean {
+        val postTag: PostTag = postTagReader.findById(id = postTagId)
+        postTag.delete()
+        return true
+    }
 }
