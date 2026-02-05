@@ -5,11 +5,13 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.post.converter.PostTagConverter
 import com.musinsa.post.dto.CreatePostTagRequest
 import com.musinsa.post.dto.PostTagResponse
+import com.musinsa.post.dto.UpdatePostTagRequest
 import com.musinsa.post.entity.PostTag
 import com.musinsa.post.reader.PostTagQueryFilter
 import com.musinsa.post.reader.PostTagReader
 import com.musinsa.post.service.impl.PostTagServiceV1
 import com.musinsa.post.store.PostTagStore
+import com.musinsa.post.updater.PostTagUpdater
 import com.musinsa.post.vo.PostTagOrderType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -36,6 +38,9 @@ class PostTagServiceV1Test {
 
     @Mock
     private lateinit var postTagReader: PostTagReader
+
+    @Mock
+    private lateinit var postTagUpdater: PostTagUpdater
 
     @InjectMocks
     private lateinit var postTagService: PostTagServiceV1
@@ -107,5 +112,28 @@ class PostTagServiceV1Test {
 
         // then
         assertThat(result.id).isEqualTo(dummyPostTagId)
+    }
+
+    @Test
+    fun updatePostTagTest() {
+        // given
+        val dummyPostTagId: Long = dummyPostTag.id!!
+        val request: UpdatePostTagRequest = DummyPostTag.toUpdateRequest()
+        `when`(postTagReader.findById(id = dummyPostTagId)).thenReturn(dummyPostTag)
+        `when`(
+            postTagUpdater.markAsUpdate(
+                request = request,
+                postTag = dummyPostTag
+            )
+        ).thenReturn(dummyPostTag)
+
+        // when
+        val result: Long = postTagService.updatePostTag(
+            postTagId = dummyPostTagId,
+            request = request
+        )
+
+        // then
+        assertThat(result).isEqualTo(dummyPostTagId)
     }
 }
