@@ -5,11 +5,13 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.post.converter.PostTagConverter
 import com.musinsa.post.dto.CreatePostTagRequest
 import com.musinsa.post.dto.PostTagResponse
+import com.musinsa.post.dto.UpdatePostTagRequest
 import com.musinsa.post.entity.PostTag
 import com.musinsa.post.reader.PostTagQueryFilter
 import com.musinsa.post.reader.PostTagReader
 import com.musinsa.post.service.PostTagService
 import com.musinsa.post.store.PostTagStore
+import com.musinsa.post.updater.PostTagUpdater
 import com.musinsa.post.vo.PostTagOrderType
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -18,7 +20,8 @@ import org.springframework.transaction.annotation.Transactional
 class PostTagServiceV1(
     private val postTagConverter: PostTagConverter,
     private val postTagStore: PostTagStore,
-    private val postTagReader: PostTagReader
+    private val postTagReader: PostTagReader,
+    private val postTagUpdater: PostTagUpdater
 ) : PostTagService {
 
     @Transactional
@@ -51,5 +54,25 @@ class PostTagServiceV1(
     override fun getPostTag(postTagId: Long): PostTagResponse {
         val postTag: PostTag = postTagReader.findById(id = postTagId)
         return postTagConverter.toResponse(postTag = postTag)
+    }
+
+    @Transactional
+    override fun updatePostTag(
+        postTagId: Long,
+        request: UpdatePostTagRequest
+    ): Long {
+        val postTag: PostTag = postTagReader.findById(id = postTagId)
+        postTagUpdater.markAsUpdate(
+            request = request,
+            postTag = postTag,
+        )
+        return postTagId
+    }
+
+    @Transactional
+    override fun deletePostTag(postTagId: Long): Boolean {
+        val postTag: PostTag = postTagReader.findById(id = postTagId)
+        postTag.delete()
+        return true
     }
 }

@@ -2,7 +2,9 @@ package com.musinsa.post.tag
 
 import com.musinsa.post.dto.CreatePostTagRequest
 import com.musinsa.post.dto.PostTagResponse
+import com.musinsa.post.dto.UpdatePostTagRequest
 import com.musinsa.post.entity.PostTag
+import com.musinsa.post.vo.PostTagUpdateMask
 
 object DummyPostTag {
     private const val id: Long = 1L
@@ -35,9 +37,19 @@ object DummyPostTag {
         )
     }
 
+    private val dummyUpdateRequest: UpdatePostTagRequest by lazy {
+        UpdatePostTagRequest(
+            name = "Kotlin",
+            sortOrder = null,
+            updateMask = listOf(PostTagUpdateMask.NAME)
+        )
+    }
+
     fun toEntity(): PostTag = dummyPostTag
 
     fun toResponse(): PostTagResponse = dummyPostTagResponse
 
     fun toCreateRequest(): CreatePostTagRequest = dummyCreateRequest
+
+    fun toUpdateRequest(): UpdatePostTagRequest = dummyUpdateRequest
 }
