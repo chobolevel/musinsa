@@ -5,6 +5,7 @@ import com.musinsa.common.dto.CommonResponse
 import com.musinsa.post.dto.CreatePostTagRequest
 import com.musinsa.post.dto.UpdatePostTagRequest
 import com.musinsa.post.service.PostTagService
+import com.musinsa.post.validator.PostTagParameterValidator
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/admin")
 class AdminPostTagController(
     private val postTagService: PostTagService,
+    private val postTagParameterValidator: PostTagParameterValidator,
 ) {
 
     @PostMapping("/post-tags")
@@ -39,6 +41,7 @@ class AdminPostTagController(
         @Valid @RequestBody
         request: UpdatePostTagRequest
     ): ResponseEntity<CommonResponse> {
+        postTagParameterValidator.validate(request = request)
         val result: Long = postTagService.updatePostTag(
             postTagId = postTagId,
             request = request
