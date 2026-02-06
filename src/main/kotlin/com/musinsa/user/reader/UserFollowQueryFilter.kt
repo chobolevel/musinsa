@@ -1,6 +1,6 @@
-package com.musinsa.user.entity.follow
+package com.musinsa.user.reader
 
-import com.musinsa.user.entity.follow.QUserFollow.userFollow
+import com.musinsa.user.entity.QUserFollow.userFollow
 import com.querydsl.core.types.dsl.BooleanExpression
 
 class UserFollowQueryFilter(

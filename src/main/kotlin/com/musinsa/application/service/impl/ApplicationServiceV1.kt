@@ -17,21 +17,21 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.exception.ErrorCode
 import com.musinsa.common.exception.PolicyViolationException
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.reader.UserReader
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ApplicationServiceV1(
     private val repository: ApplicationRepositoryFacade,
-    private val userRepository: UserRepositoryFacade,
+    private val userReader: UserReader,
     private val converter: ApplicationConverter,
     private val updater: ApplicationUpdater
 ) : ApplicationService {
 
     @Transactional
     override fun createApplication(userId: Long, request: CreateApplicationRequest): Long {
-        val user: User = userRepository.findById(id = userId)
+        val user: User = userReader.findById(id = userId)
         val application: Application = converter.toEntity(request = request)
         application.addMember(
             user = user,
@@ -102,7 +102,7 @@ class ApplicationServiceV1(
                 message = ErrorCode.ACCESSIBLE_ONLY_OWNER_MEMBER_ON_APPLICATION.defaultMessage
             )
         }
-        val userToAdd: User = userRepository.findById(id = request.memberId)
+        val userToAdd: User = userReader.findById(id = request.memberId)
         application.addMember(
             user = userToAdd,
             memberType = request.memberType
@@ -123,7 +123,7 @@ class ApplicationServiceV1(
                 message = ErrorCode.ACCESSIBLE_ONLY_OWNER_MEMBER_ON_APPLICATION.defaultMessage
             )
         }
-        val userToRemove: User = userRepository.findById(id = applicationMemberId)
+        val userToRemove: User = userReader.findById(id = applicationMemberId)
         application.removeMember(
             user = userToRemove
         )

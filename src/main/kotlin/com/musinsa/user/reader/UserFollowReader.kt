@@ -1,27 +1,26 @@
-package com.musinsa.user.entity.follow
+package com.musinsa.user.reader
 
 import com.musinsa.common.dto.Pagination
-import com.musinsa.user.entity.follow.QUserFollow.userFollow
+import com.musinsa.user.entity.QUserFollow.userFollow
+import com.musinsa.user.entity.UserFollow
+import com.musinsa.user.repository.UserFollowCustomRepository
+import com.musinsa.user.repository.UserFollowRepository
 import com.musinsa.user.vo.UserFollowOrderType
 import com.querydsl.core.types.OrderSpecifier
 import org.springframework.stereotype.Component
 
 @Component
-class UserFollowRepositoryFacade(
-    private val repository: UserFollowRepository,
-    private val customRepository: UserFollowCustomRepository
+class UserFollowReader(
+    private val userFollowRepository: UserFollowRepository,
+    private val userFollowCustomRepository: UserFollowCustomRepository
 ) {
-
-    fun save(userFollow: UserFollow): UserFollow {
-        return repository.save(userFollow)
-    }
 
     fun searchUserFollows(
         queryFilter: UserFollowQueryFilter,
         pagination: Pagination,
         orderTypes: List<UserFollowOrderType>
     ): List<UserFollow> {
-        return customRepository.searchUserFollows(
+        return userFollowCustomRepository.searchUserFollows(
             booleanExpressions = queryFilter.toBooleanExpressions(),
             pagination = pagination,
             orderSpecifiers = orderTypes.toOrderSpecifiers()
@@ -29,13 +28,9 @@ class UserFollowRepositoryFacade(
     }
 
     fun searchUserFollowsCount(queryFilter: UserFollowQueryFilter): Long {
-        return customRepository.searchUserFollowsCount(
+        return userFollowCustomRepository.searchUserFollowsCount(
             booleanExpressions = queryFilter.toBooleanExpressions(),
         )
-    }
-
-    fun deleteByFollowerIdAndFollowingId(followerId: Long, followingId: Long) {
-        return repository.deleteByFollowerIdAndFollowingId(followerId, followingId)
     }
 
     private fun List<UserFollowOrderType>.toOrderSpecifiers(): Array<OrderSpecifier<*>> {

@@ -20,7 +20,7 @@ import com.musinsa.snap.validator.SnapCommentBusinessValidator
 import com.musinsa.snap.vo.SnapCommentOrderType
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.reader.UserReader
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
@@ -51,7 +51,7 @@ class SnapCommentServiceV1Test {
     private lateinit var snapCommentReader: SnapCommentReader
 
     @Mock
-    private lateinit var userRepository: UserRepositoryFacade
+    private lateinit var userReader: UserReader
 
     @Mock
     private lateinit var snapReader: SnapReader
@@ -79,7 +79,7 @@ class SnapCommentServiceV1Test {
         val dummyRequest: CreateSnapCommentRequest = DummySnapComment.toCreateRequest()
         `when`(converter.toEntity(request = dummyRequest)).thenReturn(dummySnapComment)
         `when`(snapCommentReader.findById(id = dummyRequest.parentId!!)).thenReturn(dummyParentSnapComment)
-        `when`(userRepository.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(userReader.findById(id = dummyUserId)).thenReturn(dummyUser)
         `when`(snapReader.findById(id = dummySnapId)).thenReturn(dummySnap)
         `when`(
             assembler.assemble(

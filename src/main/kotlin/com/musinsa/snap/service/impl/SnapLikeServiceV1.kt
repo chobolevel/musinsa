@@ -15,7 +15,7 @@ import com.musinsa.snap.service.SnapLikeService
 import com.musinsa.snap.store.SnapLikeStore
 import com.musinsa.snap.vo.SnapLikeOrderType
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.reader.UserReader
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -26,7 +26,7 @@ class SnapLikeServiceV1(
     private val snapReader: SnapReader,
     private val converter: SnapLikeConverter,
     private val assembler: SnapLikeAssembler,
-    private val userRepository: UserRepositoryFacade,
+    private val userReader: UserReader
 ) : SnapLikeService {
 
     @Transactional(readOnly = true)
@@ -53,7 +53,7 @@ class SnapLikeServiceV1(
 
     @Transactional
     override fun likeSnap(userId: Long, snapId: Long): Long {
-        val user: User = userRepository.findById(id = userId)
+        val user: User = userReader.findById(id = userId)
         val snap: Snap = snapReader.findById(id = snapId)
         val isExists = snapLikeReader.existsBySnapIdAndUserId(
             snapId = snapId,

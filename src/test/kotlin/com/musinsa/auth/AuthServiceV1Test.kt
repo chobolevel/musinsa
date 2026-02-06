@@ -8,7 +8,7 @@ import com.musinsa.auth.util.TokenProvider
 import com.musinsa.common.properties.JwtProperties
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.reader.UserReader
 import com.musinsa.user.vo.UserSignUpType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -29,7 +29,7 @@ class AuthServiceV1Test {
     private val dummyUser: User = DummyUser.toEntity()
 
     @Mock
-    private lateinit var userRepository: UserRepositoryFacade
+    private lateinit var userReader: UserReader
 
     @Mock
     private lateinit var passwordEncoder: BCryptPasswordEncoder
@@ -66,7 +66,7 @@ class AuthServiceV1Test {
             refreshToken = "refreshToken",
             refreshTokenExpiredAt = 0L
         )
-        `when`(userRepository.findByUsername(username = dummyRequest.username!!)).thenReturn(dummyUser)
+        `when`(userReader.findByUsername(username = dummyRequest.username!!)).thenReturn(dummyUser)
         `when`(passwordEncoder.matches(dummyRequest.password, dummyUser.password)).thenReturn(true)
         `when`(tokenProvider.generateToken(id = dummyUser.id!!)).thenReturn(dummyJwtResponse)
 

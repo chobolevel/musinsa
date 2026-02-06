@@ -6,7 +6,7 @@ import com.musinsa.user.dto.ChangeUserPasswordRequest
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
-import com.musinsa.user.entity.UserQueryFilter
+import com.musinsa.user.reader.UserQueryFilter
 import com.musinsa.user.vo.UserOrderType
 
 interface UserService {

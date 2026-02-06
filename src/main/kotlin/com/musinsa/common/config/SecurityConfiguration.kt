@@ -2,7 +2,7 @@ package com.musinsa.common.config
 
 import com.musinsa.auth.util.TokenProvider
 import com.musinsa.common.filter.OnceAuthorizationFilter
-import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.reader.UserReader
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
@@ -20,7 +20,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @EnableMethodSecurity(prePostEnabled = true)
 class SecurityConfiguration(
     private val tokenProvider: TokenProvider,
-    private val userRepository: UserRepositoryFacade
+    private val userReader: UserReader
 ) {
 
     @Bean
@@ -72,7 +72,7 @@ class SecurityConfiguration(
             .addFilterBefore(
                 OnceAuthorizationFilter(
                     tokenProvider = tokenProvider,
-                    userRepository = userRepository
+                    userReader = userReader,
                 ),
                 UsernamePasswordAuthenticationFilter::class.java
             )

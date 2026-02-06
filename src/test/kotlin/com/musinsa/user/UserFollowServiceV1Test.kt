@@ -1,9 +1,9 @@
 package com.musinsa.user
 
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserRepositoryFacade
-import com.musinsa.user.entity.follow.UserFollowRepositoryFacade
+import com.musinsa.user.reader.UserReader
 import com.musinsa.user.serivce.impl.UserFollowServiceV1
+import com.musinsa.user.store.UserFollowStore
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
@@ -23,10 +23,10 @@ class UserFollowServiceV1Test {
     private val dummySocialUser: User = DummyUser.toSocialUserEntity()
 
     @Mock
-    private lateinit var repository: UserFollowRepositoryFacade
+    private lateinit var userReader: UserReader
 
     @Mock
-    private lateinit var userRepository: UserRepositoryFacade
+    private lateinit var userFollowStore: UserFollowStore
 
     @InjectMocks
     private lateinit var service: UserFollowServiceV1
@@ -36,8 +36,8 @@ class UserFollowServiceV1Test {
         // given
         val dummyUserId: Long = dummyUser.id!!
         val dummySocialUserId: Long = dummySocialUser.id!!
-        `when`(userRepository.findById(id = dummyUserId)).thenReturn(dummyUser)
-        `when`(userRepository.findById(id = dummySocialUserId)).thenReturn(dummySocialUser)
+        `when`(userReader.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(userReader.findById(id = dummySocialUserId)).thenReturn(dummySocialUser)
 
         // when
         val result: Boolean = service.following(
@@ -54,7 +54,7 @@ class UserFollowServiceV1Test {
         // given
         val dummyUserId: Long = dummyUser.id!!
         val dummySocialUserId: Long = dummySocialUser.id!!
-        doNothing().`when`(repository).deleteByFollowerIdAndFollowingId(
+        doNothing().`when`(userFollowStore).deleteByFollowerIdAndFollowingId(
             followerId = dummyUserId,
             followingId = dummySocialUserId,
         )

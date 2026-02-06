@@ -1,6 +1,6 @@
-package com.musinsa.user.entity
+package com.musinsa.user.reader
 
-import com.musinsa.user.entity.QUser.user
+import com.musinsa.user.entity.QUser
 import com.musinsa.user.vo.UserGender
 import com.musinsa.user.vo.UserGrade
 import com.musinsa.user.vo.UserRole
@@ -21,13 +21,13 @@ data class UserQueryFilter(
 
     fun toBooleanExpressions(): Array<BooleanExpression> {
         return listOfNotNull(
-            signUpType?.let { user.signUpType.eq(it) },
-            email?.let { user.email.eq(it) },
-            name?.let { user.name.eq(it) },
-            phone?.let { user.phone.eq(it) },
-            status?.let { user.status.eq(it) },
-            grade?.let { user.grade.eq(it) },
-            role?.let { user.role.eq(it) }
+            signUpType?.let { QUser.user.signUpType.eq(it) },
+            email?.let { QUser.user.email.eq(it) },
+            name?.let { QUser.user.name.eq(it) },
+            phone?.let { QUser.user.phone.eq(it) },
+            status?.let { QUser.user.status.eq(it) },
+            grade?.let { QUser.user.grade.eq(it) },
+            role?.let { QUser.user.role.eq(it) }
         ).toTypedArray()
     }
 }
