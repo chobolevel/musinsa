@@ -46,6 +46,7 @@ object DummyPost {
 
     private val dummyUpdateRequest: UpdatePostRequest by lazy {
         UpdatePostRequest(
+            postTagIds = null,
             title = "변경할 게시글 제목",
             content = null,
             updateMask = listOf(PostUpdateMask.TITLE)
