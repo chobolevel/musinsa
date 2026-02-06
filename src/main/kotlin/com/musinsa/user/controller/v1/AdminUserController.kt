@@ -6,7 +6,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
-import com.musinsa.user.entity.UserQueryFilter
+import com.musinsa.user.reader.UserQueryFilter
 import com.musinsa.user.serivce.UserService
 import com.musinsa.user.validator.UserParameterValidator
 import com.musinsa.user.vo.UserGender

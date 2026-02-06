@@ -20,7 +20,7 @@ import com.musinsa.post.validator.PostBusinessValidator
 import com.musinsa.post.vo.PostOrderType
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.reader.UserReader
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
@@ -46,7 +46,7 @@ class PostServiceV1Test {
     private lateinit var postConverter: PostConverter
 
     @Mock
-    private lateinit var userRepositoryFacade: UserRepositoryFacade
+    private lateinit var userReader: UserReader
 
     @Mock
     private lateinit var postStore: PostStore
@@ -75,7 +75,7 @@ class PostServiceV1Test {
         val dummyUserId: Long = dummyUser.id!!
         val createRequest: CreatePostRequest = DummyPost.toCreateRequest()
         val dummyPostTags: List<PostTag> = listOf(dummyPostTag)
-        `when`(userRepositoryFacade.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(userReader.findById(id = dummyUserId)).thenReturn(dummyUser)
         `when`(postConverter.toEntity(request = createRequest)).thenReturn(dummyPost)
         `when`(postTagReader.findByIds(ids = createRequest.postTagIds.toList())).thenReturn(dummyPostTags)
         `when`(

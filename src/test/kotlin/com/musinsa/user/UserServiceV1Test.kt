@@ -8,9 +8,10 @@ import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserQueryFilter
-import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.reader.UserQueryFilter
+import com.musinsa.user.reader.UserReader
 import com.musinsa.user.serivce.impl.UserServiceV1
+import com.musinsa.user.store.UserStore
 import com.musinsa.user.updater.UserUpdater
 import com.musinsa.user.validator.UserBusinessValidator
 import com.musinsa.user.vo.UserOrderType
@@ -34,10 +35,13 @@ class UserServiceV1Test {
     private val dummyUserResponse: UserResponse = DummyUser.toResponse()
 
     @Mock
-    private lateinit var repository: UserRepositoryFacade
+    private lateinit var converter: UserConverter
 
     @Mock
-    private lateinit var converter: UserConverter
+    private lateinit var userStore: UserStore
+
+    @Mock
+    private lateinit var userReader: UserReader
 
     @Mock
     private lateinit var validator: UserBusinessValidator
@@ -56,7 +60,7 @@ class UserServiceV1Test {
         // given
         val createRequest: CreateUserRequest = DummyUser.toCreateRequest()
         `when`(converter.toEntity(request = createRequest)).thenReturn(dummyUser)
-        `when`(repository.save(user = dummyUser)).thenReturn(dummyUser)
+        `when`(userStore.save(user = dummyUser)).thenReturn(dummyUser)
 
         // when
         val result: Long = userService.createUser(request = createRequest)
@@ -86,14 +90,14 @@ class UserServiceV1Test {
         )
         val orderTypes: List<UserOrderType> = emptyList()
         `when`(
-            repository.searchUsers(
+            userReader.searchUsers(
                 queryFilter = queryFilter,
                 pagination = pagination,
                 orderTypes = orderTypes
             )
         ).thenReturn(dummyUsers)
         `when`(
-            repository.searchUsersCount(
+            userReader.searchUsersCount(
                 queryFilter = queryFilter,
             )
         ).thenReturn(dummyUsers.size.toLong())
@@ -117,7 +121,7 @@ class UserServiceV1Test {
     fun getUserTest() {
         // given
         val dummyUserId: Long = dummyUser.id!!
-        `when`(repository.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(userReader.findById(id = dummyUserId)).thenReturn(dummyUser)
         `when`(converter.toResponse(user = dummyUser)).thenReturn(dummyUserResponse)
 
         // when
@@ -133,7 +137,7 @@ class UserServiceV1Test {
         // given
         val dummyUserId: Long = dummyUser.id!!
         val updateRequest: UpdateUserRequest = DummyUser.toUpdateRequest()
-        `when`(repository.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(userReader.findById(id = dummyUserId)).thenReturn(dummyUser)
         `when`(
             updater.markAsUpdate(
                 request = updateRequest,
@@ -155,7 +159,7 @@ class UserServiceV1Test {
     fun resignUserTest() {
         // given
         val dummyUserId: Long = dummyUser.id!!
-        `when`(repository.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(userReader.findById(id = dummyUserId)).thenReturn(dummyUser)
 
         // when
         val result: Boolean = userService.resignUser(userId = dummyUserId)
@@ -169,7 +173,7 @@ class UserServiceV1Test {
         // given
         val dummyUserId: Long = dummyUser.id!!
         val request: ChangeUserPasswordRequest = DummyUser.toChangePasswordRequest()
-        `when`(repository.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(userReader.findById(id = dummyUserId)).thenReturn(dummyUser)
         `when`(passwordEncoder.encode(request.newPassword)).thenReturn(request.newPassword)
 
         // when

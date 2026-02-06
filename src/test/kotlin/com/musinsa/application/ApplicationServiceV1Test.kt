@@ -16,7 +16,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.reader.UserReader
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
@@ -40,7 +40,7 @@ class ApplicationServiceV1Test {
     private lateinit var repository: ApplicationRepositoryFacade
 
     @Mock
-    private lateinit var userRepository: UserRepositoryFacade
+    private lateinit var userReader: UserReader
 
     @Mock
     private lateinit var converter: ApplicationConverter
@@ -56,7 +56,7 @@ class ApplicationServiceV1Test {
         // given
         val dummyUserId: Long = dummyUser.id!!
         val dummyCreateRequest: CreateApplicationRequest = DummyApplication.toCreateRequest()
-        `when`(userRepository.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(userReader.findById(id = dummyUserId)).thenReturn(dummyUser)
         `when`(converter.toEntity(request = dummyCreateRequest)).thenReturn(dummyApplication)
         `when`(repository.save(application = dummyApplication)).thenReturn(dummyApplication)
 
@@ -167,7 +167,7 @@ class ApplicationServiceV1Test {
             memberType = ApplicationMemberType.OWNER,
         )
         `when`(repository.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
-        `when`(userRepository.findById(id = dummyRequest.memberId)).thenReturn(dummySocialUser)
+        `when`(userReader.findById(id = dummyRequest.memberId)).thenReturn(dummySocialUser)
 
         // when
         val result: Boolean = service.addMember(
@@ -191,7 +191,7 @@ class ApplicationServiceV1Test {
             memberType = ApplicationMemberType.OWNER,
         )
         `when`(repository.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
-        `when`(userRepository.findById(id = dummyApplicationMemberId)).thenReturn(dummySocialUser)
+        `when`(userReader.findById(id = dummyApplicationMemberId)).thenReturn(dummySocialUser)
 
         // when
         val result: Boolean = service.removeMember(

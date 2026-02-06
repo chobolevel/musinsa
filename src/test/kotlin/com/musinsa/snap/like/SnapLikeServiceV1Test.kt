@@ -16,7 +16,7 @@ import com.musinsa.snap.store.SnapLikeStore
 import com.musinsa.snap.vo.SnapLikeOrderType
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.reader.UserReader
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
@@ -51,7 +51,7 @@ class SnapLikeServiceV1Test {
     private lateinit var assembler: SnapLikeAssembler
 
     @Mock
-    private lateinit var userRepository: UserRepositoryFacade
+    private lateinit var userReader: UserReader
 
     @Mock
     private lateinit var snapReader: SnapReader

@@ -20,7 +20,7 @@ import com.musinsa.snap.updater.SnapUpdater
 import com.musinsa.snap.validator.SnapBusinessValidator
 import com.musinsa.snap.vo.SnapOrderType
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.reader.UserReader
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional
 class SnapServiceV1(
     private val converter: SnapConverter,
     private val snapImageConverter: SnapImageConverter,
-    private val userRepository: UserRepositoryFacade,
+    private val userReader: UserReader,
     private val snapReader: SnapReader,
     private val snapTagReader: SnapTagReader,
     private val snapStore: SnapStore,
@@ -40,7 +40,7 @@ class SnapServiceV1(
     @Transactional
     override fun createSnap(userId: Long, request: CreateSnapRequest): Long {
         val baseSnap: Snap = converter.toEntity(request = request)
-        val user: User = userRepository.findById(id = userId)
+        val user: User = userReader.findById(id = userId)
         val snapTags: List<SnapTag> = snapTagReader.findByIds(ids = request.snapTagIds)
         val snapImages: List<SnapImage> = snapImageConverter.toEntityInBatch(requests = request.snapImages)
 

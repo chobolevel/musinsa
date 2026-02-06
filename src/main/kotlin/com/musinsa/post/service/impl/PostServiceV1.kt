@@ -18,14 +18,14 @@ import com.musinsa.post.updater.PostUpdater
 import com.musinsa.post.validator.PostBusinessValidator
 import com.musinsa.post.vo.PostOrderType
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.reader.UserReader
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PostServiceV1(
     private val postConverter: PostConverter,
-    private val userRepositoryFacade: UserRepositoryFacade,
+    private val userReader: UserReader,
     private val postStore: PostStore,
     private val postReader: PostReader,
     private val postTagReader: PostTagReader,
@@ -37,7 +37,7 @@ class PostServiceV1(
     @Transactional
     override fun createPost(userId: Long, request: CreatePostRequest): Long {
         val basePost: Post = postConverter.toEntity(request = request)
-        val user: User = userRepositoryFacade.findById(id = userId)
+        val user: User = userReader.findById(id = userId)
         val postTags: List<PostTag> = postTagReader.findByIds(ids = request.postTagIds.toList())
 
         val post: Post = postAssembler.assemble(

@@ -1,7 +1,7 @@
 package com.musinsa.common.filter
 
 import com.musinsa.auth.util.TokenProvider
-import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.reader.UserReader
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -13,7 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 class OnceAuthorizationFilter(
     private val tokenProvider: TokenProvider,
-    private val userRepository: UserRepositoryFacade
+    private val userReader: UserReader
 ) : OncePerRequestFilter() {
 
     private val accessTokenPrefix: String = "Bearer "
@@ -31,7 +31,7 @@ class OnceAuthorizationFilter(
         val accessToken: String = authorizationHeaderValue.substring(accessTokenPrefix.length)
         tokenProvider.validateToken(token = accessToken)
         val userId: Long = tokenProvider.getId(token = accessToken)
-        userRepository.findById(id = userId).also { user ->
+        userReader.findById(id = userId).also { user ->
             SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(
                 user.id!!,
                 null,

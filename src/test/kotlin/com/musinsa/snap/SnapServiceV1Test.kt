@@ -23,7 +23,7 @@ import com.musinsa.snap.validator.SnapBusinessValidator
 import com.musinsa.snap.vo.SnapOrderType
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.reader.UserReader
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
@@ -54,7 +54,7 @@ class SnapServiceV1Test {
     private lateinit var snapImageConverter: SnapImageConverter
 
     @Mock
-    private lateinit var userRepository: UserRepositoryFacade
+    private lateinit var userReader: UserReader
 
     @Mock
     private lateinit var snapReader: SnapReader
@@ -86,7 +86,7 @@ class SnapServiceV1Test {
         val dummySnapImages: List<SnapImage> = listOf(dummySnapImage)
         `when`(converter.toEntity(request = dummyRequest)).thenReturn(dummySnap)
         `when`(snapImageConverter.toEntityInBatch(requests = dummyRequest.snapImages)).thenReturn(dummySnapImages)
-        `when`(userRepository.findById(id = dummyUserId)).thenReturn(dummyUser)
+        `when`(userReader.findById(id = dummyUserId)).thenReturn(dummyUser)
         `when`(snapTagReader.findByIds(ids = dummyRequest.snapTagIds)).thenReturn(dummySnapTags)
         `when`(
             assembler.assemble(

@@ -10,9 +10,10 @@ import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserQueryFilter
-import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.reader.UserQueryFilter
+import com.musinsa.user.reader.UserReader
 import com.musinsa.user.serivce.UserService
+import com.musinsa.user.store.UserStore
 import com.musinsa.user.updater.UserUpdater
 import com.musinsa.user.validator.UserBusinessValidator
 import com.musinsa.user.vo.UserOrderType
@@ -23,8 +24,9 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserServiceV1(
-    private val repository: UserRepositoryFacade,
     private val converter: UserConverter,
+    private val userStore: UserStore,
+    private val userReader: UserReader,
     private val validator: UserBusinessValidator,
     private val updater: UserUpdater,
     private val passwordEncoder: BCryptPasswordEncoder,
@@ -44,8 +46,10 @@ class UserServiceV1(
         validator.validateEmailExist(email = request.email)
         validator.validateNameExists(name = request.name)
         validator.validatePhoneExists(phone = request.phone)
+
         val user: User = converter.toEntity(request = request)
-        return repository.save(user = user).id!!
+
+        return userStore.save(user = user).id!!
     }
 
     @Transactional(readOnly = true)
@@ -54,12 +58,12 @@ class UserServiceV1(
         pagination: Pagination,
         orderTypes: List<UserOrderType>
     ): PaginationResponse {
-        val users: List<User> = repository.searchUsers(
+        val users: List<User> = userReader.searchUsers(
             queryFilter = queryFilter,
             pagination = pagination,
             orderTypes = orderTypes
         )
-        val totalCount: Long = repository.searchUsersCount(queryFilter = queryFilter)
+        val totalCount: Long = userReader.searchUsersCount(queryFilter = queryFilter)
         return PaginationResponse(
             page = pagination.page,
             size = pagination.size,
@@ -70,13 +74,13 @@ class UserServiceV1(
 
     @Transactional(readOnly = true)
     override fun getUser(id: Long): UserResponse {
-        val user: User = repository.findById(id = id)
+        val user: User = userReader.findById(id = id)
         return converter.toResponse(user = user)
     }
 
     @Transactional
     override fun updateUser(userId: Long, request: UpdateUserRequest): Long {
-        val user: User = repository.findById(id = userId)
+        val user: User = userReader.findById(id = userId)
         updater.markAsUpdate(
             request = request,
             user = user
@@ -86,7 +90,7 @@ class UserServiceV1(
 
     @Transactional
     override fun resignUser(userId: Long): Boolean {
-        val user: User = repository.findById(userId)
+        val user: User = userReader.findById(userId)
         user.delete()
         return user.isDeleted
     }
@@ -96,7 +100,7 @@ class UserServiceV1(
         userId: Long,
         request: ChangeUserPasswordRequest
     ): Long {
-        val user: User = repository.findById(userId)
+        val user: User = userReader.findById(userId)
         if (user.signUpType != UserSignUpType.GENERAL) {
             throw PolicyViolationException(
                 errorCode = ErrorCode.SOCIAL_USER_CAN_NOT_CHANGE_PASSWORD,

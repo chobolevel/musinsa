@@ -1,6 +1,6 @@
 package com.musinsa.user
 
-import com.musinsa.user.entity.follow.UserFollow
+import com.musinsa.user.entity.UserFollow
 
 object DummyUserFollow {
     private val id: Long = 1L

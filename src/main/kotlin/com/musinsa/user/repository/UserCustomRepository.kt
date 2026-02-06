@@ -1,7 +1,8 @@
-package com.musinsa.user.entity
+package com.musinsa.user.repository
 
 import com.musinsa.common.dto.Pagination
-import com.musinsa.user.entity.QUser.user
+import com.musinsa.user.entity.QUser
+import com.musinsa.user.entity.User
 import com.querydsl.core.types.OrderSpecifier
 import com.querydsl.core.types.dsl.BooleanExpression
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
@@ -15,7 +16,7 @@ class UserCustomRepository : QuerydslRepositorySupport(User::class.java) {
         pagination: Pagination,
         orderSpecifiers: Array<OrderSpecifier<*>>
     ): List<User> {
-        return from(user)
+        return from(QUser.user)
             .where(*booleanExpressions)
             .orderBy(*orderSpecifiers)
             .offset(pagination.offset)
@@ -26,7 +27,7 @@ class UserCustomRepository : QuerydslRepositorySupport(User::class.java) {
     fun searchUsersCount(
         booleanExpressions: Array<BooleanExpression>,
     ): Long {
-        return from(user)
+        return from(QUser.user)
             .where(*booleanExpressions)
             .fetchCount()
     }

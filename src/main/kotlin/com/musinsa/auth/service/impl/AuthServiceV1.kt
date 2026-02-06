@@ -9,7 +9,7 @@ import com.musinsa.common.exception.ErrorCode
 import com.musinsa.common.exception.UnauthorizedException
 import com.musinsa.common.properties.JwtProperties
 import com.musinsa.user.entity.User
-import com.musinsa.user.entity.UserRepositoryFacade
+import com.musinsa.user.reader.UserReader
 import com.musinsa.user.vo.UserSignUpType
 import org.springframework.data.redis.core.HashOperations
 import org.springframework.security.authentication.BadCredentialsException
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class AuthServiceV1(
-    private val userRepository: UserRepositoryFacade,
+    private val userReader: UserReader,
     private val passwordEncoder: BCryptPasswordEncoder,
     private val tokenProvider: TokenProvider,
     private val opsForHash: HashOperations<String, String, String>,
@@ -31,7 +31,7 @@ class AuthServiceV1(
         val userId: Long = when (request.signUpType) {
             UserSignUpType.GENERAL -> {
                 // 일반 로그인
-                val user: User = userRepository.findByUsername(username = request.username!!)
+                val user: User = userReader.findByUsername(username = request.username!!)
                 if (!passwordEncoder.matches(request.password, user.password)) {
                     throw BadCredentialsException("아이디 또는 비밀번호가 일치하지 않습니다.")
                 }
@@ -40,7 +40,7 @@ class AuthServiceV1(
 
             else -> {
                 // 소셜 로그인
-                val user: User = userRepository.findBySocialId(socialId = request.socialId!!)
+                val user: User = userReader.findBySocialId(socialId = request.socialId!!)
                 user.id!!
             }
         }

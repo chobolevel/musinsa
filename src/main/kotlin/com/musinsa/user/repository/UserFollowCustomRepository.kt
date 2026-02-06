@@ -1,7 +1,8 @@
-package com.musinsa.user.entity.follow
+package com.musinsa.user.repository
 
 import com.musinsa.common.dto.Pagination
-import com.musinsa.user.entity.follow.QUserFollow.userFollow
+import com.musinsa.user.entity.QUserFollow.userFollow
+import com.musinsa.user.entity.UserFollow
 import com.querydsl.core.types.OrderSpecifier
 import com.querydsl.core.types.dsl.BooleanExpression
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
