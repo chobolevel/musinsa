@@ -4,6 +4,7 @@ import com.musinsa.post.dto.CreatePostRequest
 import com.musinsa.post.dto.PostResponse
 import com.musinsa.post.dto.UpdatePostRequest
 import com.musinsa.post.entity.Post
+import com.musinsa.post.tag.DummyPostTag
 import com.musinsa.post.vo.PostUpdateMask
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
@@ -39,11 +40,13 @@ object DummyPost {
         CreatePostRequest(
             title = title,
             content = content,
+            postTagIds = setOf(DummyPostTag.toEntity().id!!)
         )
     }
 
     private val dummyUpdateRequest: UpdatePostRequest by lazy {
         UpdatePostRequest(
+            postTagIds = null,
             title = "변경할 게시글 제목",
             content = null,
             updateMask = listOf(PostUpdateMask.TITLE)

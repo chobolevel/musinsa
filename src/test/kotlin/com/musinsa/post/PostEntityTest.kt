@@ -1,6 +1,8 @@
 package com.musinsa.post
 
 import com.musinsa.post.entity.Post
+import com.musinsa.post.entity.PostTag
+import com.musinsa.post.tag.DummyPostTag
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
 import org.assertj.core.api.Assertions.assertThat
@@ -31,5 +33,17 @@ class PostEntityTest {
 
         // then
         assertThat(dummyPost.isDeleted).isTrue()
+    }
+
+    @Test
+    fun addPostTagTest() {
+        // given
+        val dummyPostTag: PostTag = DummyPostTag.toEntity()
+
+        // when
+        dummyPost.addPostTag(postTag = dummyPostTag)
+
+        // then
+        assertThat(dummyPost.postTagMappings.first().postTag).isEqualTo(dummyPostTag)
     }
 }

@@ -2,6 +2,7 @@ package com.musinsa.post.entity
 
 import com.musinsa.common.entity.BaseEntity
 import com.musinsa.user.entity.User
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
@@ -10,6 +11,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
 @Entity
@@ -33,6 +35,9 @@ class Post(
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     var isDeleted: Boolean = false
 
+    @OneToMany(mappedBy = "post", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val postTagMappings: MutableSet<PostTagMapping> = mutableSetOf()
+
     /* ==============================
      * 생성 시 불변식 검증
      * ============================== */
@@ -47,6 +52,26 @@ class Post(
     fun assignUser(user: User) {
         if (this.user != user) {
             this.user = user
+        }
+    }
+
+    fun addPostTag(postTag: PostTag) {
+        val postTagMapping = PostTagMapping().also {
+            it.post = this
+            it.postTag = postTag
+        }
+        if (!this.postTagMappings.contains(postTagMapping)) {
+            this.postTagMappings.add(postTagMapping)
+        }
+    }
+
+    fun addPostTagInBatch(postTags: List<PostTag>) {
+        postTags.forEach { this.addPostTag(it) }
+    }
+
+    fun deletePostTagInBatch(postTagIds: Set<Long>) {
+        this.postTagMappings.removeIf {
+            it.postTag!!.id in postTagIds
         }
     }
 

@@ -8,10 +8,13 @@ import com.musinsa.post.dto.CreatePostRequest
 import com.musinsa.post.dto.PostResponse
 import com.musinsa.post.dto.UpdatePostRequest
 import com.musinsa.post.entity.Post
+import com.musinsa.post.entity.PostTag
 import com.musinsa.post.reader.PostQueryFilter
 import com.musinsa.post.reader.PostReader
+import com.musinsa.post.reader.PostTagReader
 import com.musinsa.post.service.impl.PostServiceV1
 import com.musinsa.post.store.PostStore
+import com.musinsa.post.tag.DummyPostTag
 import com.musinsa.post.updater.PostUpdater
 import com.musinsa.post.validator.PostBusinessValidator
 import com.musinsa.post.vo.PostOrderType
@@ -35,6 +38,8 @@ class PostServiceV1Test {
 
     private val dummyPost: Post = DummyPost.toEntity()
 
+    private val dummyPostTag: PostTag = DummyPostTag.toEntity()
+
     private val dummyPostResponse: PostResponse = DummyPost.toResponse()
 
     @Mock
@@ -50,6 +55,9 @@ class PostServiceV1Test {
     private lateinit var postReader: PostReader
 
     @Mock
+    private lateinit var postTagReader: PostTagReader
+
+    @Mock
     private lateinit var postAssembler: PostAssembler
 
     @Mock
@@ -63,15 +71,18 @@ class PostServiceV1Test {
 
     @Test
     fun createPostTest() {
-        //
+        // given
         val dummyUserId: Long = dummyUser.id!!
         val createRequest: CreatePostRequest = DummyPost.toCreateRequest()
+        val dummyPostTags: List<PostTag> = listOf(dummyPostTag)
         `when`(userRepositoryFacade.findById(id = dummyUserId)).thenReturn(dummyUser)
         `when`(postConverter.toEntity(request = createRequest)).thenReturn(dummyPost)
+        `when`(postTagReader.findByIds(ids = createRequest.postTagIds.toList())).thenReturn(dummyPostTags)
         `when`(
             postAssembler.assemble(
                 post = dummyPost,
-                user = dummyUser
+                user = dummyUser,
+                postTags = dummyPostTags,
             )
         ).thenReturn(dummyPost)
         `when`(postStore.save(post = dummyPost)).thenReturn(dummyPost)

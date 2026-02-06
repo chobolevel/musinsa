@@ -12,6 +12,15 @@ class PostParameterValidator {
     fun validate(request: UpdatePostRequest) {
         request.updateMask.forEach {
             when (it) {
+                PostUpdateMask.TAG -> {
+                    if (request.postTagIds.isNullOrEmpty()) {
+                        throw InvalidParameterException(
+                            errorCode = ErrorCode.INVALID_PARAMETER,
+                            message = "[${PostUpdateMask.TAG.fieldName}]은(는) 필수 값입니다."
+                        )
+                    }
+                }
+
                 PostUpdateMask.TITLE -> {
                     if (request.title.isNullOrEmpty()) {
                         throw InvalidParameterException(

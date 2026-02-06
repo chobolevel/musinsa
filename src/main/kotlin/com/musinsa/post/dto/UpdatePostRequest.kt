@@ -5,6 +5,7 @@ import com.musinsa.post.vo.PostUpdateMask
 import jakarta.validation.constraints.Size
 
 data class UpdatePostRequest(
+    val postTagIds: Set<Long>?,
     val title: String?,
     @field:HtmlLength(min = 20)
     val content: String?,
