@@ -69,6 +69,12 @@ class Post(
         postTags.forEach { this.addPostTag(it) }
     }
 
+    fun deletePostTagInBatch(postTagIds: Set<Long>) {
+        this.postTagMappings.removeIf {
+            it.postTag!!.id in postTagIds
+        }
+    }
+
     /* ==============================
      * 상태 변경 메서드
      * ============================== */
