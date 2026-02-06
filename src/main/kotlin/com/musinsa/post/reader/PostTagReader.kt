@@ -42,6 +42,10 @@ class PostTagReader(
         )
     }
 
+    fun findByIds(ids: List<Long>): List<PostTag> {
+        return postTagRepository.findByIdInAndIsDeletedFalse(ids)
+    }
+
     fun List<PostTagOrderType>.toOrderSpecifiers(): Array<OrderSpecifier<*>> {
         return this.map {
             when (it) {

@@ -8,8 +8,10 @@ import com.musinsa.post.dto.CreatePostRequest
 import com.musinsa.post.dto.PostResponse
 import com.musinsa.post.dto.UpdatePostRequest
 import com.musinsa.post.entity.Post
+import com.musinsa.post.entity.PostTag
 import com.musinsa.post.reader.PostQueryFilter
 import com.musinsa.post.reader.PostReader
+import com.musinsa.post.reader.PostTagReader
 import com.musinsa.post.service.PostService
 import com.musinsa.post.store.PostStore
 import com.musinsa.post.updater.PostUpdater
@@ -26,6 +28,7 @@ class PostServiceV1(
     private val userRepositoryFacade: UserRepositoryFacade,
     private val postStore: PostStore,
     private val postReader: PostReader,
+    private val postTagReader: PostTagReader,
     private val postAssembler: PostAssembler,
     private val postUpdater: PostUpdater,
     private val postBusinessValidator: PostBusinessValidator,
@@ -35,10 +38,12 @@ class PostServiceV1(
     override fun createPost(userId: Long, request: CreatePostRequest): Long {
         val basePost: Post = postConverter.toEntity(request = request)
         val user: User = userRepositoryFacade.findById(id = userId)
+        val postTags: List<PostTag> = postTagReader.findByIds(ids = request.postTagIds.toList())
 
         val post: Post = postAssembler.assemble(
             post = basePost,
-            user = user
+            user = user,
+            postTags = postTags
         )
 
         return postStore.save(post = post).id!!
