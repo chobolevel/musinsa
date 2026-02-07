@@ -1,5 +1,6 @@
 package com.musinsa.user.serivce.impl
 
+import com.musinsa.user.assembler.UserFollowAssembler
 import com.musinsa.user.entity.User
 import com.musinsa.user.entity.UserFollow
 import com.musinsa.user.reader.UserReader
@@ -12,16 +13,19 @@ import org.springframework.transaction.annotation.Transactional
 class UserFollowServiceV1(
     private val userReader: UserReader,
     private val userFollowStore: UserFollowStore,
+    private val userFollowAssembler: UserFollowAssembler
 ) : UserFollowService {
 
     @Transactional
     override fun following(userId: Long, followingUserId: Long): Boolean {
         val user: User = userReader.findById(id = userId)
         val followingUser: User = userReader.findById(id = followingUserId)
-        val userFollow = UserFollow().also { userFollow ->
-            userFollow.assignFollower(user = user)
-            userFollow.assignFollowing(user = followingUser)
-        }
+
+        val userFollow: UserFollow = userFollowAssembler.assemble(
+            followerUser = user,
+            followingUser = followingUser
+        )
+
         userFollowStore.save(userFollow = userFollow)
         return true
     }

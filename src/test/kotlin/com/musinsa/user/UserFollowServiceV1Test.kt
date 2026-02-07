@@ -1,6 +1,8 @@
 package com.musinsa.user
 
+import com.musinsa.user.assembler.UserFollowAssembler
 import com.musinsa.user.entity.User
+import com.musinsa.user.entity.UserFollow
 import com.musinsa.user.reader.UserReader
 import com.musinsa.user.serivce.impl.UserFollowServiceV1
 import com.musinsa.user.store.UserFollowStore
@@ -22,11 +24,16 @@ class UserFollowServiceV1Test {
 
     private val dummySocialUser: User = DummyUser.toSocialUserEntity()
 
+    private val dummyUserFollow: UserFollow = DummyUserFollow.toEntity()
+
     @Mock
     private lateinit var userReader: UserReader
 
     @Mock
     private lateinit var userFollowStore: UserFollowStore
+
+    @Mock
+    private lateinit var userFollowAssembler: UserFollowAssembler
 
     @InjectMocks
     private lateinit var service: UserFollowServiceV1
@@ -36,8 +43,16 @@ class UserFollowServiceV1Test {
         // given
         val dummyUserId: Long = dummyUser.id!!
         val dummySocialUserId: Long = dummySocialUser.id!!
+        dummyUserFollow.assignFollower(user = dummyUser)
+        dummyUserFollow.assignFollowing(user = dummySocialUser)
         `when`(userReader.findById(id = dummyUserId)).thenReturn(dummyUser)
         `when`(userReader.findById(id = dummySocialUserId)).thenReturn(dummySocialUser)
+        `when`(
+            userFollowAssembler.assemble(
+                followerUser = dummyUser,
+                followingUser = dummySocialUser
+            )
+        ).thenReturn(dummyUserFollow)
 
         // when
         val result: Boolean = service.following(
