@@ -7,8 +7,9 @@ import com.musinsa.application.dto.CreateApplicationRequest
 import com.musinsa.application.dto.UpdateApplicationRequest
 import com.musinsa.application.entity.Application
 import com.musinsa.application.entity.ApplicationQueryFilter
-import com.musinsa.application.entity.ApplicationRepositoryFacade
+import com.musinsa.application.reader.ApplicationReader
 import com.musinsa.application.service.ApplicationService
+import com.musinsa.application.store.ApplicationStore
 import com.musinsa.application.updater.ApplicationUpdater
 import com.musinsa.application.vo.ApplicationOrderType
 import com.musinsa.application.vo.member.ApplicationMemberType
@@ -23,7 +24,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ApplicationServiceV1(
-    private val repository: ApplicationRepositoryFacade,
+    private val applicationStore: ApplicationStore,
+    private val applicationReader: ApplicationReader,
     private val userReader: UserReader,
     private val converter: ApplicationConverter,
     private val updater: ApplicationUpdater
@@ -37,7 +39,7 @@ class ApplicationServiceV1(
             user = user,
             memberType = ApplicationMemberType.OWNER
         )
-        return repository.save(application).id!!
+        return applicationStore.save(application).id!!
     }
 
     @Transactional(readOnly = true)
@@ -46,12 +48,12 @@ class ApplicationServiceV1(
         pagination: Pagination,
         orderTypes: List<ApplicationOrderType>
     ): PaginationResponse {
-        val applications: List<Application> = repository.searchApplications(
+        val applications: List<Application> = applicationReader.searchApplications(
             queryFilter = queryFilter,
             pagination = pagination,
             orderTypes = orderTypes
         )
-        val totalCount: Long = repository.searchApplicationsCount(
+        val totalCount: Long = applicationReader.searchApplicationsCount(
             queryFilter = queryFilter,
         )
         return PaginationResponse(
@@ -67,7 +69,7 @@ class ApplicationServiceV1(
         userId: Long,
         applicationId: Long
     ): ApplicationResponse {
-        val application: Application = repository.findById(id = applicationId)
+        val application: Application = applicationReader.findById(id = applicationId)
         return converter.toResponse(entity = application)
     }
 
@@ -77,14 +79,14 @@ class ApplicationServiceV1(
         applicationId: Long,
         request: UpdateApplicationRequest
     ): Long {
-        val application: Application = repository.findById(id = applicationId)
+        val application: Application = applicationReader.findById(id = applicationId)
         updater.markAsUpdate(entity = application, request = request)
         return applicationId
     }
 
     @Transactional
     override fun deleteApplication(userId: Long, applicationId: Long): Boolean {
-        val application: Application = repository.findById(id = applicationId)
+        val application: Application = applicationReader.findById(id = applicationId)
         application.delete()
         return application.isDeleted
     }
@@ -95,7 +97,7 @@ class ApplicationServiceV1(
         applicationId: Long,
         request: AddApplicationMemberRequest
     ): Boolean {
-        val application = repository.findById(id = applicationId)
+        val application = applicationReader.findById(id = applicationId)
         if (!application.isOwnerMember(memberId = userId)) {
             throw PolicyViolationException(
                 errorCode = ErrorCode.ACCESSIBLE_ONLY_OWNER_MEMBER_ON_APPLICATION,
@@ -116,7 +118,7 @@ class ApplicationServiceV1(
         applicationId: Long,
         applicationMemberId: Long
     ): Boolean {
-        val application: Application = repository.findById(id = applicationId)
+        val application: Application = applicationReader.findById(id = applicationId)
         if (!application.isOwnerMember(memberId = userId)) {
             throw PolicyViolationException(
                 errorCode = ErrorCode.ACCESSIBLE_ONLY_OWNER_MEMBER_ON_APPLICATION,

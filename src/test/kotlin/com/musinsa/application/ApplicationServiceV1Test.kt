@@ -7,8 +7,9 @@ import com.musinsa.application.dto.CreateApplicationRequest
 import com.musinsa.application.dto.UpdateApplicationRequest
 import com.musinsa.application.entity.Application
 import com.musinsa.application.entity.ApplicationQueryFilter
-import com.musinsa.application.entity.ApplicationRepositoryFacade
+import com.musinsa.application.reader.ApplicationReader
 import com.musinsa.application.service.impl.ApplicationServiceV1
+import com.musinsa.application.store.ApplicationStore
 import com.musinsa.application.updater.ApplicationUpdater
 import com.musinsa.application.vo.ApplicationOrderType
 import com.musinsa.application.vo.member.ApplicationMemberType
@@ -37,7 +38,10 @@ class ApplicationServiceV1Test {
     private val dummyApplicationResponse: ApplicationResponse = DummyApplication.toResponse()
 
     @Mock
-    private lateinit var repository: ApplicationRepositoryFacade
+    private lateinit var applicationStore: ApplicationStore
+
+    @Mock
+    private lateinit var applicationReader: ApplicationReader
 
     @Mock
     private lateinit var userReader: UserReader
@@ -58,7 +62,7 @@ class ApplicationServiceV1Test {
         val dummyCreateRequest: CreateApplicationRequest = DummyApplication.toCreateRequest()
         `when`(userReader.findById(id = dummyUserId)).thenReturn(dummyUser)
         `when`(converter.toEntity(request = dummyCreateRequest)).thenReturn(dummyApplication)
-        `when`(repository.save(application = dummyApplication)).thenReturn(dummyApplication)
+        `when`(applicationStore.save(application = dummyApplication)).thenReturn(dummyApplication)
 
         // when
         val result: Long = service.createApplication(userId = dummyUserId, request = dummyCreateRequest)
@@ -81,14 +85,14 @@ class ApplicationServiceV1Test {
         val dummyApplications: List<Application> = listOf(dummyApplication)
         val dummyApplicationResponses: List<ApplicationResponse> = listOf(dummyApplicationResponse)
         `when`(
-            repository.searchApplications(
+            applicationReader.searchApplications(
                 queryFilter = queryFilter,
                 pagination = pagination,
                 orderTypes = orderTypes
             )
         ).thenReturn(dummyApplications)
         `when`(
-            repository.searchApplicationsCount(
+            applicationReader.searchApplicationsCount(
                 queryFilter = queryFilter,
             )
         ).thenReturn(dummyApplications.size.toLong())
@@ -113,7 +117,7 @@ class ApplicationServiceV1Test {
         // given
         val dummyUserId: Long = dummyUser.id!!
         val dummyApplicationId: Long = dummyApplication.id!!
-        `when`(repository.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
+        `when`(applicationReader.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
         `when`(converter.toResponse(entity = dummyApplication)).thenReturn(dummyApplicationResponse)
 
         // when
@@ -129,7 +133,7 @@ class ApplicationServiceV1Test {
         val dummyUserId: Long = dummyUser.id!!
         val dummyApplicationId: Long = dummyApplication.id!!
         val request: UpdateApplicationRequest = DummyApplication.toUpdateRequest()
-        `when`(repository.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
+        `when`(applicationReader.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
         `when`(updater.markAsUpdate(entity = dummyApplication, request = request)).thenReturn(dummyApplication)
 
         // when
@@ -144,7 +148,7 @@ class ApplicationServiceV1Test {
         // given
         val dummyUserId: Long = dummyUser.id!!
         val dummyApplicationId: Long = dummyApplication.id!!
-        `when`(repository.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
+        `when`(applicationReader.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
 
         // when
         val result: Boolean = service.deleteApplication(userId = dummyUserId, applicationId = dummyApplicationId)
@@ -166,7 +170,7 @@ class ApplicationServiceV1Test {
             user = dummyUser,
             memberType = ApplicationMemberType.OWNER,
         )
-        `when`(repository.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
+        `when`(applicationReader.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
         `when`(userReader.findById(id = dummyRequest.memberId)).thenReturn(dummySocialUser)
 
         // when
@@ -190,7 +194,7 @@ class ApplicationServiceV1Test {
             user = dummyUser,
             memberType = ApplicationMemberType.OWNER,
         )
-        `when`(repository.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
+        `when`(applicationReader.findById(id = dummyApplicationId)).thenReturn(dummyApplication)
         `when`(userReader.findById(id = dummyApplicationMemberId)).thenReturn(dummySocialUser)
 
         // when

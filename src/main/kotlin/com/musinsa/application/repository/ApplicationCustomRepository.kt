@@ -1,6 +1,7 @@
-package com.musinsa.application.entity
+package com.musinsa.application.repository
 
-import com.musinsa.application.entity.QApplication.application
+import com.musinsa.application.entity.Application
+import com.musinsa.application.entity.QApplication
 import com.musinsa.common.dto.Pagination
 import com.querydsl.core.types.OrderSpecifier
 import com.querydsl.core.types.dsl.BooleanExpression
@@ -15,7 +16,7 @@ class ApplicationCustomRepository : QuerydslRepositorySupport(Application::class
         pagination: Pagination,
         orderSpecifiers: Array<OrderSpecifier<*>>
     ): List<Application> {
-        return from(application)
+        return from(QApplication.application)
             .where(*booleanExpressions)
             .orderBy(*orderSpecifiers)
             .offset(pagination.offset)
@@ -24,7 +25,7 @@ class ApplicationCustomRepository : QuerydslRepositorySupport(Application::class
     }
 
     fun searchApplicationsCount(booleanExpressions: Array<BooleanExpression>): Long {
-        return from(application)
+        return from(QApplication.application)
             .where(*booleanExpressions)
             .fetchCount()
     }

@@ -1,5 +1,6 @@
-package com.musinsa.application.entity
+package com.musinsa.application.repository
 
+import com.musinsa.application.entity.Application
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface ApplicationRepository : JpaRepository<Application, Long> {
