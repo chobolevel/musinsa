@@ -4,7 +4,7 @@ import com.musinsa.application.dto.AddApplicationMemberRequest
 import com.musinsa.application.dto.ApplicationResponse
 import com.musinsa.application.dto.CreateApplicationRequest
 import com.musinsa.application.dto.UpdateApplicationRequest
-import com.musinsa.application.entity.ApplicationQueryFilter
+import com.musinsa.application.reader.ApplicationQueryFilter
 import com.musinsa.application.vo.ApplicationOrderType
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse

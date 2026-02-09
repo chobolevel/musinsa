@@ -6,7 +6,7 @@ import com.musinsa.application.dto.ApplicationResponse
 import com.musinsa.application.dto.CreateApplicationRequest
 import com.musinsa.application.dto.UpdateApplicationRequest
 import com.musinsa.application.entity.Application
-import com.musinsa.application.entity.ApplicationQueryFilter
+import com.musinsa.application.reader.ApplicationQueryFilter
 import com.musinsa.application.reader.ApplicationReader
 import com.musinsa.application.service.ApplicationService
 import com.musinsa.application.store.ApplicationStore

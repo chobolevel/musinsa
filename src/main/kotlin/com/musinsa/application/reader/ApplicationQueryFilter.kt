@@ -1,6 +1,6 @@
-package com.musinsa.application.entity
+package com.musinsa.application.reader
 
-import com.musinsa.application.entity.QApplication.application
+import com.musinsa.application.entity.QApplication
 import com.querydsl.core.types.dsl.BooleanExpression
 
 data class ApplicationQueryFilter(
@@ -8,8 +8,8 @@ data class ApplicationQueryFilter(
 ) {
     fun toBooleanExpressions(): Array<BooleanExpression> {
         return listOfNotNull(
-            name?.let { application.name.contains(it) },
-            application.isDeleted.isFalse
+            name?.let { QApplication.application.name.contains(it) },
+            QApplication.application.isDeleted.isFalse
         ).toTypedArray()
     }
 }

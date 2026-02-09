@@ -1,7 +1,6 @@
 package com.musinsa.application.reader
 
 import com.musinsa.application.entity.Application
-import com.musinsa.application.entity.ApplicationQueryFilter
 import com.musinsa.application.entity.QApplication
 import com.musinsa.application.repository.ApplicationCustomRepository
 import com.musinsa.application.repository.ApplicationRepository

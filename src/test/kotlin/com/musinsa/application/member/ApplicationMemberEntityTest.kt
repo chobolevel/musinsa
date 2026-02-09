@@ -2,7 +2,7 @@ package com.musinsa.application.member
 
 import com.musinsa.application.DummyApplication
 import com.musinsa.application.entity.Application
-import com.musinsa.application.entity.member.ApplicationMember
+import com.musinsa.application.entity.ApplicationMember
 import com.musinsa.application.vo.member.ApplicationMemberType
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User

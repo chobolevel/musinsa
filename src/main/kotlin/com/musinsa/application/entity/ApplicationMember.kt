@@ -1,6 +1,5 @@
-package com.musinsa.application.entity.member
+package com.musinsa.application.entity
 
-import com.musinsa.application.entity.Application
 import com.musinsa.application.vo.member.ApplicationMemberType
 import com.musinsa.common.entity.BaseEntity
 import com.musinsa.user.entity.User
