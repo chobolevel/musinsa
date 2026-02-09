@@ -9,9 +9,11 @@ object DummyApplicationMember {
     private val createdAt: Long = 0L
     private val updatedAt: Long = 0L
 
-    private val dummyApplicationMember: ApplicationMember = ApplicationMember(
-        type = type
-    )
+    private val dummyApplicationMember: ApplicationMember by lazy {
+        ApplicationMember(
+            type = type
+        ).also { it.id = id }
+    }
 
     fun toEntity(): ApplicationMember {
         return dummyApplicationMember
