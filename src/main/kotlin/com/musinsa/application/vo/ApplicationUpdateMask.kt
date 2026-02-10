@@ -1,5 +1,5 @@
 package com.musinsa.application.vo
 
-enum class ApplicationUpdateMask {
-    NAME
+enum class ApplicationUpdateMask(val fieldName: String) {
+    NAME("name")
 }

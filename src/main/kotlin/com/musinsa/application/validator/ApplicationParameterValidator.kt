@@ -16,7 +16,7 @@ class ApplicationParameterValidator {
                     if (request.name.isNullOrEmpty()) {
                         throw InvalidParameterException(
                             errorCode = ErrorCode.INVALID_PARAMETER,
-                            message = "[name]은(는) 필수 값입니다."
+                            message = "[${ApplicationUpdateMask.NAME.fieldName}]은(는) 필수 값입니다."
                         )
                     }
                 }
