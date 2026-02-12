@@ -38,6 +38,12 @@ class Post(
     @OneToMany(mappedBy = "post", cascade = [CascadeType.ALL], orphanRemoval = true)
     val postTagMappings: MutableSet<PostTagMapping> = mutableSetOf()
 
+    @OneToMany(mappedBy = "post", cascade = [CascadeType.ALL], orphanRemoval = true)
+    private val _postImages: MutableSet<PostImage> = mutableSetOf()
+
+    val postImages: Set<PostImage>
+        get(): Set<PostImage> = _postImages
+
     /* ==============================
      * 생성 시 불변식 검증
      * ============================== */
@@ -73,6 +79,17 @@ class Post(
         this.postTagMappings.removeIf {
             it.postTag!!.id in postTagIds
         }
+    }
+
+    fun addPostImage(postImage: PostImage) {
+        // TODO 여기서 이미지 개수 검증 가능
+        if (!this._postImages.contains(postImage)) {
+            this._postImages.add(postImage)
+        }
+    }
+
+    fun addPostImageInBatch(postImages: List<PostImage>) {
+        postImages.forEach { this.addPostImage(it) }
     }
 
     /* ==============================

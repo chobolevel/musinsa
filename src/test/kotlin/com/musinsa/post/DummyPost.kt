@@ -4,6 +4,7 @@ import com.musinsa.post.dto.CreatePostRequest
 import com.musinsa.post.dto.PostResponse
 import com.musinsa.post.dto.UpdatePostRequest
 import com.musinsa.post.entity.Post
+import com.musinsa.post.image.DummyPostImage
 import com.musinsa.post.tag.DummyPostTag
 import com.musinsa.post.vo.PostUpdateMask
 import com.musinsa.user.DummyUser
@@ -40,7 +41,8 @@ object DummyPost {
         CreatePostRequest(
             title = title,
             content = content,
-            postTagIds = setOf(DummyPostTag.toEntity().id!!)
+            postTagIds = setOf(DummyPostTag.toEntity().id!!),
+            postImages = listOf(DummyPostImage.toCreateRequest())
         )
     }
 

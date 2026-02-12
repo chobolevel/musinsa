@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.hibernate.envers.Audited
+import org.hibernate.envers.NotAudited
 
 @Entity
 @Table(name = "post_images")
@@ -36,6 +37,7 @@ class PostImage(
     @Column(nullable = false, updatable = false, unique = true)
     var id: Long? = null
 
+    @NotAudited
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     var post: Post? = null

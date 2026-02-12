@@ -4,11 +4,14 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.post.assembler.PostAssembler
 import com.musinsa.post.converter.PostConverter
+import com.musinsa.post.converter.PostImageConverter
 import com.musinsa.post.dto.CreatePostRequest
 import com.musinsa.post.dto.PostResponse
 import com.musinsa.post.dto.UpdatePostRequest
 import com.musinsa.post.entity.Post
+import com.musinsa.post.entity.PostImage
 import com.musinsa.post.entity.PostTag
+import com.musinsa.post.image.DummyPostImage
 import com.musinsa.post.reader.PostQueryFilter
 import com.musinsa.post.reader.PostReader
 import com.musinsa.post.reader.PostTagReader
@@ -40,10 +43,15 @@ class PostServiceV1Test {
 
     private val dummyPostTag: PostTag = DummyPostTag.toEntity()
 
+    private val dummyPostImage: PostImage = DummyPostImage.toEntity()
+
     private val dummyPostResponse: PostResponse = DummyPost.toResponse()
 
     @Mock
     private lateinit var postConverter: PostConverter
+
+    @Mock
+    private lateinit var postImageConverter: PostImageConverter
 
     @Mock
     private lateinit var userReader: UserReader
@@ -75,14 +83,17 @@ class PostServiceV1Test {
         val dummyUserId: Long = dummyUser.id!!
         val createRequest: CreatePostRequest = DummyPost.toCreateRequest()
         val dummyPostTags: List<PostTag> = listOf(dummyPostTag)
+        val dummyPostImages: List<PostImage> = listOf(dummyPostImage)
         `when`(userReader.findById(id = dummyUserId)).thenReturn(dummyUser)
         `when`(postConverter.toEntity(request = createRequest)).thenReturn(dummyPost)
         `when`(postTagReader.findByIds(ids = createRequest.postTagIds.toList())).thenReturn(dummyPostTags)
+        `when`(postImageConverter.toEntityInBatch(requests = createRequest.postImages!!)).thenReturn(dummyPostImages)
         `when`(
             postAssembler.assemble(
                 post = dummyPost,
                 user = dummyUser,
                 postTags = dummyPostTags,
+                postImages = dummyPostImages,
             )
         ).thenReturn(dummyPost)
         `when`(postStore.save(post = dummyPost)).thenReturn(dummyPost)

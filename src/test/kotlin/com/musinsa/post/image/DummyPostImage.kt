@@ -1,5 +1,6 @@
 package com.musinsa.post.image
 
+import com.musinsa.post.dto.CreatePostImageRequest
 import com.musinsa.post.entity.PostImage
 import com.musinsa.post.vo.PostImageType
 
@@ -23,5 +24,17 @@ object DummyPostImage {
         ).also { it.id = id }
     }
 
+    private val createRequest: CreatePostImageRequest by lazy {
+        CreatePostImageRequest(
+            type = type,
+            path = path,
+            width = width,
+            height = height,
+            sortOrder = sortOrder
+        )
+    }
+
     fun toEntity(): PostImage = dummyPostImage
+
+    fun toCreateRequest(): CreatePostImageRequest = createRequest
 }

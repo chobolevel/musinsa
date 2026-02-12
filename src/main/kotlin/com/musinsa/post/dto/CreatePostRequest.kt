@@ -1,6 +1,7 @@
 package com.musinsa.post.dto
 
 import com.musinsa.common.annotation.HtmlLength
+import jakarta.validation.Valid
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 
@@ -11,5 +12,7 @@ data class CreatePostRequest(
     val title: String,
     @field:NotEmpty
     @field:HtmlLength(min = 20)
-    val content: String
+    val content: String,
+    @field:Valid
+    val postImages: List<CreatePostImageRequest>?
 )

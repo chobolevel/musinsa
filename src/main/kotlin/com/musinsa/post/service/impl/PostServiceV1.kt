@@ -4,10 +4,12 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.post.assembler.PostAssembler
 import com.musinsa.post.converter.PostConverter
+import com.musinsa.post.converter.PostImageConverter
 import com.musinsa.post.dto.CreatePostRequest
 import com.musinsa.post.dto.PostResponse
 import com.musinsa.post.dto.UpdatePostRequest
 import com.musinsa.post.entity.Post
+import com.musinsa.post.entity.PostImage
 import com.musinsa.post.entity.PostTag
 import com.musinsa.post.reader.PostQueryFilter
 import com.musinsa.post.reader.PostReader
@@ -25,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class PostServiceV1(
     private val postConverter: PostConverter,
+    private val postImageConverter: PostImageConverter,
     private val userReader: UserReader,
     private val postStore: PostStore,
     private val postReader: PostReader,
@@ -39,11 +42,15 @@ class PostServiceV1(
         val basePost: Post = postConverter.toEntity(request = request)
         val user: User = userReader.findById(id = userId)
         val postTags: List<PostTag> = postTagReader.findByIds(ids = request.postTagIds.toList())
+        val postImages: List<PostImage>? = request.postImages?.let { createPostImageRequests ->
+            postImageConverter.toEntityInBatch(requests = createPostImageRequests)
+        }
 
         val post: Post = postAssembler.assemble(
             post = basePost,
             user = user,
-            postTags = postTags
+            postTags = postTags,
+            postImages = postImages
         )
 
         return postStore.save(post = post).id!!
