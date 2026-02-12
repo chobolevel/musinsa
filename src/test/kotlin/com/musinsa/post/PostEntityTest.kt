@@ -71,4 +71,17 @@ class PostEntityTest {
         // then
         assertThat(dummyPostImages.contains(dummyPostImage)).isTrue()
     }
+
+    @Test
+    fun removePostImageInBatchTest() {
+        // given
+        val dummyPostImageIds: List<Long> = listOf(dummyPostImage.id!!)
+        dummyPost.addPostImage(postImage = dummyPostImage)
+
+        // when
+        dummyPost.deletePostImageInBatch(postImageIds = dummyPostImageIds)
+
+        // then
+        assertThat(dummyPost.postImages.isEmpty()).isTrue()
+    }
 }

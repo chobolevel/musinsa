@@ -96,6 +96,12 @@ class Post(
         postImages.forEach { this.addPostImage(it) }
     }
 
+    fun deletePostImageInBatch(postImageIds: List<Long>) {
+        this._postImages.removeIf { postImage ->
+            postImage.id in postImageIds
+        }
+    }
+
     /* ==============================
      * 상태 변경 메서드
      * ============================== */

@@ -12,4 +12,4 @@ data class CreatePostImageRequest(
     val width: Int?,
     val height: Int?,
     val sortOrder: Int?
-)
+) : PostImageCommand

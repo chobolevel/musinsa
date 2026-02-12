@@ -9,6 +9,7 @@ data class UpdatePostRequest(
     val title: String?,
     @field:HtmlLength(min = 20)
     val content: String?,
+    val postImages: List<PostImageCommand>?,
     @field:Size(min = 1)
     val updateMask: List<PostUpdateMask>
 )

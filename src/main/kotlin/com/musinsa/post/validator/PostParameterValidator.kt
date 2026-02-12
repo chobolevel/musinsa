@@ -2,12 +2,15 @@ package com.musinsa.post.validator
 
 import com.musinsa.common.exception.ErrorCode
 import com.musinsa.common.exception.InvalidParameterException
+import com.musinsa.post.dto.UpdatePostImageRequest
 import com.musinsa.post.dto.UpdatePostRequest
 import com.musinsa.post.vo.PostUpdateMask
 import org.springframework.stereotype.Component
 
 @Component
-class PostParameterValidator {
+class PostParameterValidator(
+    private val postImageParameterValidator: PostImageParameterValidator
+) {
 
     fun validate(request: UpdatePostRequest) {
         request.updateMask.forEach {
@@ -42,6 +45,12 @@ class PostParameterValidator {
                             errorCode = ErrorCode.INVALID_PARAMETER,
                             message = "[${PostUpdateMask.CONTENT.fieldName}]은(는) 필수 값입니다."
                         )
+                    }
+                }
+
+                PostUpdateMask.IMAGES -> {
+                    request.postImages?.filterIsInstance<UpdatePostImageRequest>()?.forEach { request ->
+                        postImageParameterValidator.validate(request = request)
                     }
                 }
             }
