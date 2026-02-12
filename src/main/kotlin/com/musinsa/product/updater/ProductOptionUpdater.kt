@@ -22,6 +22,12 @@ class ProductOptionUpdater(
                 ProductOptionUpdateMask.SORT_ORDER -> productOption.sortOrder = request.sortOrder!!
                 ProductOptionUpdateMask.IS_REQUIRED -> productOption.isRequired = request.isRequired!!
                 ProductOptionUpdateMask.VALUE -> {
+                    val requestIds: Set<Long> = request.values?.filterIsInstance<UpdateProductOptionValueRequest>()?.map { it.id!! }?.toSet() ?: emptySet()
+                    val deletedProductOptionValueIds: List<Long> = productOption.productOptionValues.filter { it.id!! !in requestIds }.map { it.id!! }
+                    productOption.deleteProductOptionValueInBatch(
+                        productOptionValueIds = deletedProductOptionValueIds
+                    )
+
                     val savedProductOptionValueMap: Map<Long, ProductOptionValue> = productOption.productOptionValues.associateBy { it.id!! }
 
                     request.values?.forEach { request ->
@@ -41,12 +47,6 @@ class ProductOptionUpdater(
                             }
                         }
                     }
-
-                    val requestIds: Set<Long> = request.values?.filterIsInstance<UpdateProductOptionValueRequest>()?.map { it.id!! }?.toSet() ?: emptySet()
-                    val deletedProductOptionValueIds: List<Long> = productOption.productOptionValues.filter { it.id!! !in requestIds }.map { it.id!! }
-                    productOption.deleteProductOptionValueInBatch(
-                        productOptionValueIds = deletedProductOptionValueIds
-                    )
                 }
             }
         }

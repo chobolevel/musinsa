@@ -38,6 +38,12 @@ class SnapUpdater(
                     snap.deleteSnapTagInBatch(snapTagIds = deletedSnapTagIds)
                 }
                 SnapUpdateMask.SNAP_IMAGE -> {
+                    val requestIds: Set<Long> = request.snapImages?.filterIsInstance<UpdateSnapImageRequest>()?.map { it.id!! }?.toSet() ?: emptySet()
+                    val deletedSnapImageIds: List<Long> = snap.snapImages.filter { it.id!! !in requestIds }.map { it.id!! }
+                    snap.deleteSnapImageInBatch(
+                        snapImageIds = deletedSnapImageIds,
+                    )
+
                     val savedSnapImageMap: Map<Long, SnapImage> = snap.snapImages.associateBy { it.id!! }
 
                     request.snapImages?.forEach { request ->
@@ -57,12 +63,6 @@ class SnapUpdater(
                             }
                         }
                     }
-
-                    val requestIds: Set<Long> = request.snapImages?.filterIsInstance<UpdateSnapImageRequest>()?.map { it.id!! }?.toSet() ?: emptySet()
-                    val deletedSnapImageIds: List<Long> = snap.snapImages.filter { it.id!! !in requestIds }.map { it.id!! }
-                    snap.deleteSnapImageInBatch(
-                        snapImageIds = deletedSnapImageIds,
-                    )
                 }
             }
         }

@@ -45,6 +45,10 @@ class ProductUpdater(
                 ProductUpdateMask.SALE_STATUS -> product.saleStatus = request.saleStatus!!
                 ProductUpdateMask.SORT_ORDER -> product.sortOrder = request.sortOrder!!
                 ProductUpdateMask.OPTION -> {
+                    val requestIds: Set<Long> = request.productOptions?.filterIsInstance<UpdateProductOptionRequest>()?.map { it.id!! }?.toSet() ?: emptySet()
+                    val deletedProductOptionIds: List<Long> = product.productOptions.filter { it.id!! !in requestIds }.map { it.id!! }
+                    product.deleteProductOptionInBatch(productOptionIds = deletedProductOptionIds)
+
                     val savedProductOptionMap: Map<Long, ProductOption> = product.productOptions.associateBy { it.id!! }
 
                     request.productOptions?.forEach { request ->
@@ -64,12 +68,12 @@ class ProductUpdater(
                             }
                         }
                     }
-
-                    val requestIds: Set<Long> = request.productOptions?.filterIsInstance<UpdateProductOptionRequest>()?.map { it.id!! }?.toSet() ?: emptySet()
-                    val deletedProductOptionIds: List<Long> = product.productOptions.filter { it.id!! !in requestIds }.map { it.id!! }
-                    product.deleteProductOptionInBatch(productOptionIds = deletedProductOptionIds)
                 }
                 ProductUpdateMask.IMAGE -> {
+                    val requestIds: Set<Long> = request.productImages?.filterIsInstance<UpdateProductImageRequest>()?.map { it.id }?.toSet() ?: emptySet()
+                    val deletedProductImageIds: List<Long> = product.productOptions.filter { it.id !in requestIds }.map { it.id!! }
+                    product.deleteProductImageInBatch(productImageIds = deletedProductImageIds)
+
                     val savedProductImageMap: Map<Long, ProductImage> = product.productImages.associateBy { it.id!! }
 
                     request.productImages?.forEach { request ->
@@ -89,10 +93,6 @@ class ProductUpdater(
                             }
                         }
                     }
-
-                    val requestIds: Set<Long> = request.productImages?.filterIsInstance<UpdateProductImageRequest>()?.map { it.id }?.toSet() ?: emptySet()
-                    val deletedProductImageIds: List<Long> = product.productOptions.filter { it.id !in requestIds }.map { it.id!! }
-                    product.deleteProductImageInBatch(productImageIds = deletedProductImageIds)
                 }
             }
         }

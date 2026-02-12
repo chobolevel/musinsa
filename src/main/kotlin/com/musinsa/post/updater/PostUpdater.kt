@@ -25,6 +25,9 @@ class PostUpdater(
         request.updateMask.forEach {
             when (it) {
                 PostUpdateMask.TAG -> {
+                    val deletedPostTagIds: Set<Long> = post.postTagMappings.filter { it.postTag!!.id!! !in (request.postTagIds ?: emptySet()) }.map { it.id!! }.toSet()
+                    post.deletePostTagInBatch(postTagIds = deletedPostTagIds)
+
                     val savedPostTagMap: Map<Long, PostTag> = post.postTagMappings.map { it.postTag!! }.associateBy { it.id!! }
 
                     request.postTagIds?.forEach { postTagId ->
@@ -35,9 +38,6 @@ class PostUpdater(
                             post.addPostTag(postTag = postTag)
                         }
                     }
-
-                    val deletedPostTagIds: Set<Long> = post.postTagMappings.filter { it.postTag!!.id!! !in (request.postTagIds ?: emptySet()) }.map { it.id!! }.toSet()
-                    post.deletePostTagInBatch(postTagIds = deletedPostTagIds)
                 }
                 PostUpdateMask.TITLE -> post.title = request.title!!
                 PostUpdateMask.CONTENT -> post.content = request.content!!
