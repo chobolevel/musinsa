@@ -19,3 +19,18 @@ create fulltext index posts_content_fulltext_index
 create fulltext index posts_title_fulltext_index
     on musinsa.posts (title);
 
+create table musinsa.posts_histories
+(
+  id            bigint       not null,
+  revision_id   bigint       not null,
+  revision_type tinyint      not null,
+  user_id       bigint       not null,
+  title         varchar(100) not null,
+  content       text         not null,
+  is_deleted    tinyint      not null,
+  created_at    datetime     null,
+  updated_at    datetime     not null,
+  primary key (id, revision_id)
+)
+  comment '게시글 이력 테이블';
+

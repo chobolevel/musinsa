@@ -13,9 +13,12 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import org.hibernate.envers.Audited
+import org.hibernate.envers.NotAudited
 
 @Entity
 @Table(name = "posts")
+@Audited
 class Post(
     @Column(nullable = false, length = 100)
     var title: String,
@@ -35,6 +38,7 @@ class Post(
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     var isDeleted: Boolean = false
 
+    @NotAudited
     @OneToMany(mappedBy = "post", cascade = [CascadeType.ALL], orphanRemoval = true)
     val postTagMappings: MutableSet<PostTagMapping> = mutableSetOf()
 
