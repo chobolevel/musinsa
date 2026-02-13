@@ -1,5 +1,6 @@
 package com.musinsa.post.comment
 
+import com.musinsa.post.dto.CreatePostCommentRequest
 import com.musinsa.post.entity.PostComment
 
 object DummyPostComment {
@@ -25,7 +26,16 @@ object DummyPostComment {
         ).also { it.id = parentId }
     }
 
+    private val dummyCreateRequest: CreatePostCommentRequest by lazy {
+        CreatePostCommentRequest(
+            parentId = parentId,
+            comment = comment
+        )
+    }
+
     fun toEntity(): PostComment = dummyPostComment
 
     fun toParentEntity(): PostComment = dummyParentPostComment
+
+    fun toCreateRequest(): CreatePostCommentRequest = dummyCreateRequest
 }
