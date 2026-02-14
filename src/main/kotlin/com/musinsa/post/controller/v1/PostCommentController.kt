@@ -2,12 +2,18 @@ package com.musinsa.post.controller.v1
 
 import com.musinsa.common.annotation.HasAuthorityUser
 import com.musinsa.common.dto.CommonResponse
+import com.musinsa.common.dto.Pagination
+import com.musinsa.common.dto.PaginationRequest
+import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.extension.getUserId
 import com.musinsa.post.dto.CreatePostCommentRequest
+import com.musinsa.post.dto.SearchPostCommentRequest
+import com.musinsa.post.reader.PostCommentQueryFilter
 import com.musinsa.post.service.PostCommentService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -35,5 +41,27 @@ class PostCommentController(
             request = request
         )
         return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse(data = result))
+    }
+
+    @GetMapping("/posts/comments")
+    fun getPostComments(
+        request: SearchPostCommentRequest,
+        paginationRequest: PaginationRequest
+    ): ResponseEntity<CommonResponse> {
+        val queryFilter = PostCommentQueryFilter(
+            userId = request.userId,
+            postId = request.postId,
+            parentId = request.parentId,
+        )
+        val pagination = Pagination(
+            page = paginationRequest.page ?: 1,
+            size = paginationRequest.size ?: 10
+        )
+        val result: PaginationResponse = postCommentService.getPostComments(
+            queryFilter = queryFilter,
+            pagination = pagination,
+            orderTypes = request.orderTypes ?: emptyList()
+        )
+        return ResponseEntity.ok(CommonResponse(data = result))
     }
 }

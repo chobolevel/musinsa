@@ -1,7 +1,10 @@
 package com.musinsa.post.comment
 
+import com.musinsa.post.DummyPost
 import com.musinsa.post.dto.CreatePostCommentRequest
+import com.musinsa.post.dto.PostCommentResponse
 import com.musinsa.post.entity.PostComment
+import com.musinsa.user.DummyUser
 
 object DummyPostComment {
     private const val id: Long = 1L
@@ -20,6 +23,18 @@ object DummyPostComment {
         ).also { it.id = id }
     }
 
+    private val dummyPostCommentResponse: PostCommentResponse by lazy {
+        PostCommentResponse(
+            id = id,
+            user = DummyUser.toResponse(),
+            postId = DummyPost.toEntity().id!!,
+            parentId = null,
+            comment = comment,
+            createdAt = createdAt,
+            updatedAt = updatedAt,
+        )
+    }
+
     private val dummyParentPostComment: PostComment by lazy {
         PostComment(
             comment = parentComment
@@ -34,6 +49,8 @@ object DummyPostComment {
     }
 
     fun toEntity(): PostComment = dummyPostComment
+
+    fun toResponse(): PostCommentResponse = dummyPostCommentResponse
 
     fun toParentEntity(): PostComment = dummyParentPostComment
 

@@ -1,15 +1,20 @@
 package com.musinsa.post.comment
 
+import com.musinsa.common.dto.Pagination
+import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.post.DummyPost
 import com.musinsa.post.assembler.PostCommentAssembler
 import com.musinsa.post.converter.PostCommentConverter
 import com.musinsa.post.dto.CreatePostCommentRequest
+import com.musinsa.post.dto.PostCommentResponse
 import com.musinsa.post.entity.Post
 import com.musinsa.post.entity.PostComment
+import com.musinsa.post.reader.PostCommentQueryFilter
 import com.musinsa.post.reader.PostCommentReader
 import com.musinsa.post.reader.PostReader
 import com.musinsa.post.service.impl.PostCommentServiceV1
 import com.musinsa.post.store.PostCommentStore
+import com.musinsa.post.vo.PostCommentOrderType
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
 import com.musinsa.user.reader.UserReader
@@ -31,6 +36,8 @@ class PostCommentServiceV1Test {
     private val dummyPost: Post = DummyPost.toEntity()
 
     private val dummyPostComment: PostComment = DummyPostComment.toEntity()
+
+    private val dummyPostCommentResponse: PostCommentResponse = DummyPostComment.toResponse()
 
     private val dummyParentPostComment: PostComment = DummyPostComment.toParentEntity()
 
@@ -84,5 +91,52 @@ class PostCommentServiceV1Test {
 
         // then
         assertThat(result).isEqualTo(dummyPostComment.id)
+    }
+
+    @Test
+    fun getPostCommentsTest() {
+        // given
+        val queryFilter = PostCommentQueryFilter(
+            userId = null,
+            postId = null,
+            parentId = null
+        )
+        val pagination = Pagination(
+            page = 1,
+            size = 10
+        )
+        val orderTypes: List<PostCommentOrderType> = emptyList()
+        val dummyPostComments: List<PostComment> = listOf(dummyPostComment)
+        val dummyPostCommentResponses: List<PostCommentResponse> = listOf(dummyPostCommentResponse)
+        `when`(
+            postCommentReader.searchPostComments(
+                queryFilter = queryFilter,
+                pagination = pagination,
+                orderTypes = orderTypes
+            )
+        ).thenReturn(dummyPostComments)
+        `when`(
+            postCommentReader.searchPostCommentsCount(
+                queryFilter = queryFilter,
+            )
+        ).thenReturn(dummyPostComments.size.toLong())
+        `when`(
+            postCommentConverter.toResponseInBatch(
+                postComments = dummyPostComments
+            )
+        ).thenReturn(dummyPostCommentResponses)
+
+        // when
+        val result: PaginationResponse = postCommentService.getPostComments(
+            queryFilter = queryFilter,
+            pagination = pagination,
+            orderTypes = orderTypes
+        )
+
+        // then
+        assertThat(result.page).isEqualTo(pagination.page)
+        assertThat(result.size).isEqualTo(pagination.size)
+        assertThat(result.data).isEqualTo(dummyPostCommentResponses)
+        assertThat(result.totalCount).isEqualTo(dummyPostCommentResponses.size.toLong())
     }
 }
