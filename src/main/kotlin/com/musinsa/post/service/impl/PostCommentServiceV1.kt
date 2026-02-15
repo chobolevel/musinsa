@@ -5,6 +5,7 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.post.assembler.PostCommentAssembler
 import com.musinsa.post.converter.PostCommentConverter
 import com.musinsa.post.dto.CreatePostCommentRequest
+import com.musinsa.post.dto.PostCommentResponse
 import com.musinsa.post.entity.Post
 import com.musinsa.post.entity.PostComment
 import com.musinsa.post.reader.PostCommentQueryFilter
@@ -69,5 +70,11 @@ class PostCommentServiceV1(
             data = postCommentConverter.toResponseInBatch(postComments = postComments),
             totalCount = totalCount,
         )
+    }
+
+    @Transactional(readOnly = true)
+    override fun getPostComment(postCommentId: Long): PostCommentResponse {
+        val postComment: PostComment = postCommentReader.findById(id = postCommentId)
+        return postCommentConverter.toResponse(postComment = postComment)
     }
 }

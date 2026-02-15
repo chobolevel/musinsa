@@ -139,4 +139,20 @@ class PostCommentServiceV1Test {
         assertThat(result.data).isEqualTo(dummyPostCommentResponses)
         assertThat(result.totalCount).isEqualTo(dummyPostCommentResponses.size.toLong())
     }
+
+    @Test
+    fun getPostCommentTest() {
+        // given
+        val dummyPostCommentId: Long = dummyPostComment.id!!
+        `when`(postCommentReader.findById(id = dummyPostCommentId)).thenReturn(dummyPostComment)
+        `when`(postCommentConverter.toResponse(postComment = dummyPostComment)).thenReturn(dummyPostCommentResponse)
+
+        // when
+        val result: PostCommentResponse = postCommentService.getPostComment(
+            postCommentId = dummyPostCommentId
+        )
+
+        // then
+        assertThat(result.id).isEqualTo(dummyPostCommentId)
+    }
 }

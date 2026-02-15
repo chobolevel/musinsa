@@ -7,6 +7,7 @@ import com.musinsa.common.dto.PaginationRequest
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.extension.getUserId
 import com.musinsa.post.dto.CreatePostCommentRequest
+import com.musinsa.post.dto.PostCommentResponse
 import com.musinsa.post.dto.SearchPostCommentRequest
 import com.musinsa.post.reader.PostCommentQueryFilter
 import com.musinsa.post.service.PostCommentService
@@ -62,6 +63,12 @@ class PostCommentController(
             pagination = pagination,
             orderTypes = request.orderTypes ?: emptyList()
         )
+        return ResponseEntity.ok(CommonResponse(data = result))
+    }
+
+    @GetMapping("/posts/comments/{postCommentId}")
+    fun getPostComment(@PathVariable postCommentId: Long): ResponseEntity<CommonResponse> {
+        val result: PostCommentResponse = postCommentService.getPostComment(postCommentId = postCommentId)
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 }
