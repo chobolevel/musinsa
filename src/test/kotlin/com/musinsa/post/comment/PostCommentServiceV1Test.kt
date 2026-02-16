@@ -7,6 +7,7 @@ import com.musinsa.post.assembler.PostCommentAssembler
 import com.musinsa.post.converter.PostCommentConverter
 import com.musinsa.post.dto.CreatePostCommentRequest
 import com.musinsa.post.dto.PostCommentResponse
+import com.musinsa.post.dto.UpdatePostCommentRequest
 import com.musinsa.post.entity.Post
 import com.musinsa.post.entity.PostComment
 import com.musinsa.post.reader.PostCommentQueryFilter
@@ -14,6 +15,7 @@ import com.musinsa.post.reader.PostCommentReader
 import com.musinsa.post.reader.PostReader
 import com.musinsa.post.service.impl.PostCommentServiceV1
 import com.musinsa.post.store.PostCommentStore
+import com.musinsa.post.updater.PostCommentUpdater
 import com.musinsa.post.vo.PostCommentOrderType
 import com.musinsa.user.DummyUser
 import com.musinsa.user.entity.User
@@ -58,6 +60,9 @@ class PostCommentServiceV1Test {
 
     @Mock
     private lateinit var postCommentAssembler: PostCommentAssembler
+
+    @Mock
+    private lateinit var postCommentUpdater: PostCommentUpdater
 
     @InjectMocks
     private lateinit var postCommentService: PostCommentServiceV1
@@ -154,5 +159,31 @@ class PostCommentServiceV1Test {
 
         // then
         assertThat(result.id).isEqualTo(dummyPostCommentId)
+    }
+
+    @Test
+    fun updatePostCommentTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummyPostCommentId: Long = dummyPostComment.id!!
+        val request: UpdatePostCommentRequest = DummyPostComment.toUpdateRequest()
+        dummyPostComment.assignUser(user = dummyUser)
+        `when`(postCommentReader.findById(id = dummyPostCommentId)).thenReturn(dummyPostComment)
+        `when`(
+            postCommentUpdater.markAsUpdate(
+                request = request,
+                postComment = dummyPostComment
+            )
+        ).thenReturn(dummyPostComment)
+
+        // when
+        val result: Long = postCommentService.updatePostComment(
+            userId = dummyUserId,
+            postCommentId = dummyPostCommentId,
+            request = request
+        )
+
+        // then
+        assertThat(result).isEqualTo(dummyPostComment.id)
     }
 }

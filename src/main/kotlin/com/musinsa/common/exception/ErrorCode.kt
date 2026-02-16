@@ -52,5 +52,6 @@ enum class ErrorCode(val defaultMessage: String) {
     POST_TAG_NOT_FOUND("게시글 태그를 찾을 수 없습니다."),
 
     // POST COMMENT
-    POST_COMMENT_NOT_FOUND("게시글 댓글을 찾을 수 없습니다.")
+    POST_COMMENT_NOT_FOUND("게시글 댓글을 찾을 수 없습니다."),
+    ACCESSIBLE_ONLY_WRITER_ON_POST_COMMENT("게시글 댓글 작성자만 접근할 수 있습니다."),
 }

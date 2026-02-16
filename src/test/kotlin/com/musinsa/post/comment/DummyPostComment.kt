@@ -3,7 +3,9 @@ package com.musinsa.post.comment
 import com.musinsa.post.DummyPost
 import com.musinsa.post.dto.CreatePostCommentRequest
 import com.musinsa.post.dto.PostCommentResponse
+import com.musinsa.post.dto.UpdatePostCommentRequest
 import com.musinsa.post.entity.PostComment
+import com.musinsa.post.vo.PostCommentUpdateMask
 import com.musinsa.user.DummyUser
 
 object DummyPostComment {
@@ -48,6 +50,13 @@ object DummyPostComment {
         )
     }
 
+    private val dummyUpdateRequest: UpdatePostCommentRequest by lazy {
+        UpdatePostCommentRequest(
+            comment = "수정된 테스트 댓글",
+            updateMask = listOf(PostCommentUpdateMask.COMMENT)
+        )
+    }
+
     fun toEntity(): PostComment = dummyPostComment
 
     fun toResponse(): PostCommentResponse = dummyPostCommentResponse
@@ -55,4 +64,6 @@ object DummyPostComment {
     fun toParentEntity(): PostComment = dummyParentPostComment
 
     fun toCreateRequest(): CreatePostCommentRequest = dummyCreateRequest
+
+    fun toUpdateRequest(): UpdatePostCommentRequest = dummyUpdateRequest
 }
