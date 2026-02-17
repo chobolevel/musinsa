@@ -101,6 +101,17 @@ class PostCommentServiceV1(
         return postCommentId
     }
 
+    @Transactional
+    override fun deletePostComment(userId: Long, postCommentId: Long): Boolean {
+        val postComment: PostComment = postCommentReader.findById(id = postCommentId)
+        validateUser(
+            userId = userId,
+            postComment = postComment,
+        )
+        postComment.delete()
+        return true
+    }
+
     private fun validateUser(
         userId: Long,
         postComment: PostComment

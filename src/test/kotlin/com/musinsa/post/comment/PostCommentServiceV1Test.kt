@@ -186,4 +186,21 @@ class PostCommentServiceV1Test {
         // then
         assertThat(result).isEqualTo(dummyPostComment.id)
     }
+
+    @Test
+    fun deletePostCommentTest() {
+        // given
+        val dummyUserId: Long = dummyUser.id!!
+        val dummyPostCommentId: Long = dummyPostComment.id!!
+        `when`(postCommentReader.findById(id = dummyPostCommentId)).thenReturn(dummyPostComment)
+
+        // when
+        val result: Boolean = postCommentService.deletePostComment(
+            userId = dummyUserId,
+            postCommentId = dummyPostCommentId
+        )
+
+        // then
+        assertThat(result).isTrue
+    }
 }

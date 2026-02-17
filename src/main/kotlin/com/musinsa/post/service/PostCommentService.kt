@@ -29,4 +29,6 @@ interface PostCommentService {
         postCommentId: Long,
         request: UpdatePostCommentRequest
     ): Long
+
+    fun deletePostComment(userId: Long, postCommentId: Long): Boolean
 }
