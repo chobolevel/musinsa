@@ -86,7 +86,7 @@ class Post(
     }
 
     fun addPostImage(postImage: PostImage) {
-        // TODO 여기서 이미지 개수 검증 가능
+        require(this._postImages.size <= 5) { "게시글 이미지는 최대 5개까지 가능합니다." }
         if (!this._postImages.contains(postImage)) {
             this._postImages.add(postImage)
         }
