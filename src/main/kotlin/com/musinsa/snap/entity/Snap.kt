@@ -33,7 +33,9 @@ class Snap(
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
-    var writer: User? = null
+    private var _writer: User? = null
+    val writer: User?
+        get() = _writer
 
     @Column(nullable = false)
     var isDeleted: Boolean = false
@@ -41,7 +43,9 @@ class Snap(
     @OneToMany(mappedBy = "snap", cascade = [(CascadeType.ALL)], orphanRemoval = true)
     @SQLRestriction("is_deleted = true")
     @OrderBy("order asc")
-    val snapImages: MutableList<SnapImage> = mutableListOf()
+    private val _snapImages: MutableList<SnapImage> = mutableListOf()
+    val snapImages: List<SnapImage>
+        get() = _snapImages
 
     @NotAudited
     @OneToMany(mappedBy = "snap", cascade = [(CascadeType.ALL)], orphanRemoval = true)
@@ -51,14 +55,16 @@ class Snap(
     @NotAudited
     @OneToMany(mappedBy = "snap", cascade = [(CascadeType.ALL)], orphanRemoval = true)
     @OrderBy("order asc")
-    val snapTagMappings: MutableList<SnapTagMapping> = mutableListOf()
+    private val _snapTagMappings: MutableList<SnapTagMapping> = mutableListOf()
+    val snapTagMappings: List<SnapTagMapping>
+        get() = _snapTagMappings
 
     /* ==============================
      * 연관관계 편의 메서드
      * ============================== */
     fun assignWriter(user: User) {
-        if (this.writer != user) {
-            this.writer = user
+        if (this._writer != user) {
+            this._writer = user
         }
     }
 
@@ -66,25 +72,25 @@ class Snap(
         snapImage: SnapImage
     ) {
         snapImage.assignSnap(snap = this)
-        if (!this.snapImages.contains(snapImage)) {
-            this.snapImages.add(snapImage)
+        if (!this._snapImages.contains(snapImage)) {
+            this._snapImages.add(snapImage)
         }
     }
 
     fun addSnapTag(snapTag: SnapTag) {
         val snapTagMapping = SnapTagMapping(
-            order = this.snapTagMappings.size
+            order = this._snapTagMappings.size
         ).also { snapTagMapping ->
             snapTagMapping.assignSnap(snap = this)
             snapTagMapping.assignSnapTag(snapTag = snapTag)
         }
-        if (!this.snapTagMappings.contains(snapTagMapping)) {
-            this.snapTagMappings.add(snapTagMapping)
+        if (!this._snapTagMappings.contains(snapTagMapping)) {
+            this._snapTagMappings.add(snapTagMapping)
         }
     }
 
     fun subSnapTag(snapTag: SnapTag) {
-        this.snapTagMappings.removeIf { it.snapTag == snapTag }
+        this._snapTagMappings.removeIf { it.snapTag == snapTag }
     }
 
     /* ==============================
@@ -95,13 +101,13 @@ class Snap(
     }
 
     fun deleteSnapTagInBatch(snapTagIds: List<Long>) {
-        this.snapTagMappings.removeIf { snapTagMapping ->
+        this._snapTagMappings.removeIf { snapTagMapping ->
             snapTagIds.contains(snapTagMapping.snapTag!!.id!!)
         }
     }
 
     fun deleteSnapImageInBatch(snapImageIds: List<Long>) {
-        this.snapImages.removeIf { snapImage ->
+        this._snapImages.removeIf { snapImage ->
             snapImageIds.contains(snapImage.id)
         }
     }
