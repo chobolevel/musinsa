@@ -22,24 +22,28 @@ class UserFollow : BaseEntity() {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "follower_id")
-    var follower: User? = null
+    private var _follower: User? = null
+    val follower: User?
+        get() = _follower
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "following_id")
-    var following: User? = null
+    private var _following: User? = null
+    val following: User?
+        get() = _following
 
     /* ==============================
      * 연관관계 편의 메서드
      * ============================== */
     fun assignFollower(user: User) {
-        if (this.follower != user) {
-            this.follower = user
+        if (this._follower != user) {
+            this._follower = user
         }
     }
 
     fun assignFollowing(user: User) {
-        if (this.following != user) {
-            this.following = user
+        if (this._following != user) {
+            this._following = user
         }
     }
 }
