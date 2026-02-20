@@ -17,11 +17,12 @@ import com.musinsa.product.entity.ProductInventory
 import com.musinsa.product.entity.ProductInventoryValue
 import com.musinsa.product.entity.ProductOption
 import com.musinsa.product.entity.ProductOptionValue
+import com.musinsa.product.reader.ProductQueryFilter
+import com.musinsa.product.reader.ProductReader
 import com.musinsa.product.repository.ProductBrandRepositoryFacade
 import com.musinsa.product.repository.ProductCategoryRepositoryFacade
-import com.musinsa.product.repository.ProductQueryFilter
-import com.musinsa.product.repository.ProductRepositoryFacade
 import com.musinsa.product.service.ProductService
+import com.musinsa.product.store.ProductStore
 import com.musinsa.product.updater.ProductUpdater
 import com.musinsa.product.vo.ProductOrderType
 import org.springframework.stereotype.Service
@@ -29,7 +30,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ProductServiceV1(
-    private val productRepository: ProductRepositoryFacade,
+    private val productStore: ProductStore,
+    private val productReader: ProductReader,
     private val productBrandRepository: ProductBrandRepositoryFacade,
     private val productCategoryRepository: ProductCategoryRepositoryFacade,
     private val converter: ProductConverter,
@@ -76,7 +78,7 @@ class ProductServiceV1(
         }
         productInventories.forEach { product.addProductInventory(it) }
 
-        return productRepository.save(product = product).id!!
+        return productStore.save(product = product).id!!
     }
 
     @Transactional(readOnly = true)
@@ -85,12 +87,12 @@ class ProductServiceV1(
         pagination: Pagination,
         orderTypes: List<ProductOrderType>
     ): PaginationResponse {
-        val products: List<Product> = productRepository.searchProducts(
+        val products: List<Product> = productReader.searchProducts(
             queryFilter = queryFilter,
             pagination = pagination,
             orderTypes = orderTypes
         )
-        val totalCount: Long = productRepository.searchProductsCount(
+        val totalCount: Long = productReader.searchProductsCount(
             queryFilter = queryFilter,
         )
         return PaginationResponse(
@@ -103,7 +105,7 @@ class ProductServiceV1(
 
     @Transactional(readOnly = true)
     override fun getProduct(productId: Long): ProductResponse {
-        val product: Product = productRepository.findById(id = productId)
+        val product: Product = productReader.findById(id = productId)
         return converter.toResponse(product = product)
     }
 
@@ -112,7 +114,7 @@ class ProductServiceV1(
         productId: Long,
         request: UpdateProductRequest
     ): Long {
-        val product: Product = productRepository.findById(id = productId)
+        val product: Product = productReader.findById(id = productId)
         updater.markAsUpdate(
             request = request,
             product = product
@@ -122,7 +124,7 @@ class ProductServiceV1(
 
     @Transactional
     override fun deleteProduct(productId: Long): Boolean {
-        val product: Product = productRepository.findById(id = productId)
+        val product: Product = productReader.findById(id = productId)
         product.delete()
         return product.isDeleted
     }

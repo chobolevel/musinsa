@@ -1,6 +1,6 @@
-package com.musinsa.product.repository
+package com.musinsa.product.reader
 
-import com.musinsa.product.entity.QProduct.product
+import com.musinsa.product.entity.QProduct
 import com.musinsa.product.vo.ProductSaleStatus
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.Expressions
@@ -14,17 +14,17 @@ data class ProductQueryFilter(
 
     fun toBooleanExpressions(): Array<BooleanExpression> {
         return listOfNotNull(
-            productBrandId?.let { product._productBrand.id.eq(it) },
-            productCategoryId?.let { product._productCategory.id.eq(it) },
+            productBrandId?.let { QProduct.product._productBrand.id.eq(it) },
+            productCategoryId?.let { QProduct.product._productCategory.id.eq(it) },
             name?.let {
                 Expressions.booleanTemplate(
                     "MATCH({0}) AGAINST({1} IN BOOLEAN MODE)",
-                    product.name,
+                    QProduct.product.name,
                     it
                 )
             },
-            saleStatus?.let { product.saleStatus.eq(it) },
-            product.isDeleted.isFalse
+            saleStatus?.let { QProduct.product.saleStatus.eq(it) },
+            QProduct.product.isDeleted.isFalse
         ).toTypedArray()
     }
 }

@@ -4,7 +4,7 @@ import com.musinsa.common.dto.CommonResponse
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.product.dto.ProductResponse
-import com.musinsa.product.repository.ProductQueryFilter
+import com.musinsa.product.reader.ProductQueryFilter
 import com.musinsa.product.service.ProductService
 import com.musinsa.product.vo.ProductOrderType
 import com.musinsa.product.vo.ProductSaleStatus

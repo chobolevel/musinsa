@@ -20,11 +20,12 @@ import com.musinsa.product.entity.ProductImage
 import com.musinsa.product.entity.ProductOption
 import com.musinsa.product.image.DummyProductImage
 import com.musinsa.product.option.DummyProductOption
+import com.musinsa.product.reader.ProductQueryFilter
+import com.musinsa.product.reader.ProductReader
 import com.musinsa.product.repository.ProductBrandRepositoryFacade
 import com.musinsa.product.repository.ProductCategoryRepositoryFacade
-import com.musinsa.product.repository.ProductQueryFilter
-import com.musinsa.product.repository.ProductRepositoryFacade
 import com.musinsa.product.service.impl.ProductServiceV1
+import com.musinsa.product.store.ProductStore
 import com.musinsa.product.updater.ProductUpdater
 import com.musinsa.product.vo.ProductOrderType
 import org.assertj.core.api.Assertions.assertThat
@@ -50,7 +51,10 @@ class ProductServiceV1Test {
     private val dummyProductCategory: ProductCategory = DummyProductCategory.toEntity()
 
     @Mock
-    private lateinit var productRepository: ProductRepositoryFacade
+    private lateinit var productStore: ProductStore
+
+    @Mock
+    private lateinit var productReader: ProductReader
 
     @Mock
     private lateinit var productBrandRepository: ProductBrandRepositoryFacade
@@ -96,7 +100,7 @@ class ProductServiceV1Test {
                 productImages = dummyProductImages
             )
         ).thenReturn(dummyProduct)
-        `when`(productRepository.save(product = dummyProduct)).thenReturn(dummyProduct)
+        `when`(productStore.save(product = dummyProduct)).thenReturn(dummyProduct)
 
         // when
         val result: Long = service.createProduct(request = request)
@@ -159,14 +163,14 @@ class ProductServiceV1Test {
         val dummyProducts: List<Product> = listOf(dummyProduct)
         val dummyProductResponses: List<ProductResponse> = listOf(dummyProductResponse)
         `when`(
-            productRepository.searchProducts(
+            productReader.searchProducts(
                 queryFilter = queryFilter,
                 pagination = pagination,
                 orderTypes = orderTypes
             )
         ).thenReturn(dummyProducts)
         `when`(
-            productRepository.searchProductsCount(
+            productReader.searchProductsCount(
                 queryFilter = queryFilter,
             )
         ).thenReturn(dummyProducts.size.toLong())
@@ -190,7 +194,7 @@ class ProductServiceV1Test {
     fun getProductTest() {
         // given
         val dummyProductId: Long = dummyProduct.id!!
-        `when`(productRepository.findById(id = dummyProductId)).thenReturn(dummyProduct)
+        `when`(productReader.findById(id = dummyProductId)).thenReturn(dummyProduct)
         `when`(converter.toResponse(product = dummyProduct)).thenReturn(dummyProductResponse)
 
         // when
@@ -205,7 +209,7 @@ class ProductServiceV1Test {
         // given
         val dummyProductId: Long = dummyProduct.id!!
         val request: UpdateProductRequest = DummyProduct.toUpdateRequest()
-        `when`(productRepository.findById(id = dummyProductId)).thenReturn(dummyProduct)
+        `when`(productReader.findById(id = dummyProductId)).thenReturn(dummyProduct)
         `when`(updater.markAsUpdate(request = request, product = dummyProduct)).thenReturn(dummyProduct)
 
         // when
@@ -219,7 +223,7 @@ class ProductServiceV1Test {
     fun deleteProductTest() {
         // given
         val dummyProductId: Long = dummyProduct.id!!
-        `when`(productRepository.findById(id = dummyProductId)).thenReturn(dummyProduct)
+        `when`(productReader.findById(id = dummyProductId)).thenReturn(dummyProduct)
 
         // when
         val result: Boolean = service.deleteProduct(productId = dummyProductId)
