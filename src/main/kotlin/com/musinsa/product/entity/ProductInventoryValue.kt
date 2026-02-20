@@ -22,24 +22,28 @@ class ProductInventoryValue : BaseEntity() {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_inventory_id")
-    var productInventory: ProductInventory? = null
+    private var _productInventory: ProductInventory? = null
+    val productInventory: ProductInventory?
+        get() = _productInventory
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_option_value_id")
-    var productOptionValue: ProductOptionValue? = null
+    private var _productOptionValue: ProductOptionValue? = null
+    val productOptionValue: ProductOptionValue?
+        get() = _productOptionValue
 
     /* ==============================
      * 연관관계 편의 메서드
      * ============================== */
     fun assignProductInventory(productInventory: ProductInventory) {
-        if (this.productInventory != productInventory) {
-            this.productInventory = productInventory
+        if (this._productInventory != productInventory) {
+            this._productInventory = productInventory
         }
     }
 
     fun assignProductOptionValue(productOptionValue: ProductOptionValue) {
-        if (this.productOptionValue != productOptionValue) {
-            this.productOptionValue = productOptionValue
+        if (this._productOptionValue != productOptionValue) {
+            this._productOptionValue = productOptionValue
         }
     }
 }

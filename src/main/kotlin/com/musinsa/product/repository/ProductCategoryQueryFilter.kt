@@ -10,7 +10,7 @@ data class ProductCategoryQueryFilter(
 
     fun toBooleanExpressions(): Array<BooleanExpression> {
         return listOfNotNull(
-            parentId?.let { productCategory.parent.id.eq(it) },
+            parentId?.let { productCategory._parent.id.eq(it) },
             name?.let { productCategory.name.contains(it) },
             productCategory.isDeleted.isFalse
         ).toTypedArray()

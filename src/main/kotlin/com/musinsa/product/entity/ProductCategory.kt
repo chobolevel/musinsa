@@ -29,7 +29,9 @@ class ProductCategory(
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    var parent: ProductCategory? = null
+    private var _parent: ProductCategory? = null
+    val parent: ProductCategory?
+        get() = _parent
 
     @Column(nullable = false)
     var isDeleted: Boolean = false
@@ -38,8 +40,8 @@ class ProductCategory(
      * 연관관계 편의 메서드
      * ============================== */
     fun assignParent(parent: ProductCategory?) {
-        if (this.parent != parent) {
-            this.parent = parent
+        if (this._parent != parent) {
+            this._parent = parent
         }
     }
 

@@ -29,7 +29,9 @@ class ProductOptionValue(
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_option_id")
-    var productOption: ProductOption? = null
+    private var _productOption: ProductOption? = null
+    val productOption: ProductOption?
+        get() = _productOption
 
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     var isDeleted: Boolean = false
@@ -45,8 +47,8 @@ class ProductOptionValue(
      * 연관관계 편의 메서드
      * ============================== */
     fun assignProductOption(productOption: ProductOption) {
-        if (this.productOption != productOption) {
-            this.productOption = productOption
+        if (this._productOption != productOption) {
+            this._productOption = productOption
         }
     }
 

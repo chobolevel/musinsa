@@ -37,7 +37,9 @@ class ProductImage(
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     @NotAudited
-    var product: Product? = null
+    private var _product: Product? = null
+    val product: Product?
+        get() = _product
 
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     var isDeleted: Boolean = false
@@ -46,8 +48,8 @@ class ProductImage(
      * 연관관계 편의 메서드
      * ============================== */
     fun assignProduct(product: Product) {
-        if (this.product != product) {
-            this.product = product
+        if (this._product != product) {
+            this._product = product
         }
     }
 

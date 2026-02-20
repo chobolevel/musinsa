@@ -14,8 +14,8 @@ data class ProductQueryFilter(
 
     fun toBooleanExpressions(): Array<BooleanExpression> {
         return listOfNotNull(
-            productBrandId?.let { product.productBrand.id.eq(it) },
-            productCategoryId?.let { product.productCategory.id.eq(it) },
+            productBrandId?.let { product._productBrand.id.eq(it) },
+            productCategoryId?.let { product._productCategory.id.eq(it) },
             name?.let {
                 Expressions.booleanTemplate(
                     "MATCH({0}) AGAINST({1} IN BOOLEAN MODE)",

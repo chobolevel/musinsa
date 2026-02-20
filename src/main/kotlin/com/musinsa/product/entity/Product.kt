@@ -39,11 +39,15 @@ class Product(
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_brand_id")
-    var productBrand: ProductBrand? = null
+    private var _productBrand: ProductBrand? = null
+    val productBrand: ProductBrand?
+        get() = _productBrand
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_category_id")
-    var productCategory: ProductCategory? = null
+    private var _productCategory: ProductCategory? = null
+    val productCategory: ProductCategory?
+        get() = _productCategory
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -56,17 +60,23 @@ class Product(
     @OneToMany(mappedBy = "product", cascade = [(CascadeType.ALL)], orphanRemoval = true)
     @SQLRestriction("is_deleted = false")
     @OrderBy("sort_order asc")
-    val productImages: MutableList<ProductImage> = mutableListOf()
+    private val _productImages: MutableList<ProductImage> = mutableListOf()
+    val productImages: List<ProductImage>
+        get() = _productImages
 
     @NotAudited
     @OneToMany(mappedBy = "product", cascade = [(CascadeType.ALL)], orphanRemoval = true)
     @SQLRestriction("is_deleted = false")
     @OrderBy("sort_order asc")
-    val productOptions: MutableList<ProductOption> = mutableListOf()
+    private val _productOptions: MutableList<ProductOption> = mutableListOf()
+    val productOptions: List<ProductOption>
+        get() = _productOptions
 
     @NotAudited
     @OneToMany(mappedBy = "product", cascade = [(CascadeType.ALL)], orphanRemoval = true)
-    val productInventories: MutableList<ProductInventory> = mutableListOf()
+    private val _productInventories: MutableList<ProductInventory> = mutableListOf()
+    val productInventories: List<ProductInventory>
+        get() = _productInventories
 
     /* ==============================
      * 생성 시 불변식 검증
@@ -82,33 +92,33 @@ class Product(
      * 연관관계 편의 메서드
      * ============================== */
     fun assignProductBrand(productBrand: ProductBrand) {
-        if (this.productBrand != productBrand) {
-            this.productBrand = productBrand
+        if (this._productBrand != productBrand) {
+            this._productBrand = productBrand
         }
     }
 
     fun assignProductCategory(productCategory: ProductCategory) {
-        if (this.productCategory != productCategory) {
-            this.productCategory = productCategory
+        if (this._productCategory != productCategory) {
+            this._productCategory = productCategory
         }
     }
 
     fun addProductImage(productImage: ProductImage) {
-        if (!this.productImages.contains(productImage)) {
-            this.productImages.add(productImage)
+        if (!this._productImages.contains(productImage)) {
+            this._productImages.add(productImage)
         }
     }
 
     fun addProductOption(productOption: ProductOption) {
-        if (!this.productOptions.contains(productOption)) {
-            this.productOptions.add(productOption)
+        if (!this._productOptions.contains(productOption)) {
+            this._productOptions.add(productOption)
             productOption.assignProduct(product = this)
         }
     }
 
     fun addProductInventory(productInventory: ProductInventory) {
-        if (!this.productInventories.contains(productInventory)) {
-            this.productInventories.add(productInventory)
+        if (!this._productInventories.contains(productInventory)) {
+            this._productInventories.add(productInventory)
         }
     }
 
@@ -120,13 +130,13 @@ class Product(
     }
 
     fun deleteProductOptionInBatch(productOptionIds: List<Long>) {
-        this.productOptions.removeIf { productOption ->
+        this._productOptions.removeIf { productOption ->
             productOption.id in productOptionIds
         }
     }
 
     fun deleteProductImageInBatch(productImageIds: List<Long>) {
-        this.productImages.removeIf { productImage ->
+        this._productImages.removeIf { productImage ->
             productImage.id in productImageIds
         }
     }

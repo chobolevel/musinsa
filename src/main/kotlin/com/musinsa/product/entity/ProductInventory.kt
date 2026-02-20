@@ -27,23 +27,27 @@ class ProductInventory(
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    var product: Product? = null
+    private var _product: Product? = null
+    val product: Product?
+        get() = _product
 
     @OneToMany(mappedBy = "productInventory", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val productInventoryValues: MutableSet<ProductInventoryValue> = HashSet()
+    private val _productInventoryValues: MutableSet<ProductInventoryValue> = HashSet()
+    val productInventoryValues: Set<ProductInventoryValue>
+        get() = _productInventoryValues
 
     /* ==============================
      * 연관관계 편의 메서드
      * ============================== */
     fun assignProduct(product: Product) {
-        if (this.product != product) {
-            this.product = product
+        if (this._product != product) {
+            this._product = product
         }
     }
 
     fun addProductInventoryValue(productInventoryValue: ProductInventoryValue) {
-        if (!this.productInventoryValues.contains(productInventoryValue)) {
-            this.productInventoryValues.add(productInventoryValue)
+        if (!this._productInventoryValues.contains(productInventoryValue)) {
+            this._productInventoryValues.add(productInventoryValue)
         }
     }
 }

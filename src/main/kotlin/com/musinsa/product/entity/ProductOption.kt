@@ -37,7 +37,9 @@ class ProductOption(
     @NotAudited
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    var product: Product? = null
+    private var _product: Product? = null
+    val product: Product?
+        get() = _product
 
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     var isDeleted: Boolean = false
@@ -46,7 +48,9 @@ class ProductOption(
     @NotAudited
     @SQLRestriction("is_deleted = 0")
     @OrderBy("sort_order asc")
-    val productOptionValues: MutableList<ProductOptionValue> = mutableListOf()
+    private val _productOptionValues: MutableList<ProductOptionValue> = mutableListOf()
+    val productOptionValues: List<ProductOptionValue>
+        get() = _productOptionValues
 
     // JPA에 이 필드는 영속성 대상이 아님을 명시
     @Transient
@@ -79,14 +83,14 @@ class ProductOption(
      * 연관관계 편의 메서드
      * ============================== */
     fun assignProduct(product: Product) {
-        if (this.product != product) {
-            this.product = product
+        if (this._product != product) {
+            this._product = product
         }
     }
 
     fun addProductOptionValue(productOptionValue: ProductOptionValue) {
-        if (!this.productOptionValues.contains(productOptionValue)) {
-            this.productOptionValues.add(productOptionValue)
+        if (!this._productOptionValues.contains(productOptionValue)) {
+            this._productOptionValues.add(productOptionValue)
             productOptionValue.assignProductOption(productOption = this)
         }
     }
@@ -99,7 +103,7 @@ class ProductOption(
     }
 
     fun deleteProductOptionValueInBatch(productOptionValueIds: List<Long>) {
-        this.productOptionValues.removeIf {
+        this._productOptionValues.removeIf {
             it.id in productOptionValueIds
         }
     }
