@@ -5,7 +5,7 @@ import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.vo.NationType
 import com.musinsa.product.dto.ProductBrandResponse
-import com.musinsa.product.repository.ProductBrandQueryFilter
+import com.musinsa.product.reader.ProductBrandQueryFilter
 import com.musinsa.product.service.ProductBrandService
 import com.musinsa.product.vo.ProductBrandOrderType
 import org.springframework.http.ResponseEntity

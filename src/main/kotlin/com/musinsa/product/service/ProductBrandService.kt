@@ -5,7 +5,7 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.product.dto.CreateProductBrandRequest
 import com.musinsa.product.dto.ProductBrandResponse
 import com.musinsa.product.dto.UpdateProductBrandRequest
-import com.musinsa.product.repository.ProductBrandQueryFilter
+import com.musinsa.product.reader.ProductBrandQueryFilter
 import com.musinsa.product.vo.ProductBrandOrderType
 
 interface ProductBrandService {

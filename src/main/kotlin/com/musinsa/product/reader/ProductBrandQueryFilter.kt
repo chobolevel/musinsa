@@ -1,7 +1,7 @@
-package com.musinsa.product.repository
+package com.musinsa.product.reader
 
 import com.musinsa.common.vo.NationType
-import com.musinsa.product.entity.QProductBrand.productBrand
+import com.musinsa.product.entity.QProductBrand
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.Expressions
 
@@ -16,18 +16,18 @@ class ProductBrandQueryFilter(
             name?.let {
                 Expressions.booleanTemplate(
                     "MATCH({0}) AGAINST({1} IN BOOLEAN MODE)",
-                    productBrand.name,
+                    QProductBrand.productBrand.name,
                     it
                 )
             },
             englishName?.let {
                 Expressions.booleanTemplate(
                     "MATCH({0}) AGAINST({1} IN BOOLEAN MODE)",
-                    productBrand.englishName,
+                    QProductBrand.productBrand.englishName,
                     it
                 )
             },
-            nation?.let { productBrand.nation.eq(it) }
+            nation?.let { QProductBrand.productBrand.nation.eq(it) }
         ).toTypedArray()
     }
 }

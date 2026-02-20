@@ -7,9 +7,10 @@ import com.musinsa.product.dto.CreateProductBrandRequest
 import com.musinsa.product.dto.ProductBrandResponse
 import com.musinsa.product.dto.UpdateProductBrandRequest
 import com.musinsa.product.entity.ProductBrand
-import com.musinsa.product.repository.ProductBrandQueryFilter
-import com.musinsa.product.repository.ProductBrandRepositoryFacade
+import com.musinsa.product.reader.ProductBrandQueryFilter
+import com.musinsa.product.reader.ProductBrandReader
 import com.musinsa.product.service.impl.ProductBrandServiceV1
+import com.musinsa.product.store.ProductBrandStore
 import com.musinsa.product.updater.ProductBrandUpdater
 import com.musinsa.product.vo.ProductBrandOrderType
 import org.assertj.core.api.Assertions.assertThat
@@ -30,7 +31,10 @@ class ProductBrandServiceV1Test {
     private val dummyBrandResponse: ProductBrandResponse = DummyProductBrand.toResponse()
 
     @Mock
-    private lateinit var repository: ProductBrandRepositoryFacade
+    private lateinit var productBrandStore: ProductBrandStore
+
+    @Mock
+    private lateinit var productBrandReader: ProductBrandReader
 
     @Mock
     private lateinit var converter: ProductBrandConverter
@@ -46,7 +50,7 @@ class ProductBrandServiceV1Test {
         // given
         val request: CreateProductBrandRequest = DummyProductBrand.toCreateRequest()
         `when`(converter.toEntity(request = request)).thenReturn(dummyProductBrand)
-        `when`(repository.save(productBrand = dummyProductBrand)).thenReturn(dummyProductBrand)
+        `when`(productBrandStore.save(productBrand = dummyProductBrand)).thenReturn(dummyProductBrand)
 
         // when
         val result: Long = service.createBrand(request = request)
@@ -71,14 +75,14 @@ class ProductBrandServiceV1Test {
         )
         val dummyOrderTypes: List<ProductBrandOrderType> = emptyList()
         `when`(
-            repository.searchProductBrands(
+            productBrandReader.searchProductBrands(
                 queryFilter = dummyQueryFilter,
                 pagination = dummyPagination,
                 orderTypes = dummyOrderTypes
             )
         ).thenReturn(dummyProductBrands)
         `when`(
-            repository.searchProductBrandsCount(
+            productBrandReader.searchProductBrandsCount(
                 queryFilter = dummyQueryFilter,
             )
         ).thenReturn(dummyProductBrands.size.toLong())
@@ -102,7 +106,7 @@ class ProductBrandServiceV1Test {
     fun getProductBrandTest() {
         // given
         val dummyBrandId: Long = dummyProductBrand.id!!
-        `when`(repository.findById(id = dummyBrandId)).thenReturn(dummyProductBrand)
+        `when`(productBrandReader.findById(id = dummyBrandId)).thenReturn(dummyProductBrand)
         `when`(converter.toResponse(productBrand = dummyProductBrand)).thenReturn(dummyBrandResponse)
 
         // when
@@ -117,7 +121,7 @@ class ProductBrandServiceV1Test {
         // given
         val dummyBrandId: Long = dummyProductBrand.id!!
         val dummyRequest: UpdateProductBrandRequest = DummyProductBrand.toUpdateRequest()
-        `when`(repository.findById(id = dummyBrandId)).thenReturn(dummyProductBrand)
+        `when`(productBrandReader.findById(id = dummyBrandId)).thenReturn(dummyProductBrand)
         `when`(updater.markAsUpdate(request = dummyRequest, productBrand = dummyProductBrand)).thenReturn(dummyProductBrand)
 
         // when
@@ -134,7 +138,7 @@ class ProductBrandServiceV1Test {
     fun deleteProductBrandTest() {
         // given
         val dummyBrandId: Long = dummyProductBrand.id!!
-        `when`(repository.findById(id = dummyBrandId)).thenReturn(dummyProductBrand)
+        `when`(productBrandReader.findById(id = dummyBrandId)).thenReturn(dummyProductBrand)
 
         // when
         val result: Boolean = service.deleteBrand(id = dummyBrandId)

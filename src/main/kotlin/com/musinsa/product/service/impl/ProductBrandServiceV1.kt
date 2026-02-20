@@ -7,9 +7,10 @@ import com.musinsa.product.dto.CreateProductBrandRequest
 import com.musinsa.product.dto.ProductBrandResponse
 import com.musinsa.product.dto.UpdateProductBrandRequest
 import com.musinsa.product.entity.ProductBrand
-import com.musinsa.product.repository.ProductBrandQueryFilter
-import com.musinsa.product.repository.ProductBrandRepositoryFacade
+import com.musinsa.product.reader.ProductBrandQueryFilter
+import com.musinsa.product.reader.ProductBrandReader
 import com.musinsa.product.service.ProductBrandService
+import com.musinsa.product.store.ProductBrandStore
 import com.musinsa.product.updater.ProductBrandUpdater
 import com.musinsa.product.vo.ProductBrandOrderType
 import org.springframework.stereotype.Service
@@ -17,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ProductBrandServiceV1(
-    private val repository: ProductBrandRepositoryFacade,
+    private val productBrandStore: ProductBrandStore,
+    private val productBrandReader: ProductBrandReader,
     private val converter: ProductBrandConverter,
     private val updater: ProductBrandUpdater
 ) : ProductBrandService {
@@ -25,7 +27,7 @@ class ProductBrandServiceV1(
     @Transactional
     override fun createBrand(request: CreateProductBrandRequest): Long {
         val productBrand: ProductBrand = converter.toEntity(request = request)
-        return repository.save(productBrand = productBrand).id!!
+        return productBrandStore.save(productBrand = productBrand).id!!
     }
 
     override fun getBrands(
@@ -33,12 +35,12 @@ class ProductBrandServiceV1(
         pagination: Pagination,
         orderTypes: List<ProductBrandOrderType>
     ): PaginationResponse {
-        val productBrands: List<ProductBrand> = repository.searchProductBrands(
+        val productBrands: List<ProductBrand> = productBrandReader.searchProductBrands(
             queryFilter = queryFilter,
             pagination = pagination,
             orderTypes = orderTypes
         )
-        val totalCount: Long = repository.searchProductBrandsCount(
+        val totalCount: Long = productBrandReader.searchProductBrandsCount(
             queryFilter = queryFilter,
         )
         return PaginationResponse(
@@ -50,13 +52,13 @@ class ProductBrandServiceV1(
     }
 
     override fun getBrand(id: Long): ProductBrandResponse {
-        val productBrand: ProductBrand = repository.findById(id = id)
+        val productBrand: ProductBrand = productBrandReader.findById(id = id)
         return converter.toResponse(productBrand = productBrand)
     }
 
     @Transactional
     override fun updateBrand(id: Long, request: UpdateProductBrandRequest): Long {
-        val productBrand: ProductBrand = repository.findById(id = id)
+        val productBrand: ProductBrand = productBrandReader.findById(id = id)
         updater.markAsUpdate(
             request = request,
             productBrand = productBrand
@@ -66,7 +68,7 @@ class ProductBrandServiceV1(
 
     @Transactional
     override fun deleteBrand(id: Long): Boolean {
-        val productBrand: ProductBrand = repository.findById(id = id)
+        val productBrand: ProductBrand = productBrandReader.findById(id = id)
         productBrand.delete()
         return true
     }
