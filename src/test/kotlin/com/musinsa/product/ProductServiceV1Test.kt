@@ -21,9 +21,9 @@ import com.musinsa.product.entity.ProductOption
 import com.musinsa.product.image.DummyProductImage
 import com.musinsa.product.option.DummyProductOption
 import com.musinsa.product.reader.ProductBrandReader
+import com.musinsa.product.reader.ProductCategoryReader
 import com.musinsa.product.reader.ProductQueryFilter
 import com.musinsa.product.reader.ProductReader
-import com.musinsa.product.repository.ProductCategoryRepositoryFacade
 import com.musinsa.product.service.impl.ProductServiceV1
 import com.musinsa.product.store.ProductStore
 import com.musinsa.product.updater.ProductUpdater
@@ -60,7 +60,7 @@ class ProductServiceV1Test {
     private lateinit var productBrandReader: ProductBrandReader
 
     @Mock
-    private lateinit var productCategoryRepository: ProductCategoryRepositoryFacade
+    private lateinit var productCategoryReader: ProductCategoryReader
 
     @Mock
     private lateinit var converter: ProductConverter
@@ -88,7 +88,7 @@ class ProductServiceV1Test {
         val dummyProductImages: List<ProductImage> = listOf(DummyProductImage.toEntity())
         `when`(converter.toEntity(request = request)).thenReturn(dummyProduct)
         `when`(productBrandReader.findById(id = request.productBrandId)).thenReturn(dummyProductBrand)
-        `when`(productCategoryRepository.findById(id = request.productCategoryId)).thenReturn(dummyProductCategory)
+        `when`(productCategoryReader.findById(id = request.productCategoryId)).thenReturn(dummyProductCategory)
         `when`(productOptionConverter.toEntityInBatch(requests = request.productOptions)).thenReturn(dummyProductOptions)
         `when`(productImageConverter.toEntityInBatch(requests = request.productImages)).thenReturn(dummyProductImages)
         `when`(
@@ -133,7 +133,7 @@ class ProductServiceV1Test {
         val request: CreateProductRequest = DummyProduct.toCreateRequest()
         `when`(converter.toEntity(request = request)).thenReturn(dummyProduct)
         `when`(productBrandReader.findById(id = request.productBrandId)).thenReturn(dummyProductBrand)
-        `when`(productCategoryRepository.findById(id = request.productCategoryId)).thenThrow(
+        `when`(productCategoryReader.findById(id = request.productCategoryId)).thenThrow(
             DataNotFoundException(
                 errorCode = ErrorCode.PRODUCT_CATEGORY_NOT_FOUND,
                 message = ErrorCode.PRODUCT_CATEGORY_NOT_FOUND.defaultMessage

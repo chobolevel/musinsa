@@ -14,14 +14,14 @@ import com.musinsa.product.entity.ProductImage
 import com.musinsa.product.entity.ProductOption
 import com.musinsa.product.entity.QProductOption.productOption
 import com.musinsa.product.reader.ProductBrandReader
-import com.musinsa.product.repository.ProductCategoryRepositoryFacade
+import com.musinsa.product.reader.ProductCategoryReader
 import com.musinsa.product.vo.ProductUpdateMask
 import org.springframework.stereotype.Component
 
 @Component
 class ProductUpdater(
     private val productBrandReader: ProductBrandReader,
-    private val productCategoryRepository: ProductCategoryRepositoryFacade,
+    private val productCategoryReader: ProductCategoryReader,
     private val productOptionUpdater: ProductOptionUpdater,
     private val productImageUpdater: ProductImageUpdater,
     private val productOptionConverter: ProductOptionConverter,
@@ -36,7 +36,7 @@ class ProductUpdater(
                     product.assignProductBrand(productBrand = productBrand)
                 }
                 ProductUpdateMask.PRODUCT_CATEGORY -> {
-                    val productCategory: ProductCategory = productCategoryRepository.findById(id = request.productCategoryId!!)
+                    val productCategory: ProductCategory = productCategoryReader.findById(id = request.productCategoryId!!)
                     product.assignProductCategory(productCategory = productCategory)
                 }
                 ProductUpdateMask.NAME -> product.name = request.name!!

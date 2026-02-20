@@ -5,7 +5,7 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.product.dto.CreateProductCategoryRequest
 import com.musinsa.product.dto.ProductCategoryResponse
 import com.musinsa.product.dto.UpdateProductCategoryRequest
-import com.musinsa.product.repository.ProductCategoryQueryFilter
+import com.musinsa.product.reader.ProductCategoryQueryFilter
 import com.musinsa.product.vo.ProductCategoryOrderType
 
 interface ProductCategoryService {

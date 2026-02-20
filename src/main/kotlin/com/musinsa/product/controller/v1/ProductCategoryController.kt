@@ -4,7 +4,7 @@ import com.musinsa.common.dto.CommonResponse
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.product.dto.ProductCategoryResponse
-import com.musinsa.product.repository.ProductCategoryQueryFilter
+import com.musinsa.product.reader.ProductCategoryQueryFilter
 import com.musinsa.product.service.ProductCategoryService
 import com.musinsa.product.vo.ProductCategoryOrderType
 import org.springframework.http.ResponseEntity

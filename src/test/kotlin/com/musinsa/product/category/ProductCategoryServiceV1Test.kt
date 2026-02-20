@@ -8,9 +8,10 @@ import com.musinsa.product.dto.CreateProductCategoryRequest
 import com.musinsa.product.dto.ProductCategoryResponse
 import com.musinsa.product.dto.UpdateProductCategoryRequest
 import com.musinsa.product.entity.ProductCategory
-import com.musinsa.product.repository.ProductCategoryQueryFilter
-import com.musinsa.product.repository.ProductCategoryRepositoryFacade
+import com.musinsa.product.reader.ProductCategoryQueryFilter
+import com.musinsa.product.reader.ProductCategoryReader
 import com.musinsa.product.service.impl.ProductCategoryServiceV1
+import com.musinsa.product.store.ProductCategoryStore
 import com.musinsa.product.updater.ProductCategoryUpdater
 import com.musinsa.product.vo.ProductCategoryOrderType
 import org.assertj.core.api.Assertions.assertThat
@@ -33,7 +34,10 @@ class ProductCategoryServiceV1Test {
     private val dummyProductCategoryResponse: ProductCategoryResponse = DummyProductCategory.toResponse()
 
     @Mock
-    private lateinit var repository: ProductCategoryRepositoryFacade
+    private lateinit var productCategoryStore: ProductCategoryStore
+
+    @Mock
+    private lateinit var productCategoryReader: ProductCategoryReader
 
     @Mock
     private lateinit var converter: ProductCategoryConverter
@@ -52,14 +56,14 @@ class ProductCategoryServiceV1Test {
         // given
         val dummyRequest: CreateProductCategoryRequest = DummyProductCategory.toCreateRequest()
         `when`(converter.toEntity(request = dummyRequest)).thenReturn(dummyProductCategory)
-        `when`(repository.findById(id = dummyRequest.parentId!!)).thenReturn(dummyParentProductCategory)
+        `when`(productCategoryReader.findById(id = dummyRequest.parentId!!)).thenReturn(dummyParentProductCategory)
         `when`(
             assembler.assemble(
                 productCategory = dummyProductCategory,
                 parent = dummyParentProductCategory,
             )
         ).thenReturn(dummyProductCategory)
-        `when`(repository.save(productCategory = dummyProductCategory)).thenReturn(dummyProductCategory)
+        `when`(productCategoryStore.save(productCategory = dummyProductCategory)).thenReturn(dummyProductCategory)
 
         // when
         val result: Long = service.createProductCategory(request = dummyRequest)
@@ -83,14 +87,14 @@ class ProductCategoryServiceV1Test {
         val dummyProductCategories: List<ProductCategory> = listOf(dummyProductCategory)
         val dummyProductCategoryResponses: List<ProductCategoryResponse> = listOf(dummyProductCategoryResponse)
         `when`(
-            repository.searchProductCategories(
+            productCategoryReader.searchProductCategories(
                 queryFilter = queryFilter,
                 pagination = pagination,
                 orderTypes = orderTypes
             )
         ).thenReturn(dummyProductCategories)
         `when`(
-            repository.searchProductCategoriesCount(
+            productCategoryReader.searchProductCategoriesCount(
                 queryFilter = queryFilter,
             )
         ).thenReturn(dummyProductCategories.size.toLong())
@@ -114,7 +118,7 @@ class ProductCategoryServiceV1Test {
     fun getProductCategoryTest() {
         // given
         val dummyProductCategoryId: Long = dummyProductCategory.id!!
-        `when`(repository.findById(id = dummyProductCategoryId)).thenReturn(dummyProductCategory)
+        `when`(productCategoryReader.findById(id = dummyProductCategoryId)).thenReturn(dummyProductCategory)
         `when`(converter.toResponse(productCategory = dummyProductCategory)).thenReturn(dummyProductCategoryResponse)
 
         // when
@@ -129,7 +133,7 @@ class ProductCategoryServiceV1Test {
         // given
         val dummyProductCategoryId: Long = dummyProductCategory.id!!
         val request: UpdateProductCategoryRequest = DummyProductCategory.toUpdateRequest()
-        `when`(repository.findById(id = dummyProductCategoryId)).thenReturn(dummyProductCategory)
+        `when`(productCategoryReader.findById(id = dummyProductCategoryId)).thenReturn(dummyProductCategory)
         `when`(updater.markAsUpdate(productCategory = dummyProductCategory, request = request)).thenReturn(dummyProductCategory)
 
         // when
@@ -146,7 +150,7 @@ class ProductCategoryServiceV1Test {
     fun deleteProductCategoryTest() {
         // given
         val dummyProductCategoryId: Long = dummyProductCategory.id!!
-        `when`(repository.findById(id = dummyProductCategoryId)).thenReturn(dummyProductCategory)
+        `when`(productCategoryReader.findById(id = dummyProductCategoryId)).thenReturn(dummyProductCategory)
 
         // when
         val result: Boolean = service.deleteProductCategory(productCategoryId = dummyProductCategoryId)

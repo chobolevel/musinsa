@@ -18,9 +18,9 @@ import com.musinsa.product.entity.ProductInventoryValue
 import com.musinsa.product.entity.ProductOption
 import com.musinsa.product.entity.ProductOptionValue
 import com.musinsa.product.reader.ProductBrandReader
+import com.musinsa.product.reader.ProductCategoryReader
 import com.musinsa.product.reader.ProductQueryFilter
 import com.musinsa.product.reader.ProductReader
-import com.musinsa.product.repository.ProductCategoryRepositoryFacade
 import com.musinsa.product.service.ProductService
 import com.musinsa.product.store.ProductStore
 import com.musinsa.product.updater.ProductUpdater
@@ -33,7 +33,7 @@ class ProductServiceV1(
     private val productStore: ProductStore,
     private val productReader: ProductReader,
     private val productBrandReader: ProductBrandReader,
-    private val productCategoryRepository: ProductCategoryRepositoryFacade,
+    private val productCategoryReader: ProductCategoryReader,
     private val converter: ProductConverter,
     private val assembler: ProductAssembler,
     private val productOptionConverter: ProductOptionConverter,
@@ -45,7 +45,7 @@ class ProductServiceV1(
     override fun createProduct(request: CreateProductRequest): Long {
         val baseProduct: Product = converter.toEntity(request = request)
         val productBrand: ProductBrand = productBrandReader.findById(id = request.productBrandId)
-        val productCategory: ProductCategory = productCategoryRepository.findById(id = request.productCategoryId)
+        val productCategory: ProductCategory = productCategoryReader.findById(id = request.productCategoryId)
         val productOptions: List<ProductOption> = productOptionConverter.toEntityInBatch(requests = request.productOptions)
         val productImages: List<ProductImage> = productImageConverter.toEntityInBatch(requests = request.productImages)
 
