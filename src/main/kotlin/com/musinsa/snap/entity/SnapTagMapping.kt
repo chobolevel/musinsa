@@ -25,24 +25,28 @@ class SnapTagMapping(
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "snap_id")
-    var snap: Snap? = null
+    private var _snap: Snap? = null
+    val snap: Snap?
+        get() = _snap
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "snap_tag_id")
-    var snapTag: SnapTag? = null
+    private var _snapTag: SnapTag? = null
+    val snapTag: SnapTag?
+        get() = _snapTag
 
     /* ==============================
      * 연관관계 편의 메서드
      * ============================== */
     fun assignSnap(snap: Snap) {
-        if (this.snap != snap) {
-            this.snap = snap
+        if (this._snap != snap) {
+            this._snap = snap
         }
     }
 
     fun assignSnapTag(snapTag: SnapTag) {
-        if (this.snapTag != snapTag) {
-            this.snapTag = snapTag
+        if (this._snapTag != snapTag) {
+            this._snapTag = snapTag
         }
     }
 }

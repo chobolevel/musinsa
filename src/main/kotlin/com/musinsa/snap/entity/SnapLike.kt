@@ -23,24 +23,28 @@ class SnapLike : BaseEntity() {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "snap_id")
-    var snap: Snap? = null
+    private var _snap: Snap? = null
+    val snap: Snap?
+        get() = _snap
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    var user: User? = null
+    private var _user: User? = null
+    val user: User?
+        get() = _user
 
     /* ==============================
      * 연관관계 편의 메서드
      * ============================== */
     fun assignSnap(snap: Snap) {
-        if (this.snap != snap) {
-            this.snap = snap
+        if (this._snap != snap) {
+            this._snap = snap
         }
     }
 
     fun assignUser(user: User) {
-        if (this.user != user) {
-            this.user = user
+        if (this._user != user) {
+            this._user = user
         }
     }
 }

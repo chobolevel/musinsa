@@ -1,6 +1,6 @@
 package com.musinsa.snap.reader
 
-import com.musinsa.snap.entity.QSnap
+import com.musinsa.snap.entity.QSnap.snap
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.Expressions
 
@@ -11,15 +11,15 @@ class SnapQueryFilter(
 
     fun toBooleanExpressions(): Array<BooleanExpression> {
         return listOfNotNull(
-            writerId?.let { QSnap.snap.writer.id.eq(it) },
+            writerId?.let { snap._writer.id.eq(it) },
             keyword?.let {
                 Expressions.booleanTemplate(
                     "MATCH({0}) AGAINST({1} IN BOOLEAN MODE)",
-                    QSnap.snap.content,
+                    snap.content,
                     it
                 )
             },
-            QSnap.snap.isDeleted.isFalse
+            snap.isDeleted.isFalse
         ).toTypedArray()
     }
 }

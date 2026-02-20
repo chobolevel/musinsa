@@ -1,6 +1,6 @@
 package com.musinsa.snap.reader
 
-import com.musinsa.snap.entity.QSnapTag
+import com.musinsa.snap.entity.QSnapTag.snapTag
 import com.musinsa.snap.vo.SnapTagType
 import com.querydsl.core.types.dsl.BooleanExpression
 
@@ -10,8 +10,8 @@ class SnapTagQueryFilter(
 
     fun toBooleanExpressions(): Array<BooleanExpression> {
         return listOfNotNull(
-            type?.let { QSnapTag.snapTag.type.eq(it) },
-            QSnapTag.snapTag.isDeleted.isFalse
+            type?.let { snapTag.type.eq(it) },
+            snapTag.isDeleted.isFalse
         ).toTypedArray()
     }
 }

@@ -10,8 +10,8 @@ class SnapLikeQueryFilter(
 
     fun toBooleanExpressions(): Array<BooleanExpression> {
         return listOfNotNull(
-            snapId?.let { QSnapLike.snapLike.snap.id.eq(it) },
-            userId?.let { QSnapLike.snapLike.user.id.eq(it) }
+            snapId?.let { QSnapLike.snapLike._snap.id.eq(it) },
+            userId?.let { QSnapLike.snapLike._user.id.eq(it) }
         ).toTypedArray()
     }
 }
