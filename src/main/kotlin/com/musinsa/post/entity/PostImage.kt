@@ -39,7 +39,7 @@ class PostImage(
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     var post: Post? = null
-    protected set
+        protected set
 
     /* ==============================
      * 생성 시 불변식 검증
