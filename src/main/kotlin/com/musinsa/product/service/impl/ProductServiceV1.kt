@@ -5,6 +5,7 @@ import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.product.assembler.ProductAssembler
 import com.musinsa.product.converter.ProductConverter
 import com.musinsa.product.converter.ProductImageConverter
+import com.musinsa.product.converter.ProductInventoryConverter
 import com.musinsa.product.converter.ProductOptionConverter
 import com.musinsa.product.dto.CreateProductRequest
 import com.musinsa.product.dto.ProductResponse
@@ -14,9 +15,7 @@ import com.musinsa.product.entity.ProductBrand
 import com.musinsa.product.entity.ProductCategory
 import com.musinsa.product.entity.ProductImage
 import com.musinsa.product.entity.ProductInventory
-import com.musinsa.product.entity.ProductInventoryValue
 import com.musinsa.product.entity.ProductOption
-import com.musinsa.product.entity.ProductOptionValue
 import com.musinsa.product.reader.ProductBrandReader
 import com.musinsa.product.reader.ProductCategoryReader
 import com.musinsa.product.reader.ProductQueryFilter
@@ -36,8 +35,9 @@ class ProductServiceV1(
     private val productCategoryReader: ProductCategoryReader,
     private val converter: ProductConverter,
     private val assembler: ProductAssembler,
-    private val productOptionConverter: ProductOptionConverter,
     private val productImageConverter: ProductImageConverter,
+    private val productOptionConverter: ProductOptionConverter,
+    private val productInventoryConverter: ProductInventoryConverter,
     private val updater: ProductUpdater
 ) : ProductService {
 
@@ -46,37 +46,18 @@ class ProductServiceV1(
         val baseProduct: Product = converter.toEntity(request = request)
         val productBrand: ProductBrand = productBrandReader.findById(id = request.productBrandId)
         val productCategory: ProductCategory = productCategoryReader.findById(id = request.productCategoryId)
-        val productOptions: List<ProductOption> = productOptionConverter.toEntityInBatch(requests = request.productOptions)
         val productImages: List<ProductImage> = productImageConverter.toEntityInBatch(requests = request.productImages)
+        val productOptions: List<ProductOption> = productOptionConverter.toEntityInBatch(requests = request.productOptions)
+        val productInventories: List<ProductInventory> = productInventoryConverter.toEntityInBatch(productOptions = productOptions)
 
         val product: Product = assembler.assemble(
             product = baseProduct,
             productBrand = productBrand,
             productCategory = productCategory,
             productOptions = productOptions,
-            productImages = productImages
+            productImages = productImages,
+            productInventories = productInventories,
         )
-
-        // TODO 로직 분리하기
-        val combinations: List<List<ProductOptionValue>> = productOptions.fold(listOf(emptyList())) { acc, productOption ->
-            acc.flatMap { prefix ->
-                productOption.productOptionValues.map { prefix + it }
-            }
-        }
-        val productInventories: List<ProductInventory> = combinations.map { productOptionValues ->
-            val productInventory = ProductInventory(
-                stock = 100
-            )
-            productInventory.assignProduct(product = product)
-            productOptionValues.forEach { productOptionValue ->
-                val productInventoryValue = ProductInventoryValue().also {
-                    it.assignProductOptionValue(productOptionValue = productOptionValue)
-                }
-                productInventory.addProductInventoryValue(productInventoryValue = productInventoryValue)
-            }
-            productInventory
-        }
-        productInventories.forEach { product.addProductInventory(it) }
 
         return productStore.save(product = product).id!!
     }

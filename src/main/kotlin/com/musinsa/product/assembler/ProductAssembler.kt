@@ -4,6 +4,7 @@ import com.musinsa.product.entity.Product
 import com.musinsa.product.entity.ProductBrand
 import com.musinsa.product.entity.ProductCategory
 import com.musinsa.product.entity.ProductImage
+import com.musinsa.product.entity.ProductInventory
 import com.musinsa.product.entity.ProductOption
 import org.springframework.stereotype.Component
 
@@ -15,7 +16,8 @@ class ProductAssembler {
         productBrand: ProductBrand,
         productCategory: ProductCategory,
         productOptions: List<ProductOption>,
-        productImages: List<ProductImage>
+        productImages: List<ProductImage>,
+        productInventories: List<ProductInventory>
     ): Product {
         product.assignProductBrand(productBrand = productBrand)
         product.assignProductCategory(productCategory = productCategory)
@@ -25,6 +27,9 @@ class ProductAssembler {
         }
         productImages.forEach { productImage ->
             product.addProductImage(productImage = productImage)
+        }
+        productInventories.forEach { productInventory ->
+            product.addProductInventory(productInventory = productInventory)
         }
 
         return product

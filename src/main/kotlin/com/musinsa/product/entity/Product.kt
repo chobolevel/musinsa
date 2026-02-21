@@ -119,6 +119,7 @@ class Product(
     fun addProductInventory(productInventory: ProductInventory) {
         if (!this._productInventories.contains(productInventory)) {
             this._productInventories.add(productInventory)
+            productInventory.assignProduct(product = this)
         }
     }
 

@@ -9,6 +9,7 @@ import com.musinsa.product.brand.DummyProductBrand
 import com.musinsa.product.category.DummyProductCategory
 import com.musinsa.product.converter.ProductConverter
 import com.musinsa.product.converter.ProductImageConverter
+import com.musinsa.product.converter.ProductInventoryConverter
 import com.musinsa.product.converter.ProductOptionConverter
 import com.musinsa.product.dto.CreateProductRequest
 import com.musinsa.product.dto.ProductResponse
@@ -17,8 +18,10 @@ import com.musinsa.product.entity.Product
 import com.musinsa.product.entity.ProductBrand
 import com.musinsa.product.entity.ProductCategory
 import com.musinsa.product.entity.ProductImage
+import com.musinsa.product.entity.ProductInventory
 import com.musinsa.product.entity.ProductOption
 import com.musinsa.product.image.DummyProductImage
+import com.musinsa.product.inventory.DummyProductInventory
 import com.musinsa.product.option.DummyProductOption
 import com.musinsa.product.reader.ProductBrandReader
 import com.musinsa.product.reader.ProductCategoryReader
@@ -50,6 +53,8 @@ class ProductServiceV1Test {
 
     private val dummyProductCategory: ProductCategory = DummyProductCategory.toEntity()
 
+    private val dummyProductInventory: ProductInventory = DummyProductInventory.toEntity()
+
     @Mock
     private lateinit var productStore: ProductStore
 
@@ -75,6 +80,9 @@ class ProductServiceV1Test {
     private lateinit var productImageConverter: ProductImageConverter
 
     @Mock
+    private lateinit var productInventoryConverter: ProductInventoryConverter
+
+    @Mock
     private lateinit var updater: ProductUpdater
 
     @InjectMocks
@@ -84,20 +92,23 @@ class ProductServiceV1Test {
     fun createProductTest_success() {
         // given
         val request: CreateProductRequest = DummyProduct.toCreateRequest()
-        val dummyProductOptions: List<ProductOption> = listOf(DummyProductOption.toEntity())
         val dummyProductImages: List<ProductImage> = listOf(DummyProductImage.toEntity())
+        val dummyProductOptions: List<ProductOption> = listOf(DummyProductOption.toEntity())
+        val dummyProductInventories: List<ProductInventory> = listOf(dummyProductInventory)
         `when`(converter.toEntity(request = request)).thenReturn(dummyProduct)
         `when`(productBrandReader.findById(id = request.productBrandId)).thenReturn(dummyProductBrand)
         `when`(productCategoryReader.findById(id = request.productCategoryId)).thenReturn(dummyProductCategory)
-        `when`(productOptionConverter.toEntityInBatch(requests = request.productOptions)).thenReturn(dummyProductOptions)
         `when`(productImageConverter.toEntityInBatch(requests = request.productImages)).thenReturn(dummyProductImages)
+        `when`(productOptionConverter.toEntityInBatch(requests = request.productOptions)).thenReturn(dummyProductOptions)
+        `when`(productInventoryConverter.toEntityInBatch(productOptions = dummyProductOptions)).thenReturn(dummyProductInventories)
         `when`(
             assembler.assemble(
                 product = dummyProduct,
                 productBrand = dummyProductBrand,
                 productCategory = dummyProductCategory,
                 productOptions = dummyProductOptions,
-                productImages = dummyProductImages
+                productImages = dummyProductImages,
+                productInventories = listOf(dummyProductInventory)
             )
         ).thenReturn(dummyProduct)
         `when`(productStore.save(product = dummyProduct)).thenReturn(dummyProduct)
