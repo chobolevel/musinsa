@@ -35,9 +35,8 @@ class SnapImage(
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "snap_id")
-    private var _snap: Snap? = null
-    val snap: Snap?
-        get() = _snap
+    var snap: Snap? = null
+        protected set
 
     @Column(nullable = false)
     var isDeleted: Boolean = false
@@ -55,8 +54,8 @@ class SnapImage(
      * 연관관계 편의 메서드
      * ============================== */
     fun assignSnap(snap: Snap) {
-        if (this._snap != snap) {
-            this._snap = snap
+        if (this.snap != snap) {
+            this.snap = snap
         }
     }
 

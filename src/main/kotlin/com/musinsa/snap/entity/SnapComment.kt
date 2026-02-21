@@ -28,21 +28,18 @@ class SnapComment(
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    private var _parent: SnapComment? = null
-    val parent: SnapComment?
-        get() = _parent
+    var parent: SnapComment? = null
+        protected set
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "snap_id")
-    private var _snap: Snap? = null
-    val snap: Snap?
-        get() = _snap
+    var snap: Snap? = null
+        protected set
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
-    private var _writer: User? = null
-    val writer: User?
-        get() = _writer
+    var writer: User? = null
+        protected set
 
     @Column(nullable = false)
     var isDeleted: Boolean = false
@@ -51,20 +48,20 @@ class SnapComment(
      * 연관관계 편의 메서드
      * ============================== */
     fun assignParent(snapComment: SnapComment?) {
-        if (this._parent != snapComment) {
-            this._parent = snapComment
+        if (this.parent != snapComment) {
+            this.parent = snapComment
         }
     }
 
     fun assignSnap(snap: Snap) {
-        if (this._snap != snap) {
-            this._snap = snap
+        if (this.snap != snap) {
+            this.snap = snap
         }
     }
 
     fun assignWriter(user: User) {
-        if (this._writer != user) {
-            this._writer = user
+        if (this.writer != user) {
+            this.writer = user
         }
     }
 

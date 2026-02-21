@@ -37,9 +37,8 @@ class ProductOption(
     @NotAudited
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private var _product: Product? = null
-    val product: Product?
-        get() = _product
+    var product: Product? = null
+        protected set
 
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     var isDeleted: Boolean = false
@@ -83,8 +82,8 @@ class ProductOption(
      * 연관관계 편의 메서드
      * ============================== */
     fun assignProduct(product: Product) {
-        if (this._product != product) {
-            this._product = product
+        if (this.product != product) {
+            this.product = product
         }
     }
 

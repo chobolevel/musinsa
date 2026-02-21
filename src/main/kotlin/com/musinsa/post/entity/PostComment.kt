@@ -28,21 +28,18 @@ class PostComment(
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private var _user: User? = null
-    val user: User?
-        get() = _user
+    var user: User? = null
+        protected set
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
-    private var _post: Post? = null
-    val post: Post?
-        get() = _post
+    var post: Post? = null
+        protected set
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    private var _parent: PostComment? = null
-    val parent: PostComment?
-        get() = _parent
+    var parent: PostComment? = null
+        protected set
 
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     var isDeleted: Boolean = false
@@ -58,20 +55,20 @@ class PostComment(
      * 연관관계 편의 메서드
      * ============================== */
     fun assignUser(user: User) {
-        if (this._user != user) {
-            this._user = user
+        if (this.user != user) {
+            this.user = user
         }
     }
 
     fun assignPost(post: Post) {
-        if (this._post != post) {
-            this._post = post
+        if (this.post != post) {
+            this.post = post
         }
     }
 
     fun assignParent(parent: PostComment) {
-        if (this != parent && this._parent != parent) {
-            this._parent = parent
+        if (this != parent && this.parent != parent) {
+            this.parent = parent
         }
     }
 

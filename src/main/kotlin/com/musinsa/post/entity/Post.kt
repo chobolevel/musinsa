@@ -34,6 +34,7 @@ class Post(
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     var user: User? = null
+        protected set
 
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     var isDeleted: Boolean = false
@@ -43,10 +44,7 @@ class Post(
     val postTagMappings: MutableSet<PostTagMapping> = mutableSetOf()
 
     @OneToMany(mappedBy = "post", cascade = [CascadeType.ALL], orphanRemoval = true)
-    private val _postImages: MutableSet<PostImage> = mutableSetOf()
-
-    val postImages: Set<PostImage>
-        get(): Set<PostImage> = _postImages
+    val postImages: MutableSet<PostImage> = mutableSetOf()
 
     /* ==============================
      * 생성 시 불변식 검증
@@ -66,9 +64,9 @@ class Post(
     }
 
     fun addPostTag(postTag: PostTag) {
-        val postTagMapping = PostTagMapping().also {
-            it.post = this
-            it.postTag = postTag
+        val postTagMapping = PostTagMapping().also { postTagMapping ->
+            postTagMapping.assignPost(post = this)
+            postTagMapping.assignPostTag(postTag = postTag)
         }
         if (!this.postTagMappings.contains(postTagMapping)) {
             this.postTagMappings.add(postTagMapping)
@@ -86,9 +84,9 @@ class Post(
     }
 
     fun addPostImage(postImage: PostImage) {
-        require(this._postImages.size <= 5) { "게시글 이미지는 최대 5개까지 가능합니다." }
-        if (!this._postImages.contains(postImage)) {
-            this._postImages.add(postImage)
+        require(this.postImages.size <= 5) { "게시글 이미지는 최대 5개까지 가능합니다." }
+        if (!this.postImages.contains(postImage)) {
+            this.postImages.add(postImage)
         }
     }
 
@@ -97,7 +95,7 @@ class Post(
     }
 
     fun deletePostImageInBatch(postImageIds: List<Long>) {
-        this._postImages.removeIf { postImage ->
+        this.postImages.removeIf { postImage ->
             postImage.id in postImageIds
         }
     }

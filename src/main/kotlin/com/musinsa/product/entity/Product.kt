@@ -39,15 +39,13 @@ class Product(
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_brand_id")
-    private var _productBrand: ProductBrand? = null
-    val productBrand: ProductBrand?
-        get() = _productBrand
+    var productBrand: ProductBrand? = null
+        protected set
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_category_id")
-    private var _productCategory: ProductCategory? = null
-    val productCategory: ProductCategory?
-        get() = _productCategory
+    var productCategory: ProductCategory? = null
+        protected set
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -92,14 +90,14 @@ class Product(
      * 연관관계 편의 메서드
      * ============================== */
     fun assignProductBrand(productBrand: ProductBrand) {
-        if (this._productBrand != productBrand) {
-            this._productBrand = productBrand
+        if (this.productBrand != productBrand) {
+            this.productBrand = productBrand
         }
     }
 
     fun assignProductCategory(productCategory: ProductCategory) {
-        if (this._productCategory != productCategory) {
-            this._productCategory = productCategory
+        if (this.productCategory != productCategory) {
+            this.productCategory = productCategory
         }
     }
 

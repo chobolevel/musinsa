@@ -23,10 +23,12 @@ class PostTagMapping : BaseEntity() {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     var post: Post? = null
+        protected set
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "post_tag_id")
     var postTag: PostTag? = null
+        protected set
 
     /* ==============================
      * 연관관계 편의 메서드

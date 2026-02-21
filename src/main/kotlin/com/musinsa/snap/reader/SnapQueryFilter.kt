@@ -11,7 +11,7 @@ class SnapQueryFilter(
 
     fun toBooleanExpressions(): Array<BooleanExpression> {
         return listOfNotNull(
-            writerId?.let { snap._writer.id.eq(it) },
+            writerId?.let { snap.writer.id.eq(it) },
             keyword?.let {
                 Expressions.booleanTemplate(
                     "MATCH({0}) AGAINST({1} IN BOOLEAN MODE)",

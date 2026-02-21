@@ -10,8 +10,8 @@ class SnapCommentQueryFilter(
 
     fun toBooleanExpressions(): Array<BooleanExpression> {
         return listOfNotNull(
-            snapId?.let { QSnapComment.snapComment._snap.id.eq(it) },
-            userId?.let { QSnapComment.snapComment._writer.id.eq(it) },
+            snapId?.let { QSnapComment.snapComment.snap.id.eq(it) },
+            userId?.let { QSnapComment.snapComment.writer.id.eq(it) },
             QSnapComment.snapComment.isDeleted.isFalse
         ).toTypedArray()
     }

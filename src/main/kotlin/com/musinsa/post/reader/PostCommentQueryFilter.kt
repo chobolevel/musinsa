@@ -11,9 +11,9 @@ data class PostCommentQueryFilter(
 
     fun toBooleanExpressions(): Array<BooleanExpression> {
         return listOfNotNull(
-            userId?.let { postComment._user.id.eq(it) },
-            postId?.let { postComment._post.id.eq(it) },
-            parentId?.let { postComment._parent.id.eq(it) },
+            userId?.let { postComment.user.id.eq(it) },
+            postId?.let { postComment.post.id.eq(it) },
+            parentId?.let { postComment.parent.id.eq(it) },
             postComment.isDeleted.isFalse
         ).toTypedArray()
     }
