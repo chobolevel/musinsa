@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
+import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.SQLRestriction
 import org.hibernate.envers.Audited
 import org.hibernate.envers.NotAudited
@@ -20,6 +21,7 @@ import org.hibernate.envers.NotAudited
 @Entity
 @Table(name = "product_options")
 @Audited
+@SQLDelete(sql = "UPDATE product_options SET is_deleted = 1 WHERE id = ?")
 class ProductOption(
     @Column(nullable = false, length = 100)
     var name: String,

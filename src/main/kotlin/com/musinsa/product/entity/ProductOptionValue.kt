@@ -10,11 +10,13 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.hibernate.annotations.SQLDelete
 import org.hibernate.envers.Audited
 
 @Entity
 @Table(name = "product_option_values")
 @Audited
+@SQLDelete(sql = "UPDATE product_option_values SET is_deleted = 1 WHERE id = ?")
 class ProductOptionValue(
     @Column(nullable = false, length = 100)
     var name: String,
