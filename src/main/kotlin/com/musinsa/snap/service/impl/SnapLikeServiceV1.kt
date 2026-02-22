@@ -55,7 +55,7 @@ class SnapLikeServiceV1(
     override fun likeSnap(userId: Long, snapId: Long): Long {
         val user: User = userReader.findById(id = userId)
         val snap: Snap = snapReader.findById(id = snapId)
-        val isExists = snapLikeReader.existsBySnapIdAndUserId(
+        val isExists: Boolean = snapLikeReader.existsBySnapIdAndUserId(
             snapId = snapId,
             userId = userId
         )
@@ -65,7 +65,7 @@ class SnapLikeServiceV1(
                 message = ErrorCode.ALREADY_LIKED_SNAP.defaultMessage
             )
         }
-        val baseSnapLike: SnapLike = SnapLike()
+        val baseSnapLike = SnapLike()
         val snapLike: SnapLike = assembler.assemble(
             snapLike = baseSnapLike,
             snap = snap,
