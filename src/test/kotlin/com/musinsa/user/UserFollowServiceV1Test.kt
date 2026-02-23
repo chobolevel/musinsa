@@ -1,11 +1,18 @@
 package com.musinsa.user
 
+import com.musinsa.common.dto.Pagination
+import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.user.assembler.UserFollowAssembler
+import com.musinsa.user.converter.UserFollowConverter
+import com.musinsa.user.dto.UserFollowResponse
 import com.musinsa.user.entity.User
 import com.musinsa.user.entity.UserFollow
+import com.musinsa.user.reader.UserFollowQueryFilter
+import com.musinsa.user.reader.UserFollowReader
 import com.musinsa.user.reader.UserReader
 import com.musinsa.user.serivce.impl.UserFollowServiceV1
 import com.musinsa.user.store.UserFollowStore
+import com.musinsa.user.vo.UserFollowOrderType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.extension.ExtendWith
@@ -26,14 +33,22 @@ class UserFollowServiceV1Test {
 
     private val dummyUserFollow: UserFollow = DummyUserFollow.toEntity()
 
+    private val dummyUserFollowResponse: UserFollowResponse = DummyUserFollow.toResponse()
+
     @Mock
     private lateinit var userReader: UserReader
+
+    @Mock
+    private lateinit var userFollowReader: UserFollowReader
 
     @Mock
     private lateinit var userFollowStore: UserFollowStore
 
     @Mock
     private lateinit var userFollowAssembler: UserFollowAssembler
+
+    @Mock
+    private lateinit var userFollowConverter: UserFollowConverter
 
     @InjectMocks
     private lateinit var service: UserFollowServiceV1
@@ -82,5 +97,47 @@ class UserFollowServiceV1Test {
 
         // then
         assertThat(result).isTrue()
+    }
+
+    @Test
+    fun getUserFollowsTest() {
+        // given
+        val dummyUserFollows: List<UserFollow> = listOf(dummyUserFollow)
+        val dummyUserFollowResponses: List<UserFollowResponse> = listOf(dummyUserFollowResponse)
+        val queryFilter = UserFollowQueryFilter(
+            followerId = null,
+            followingId = dummyUser.id!!
+        )
+        val pagination = Pagination(
+            page = 1,
+            size = 10
+        )
+        val orderTypes: List<UserFollowOrderType> = emptyList()
+        `when`(
+            userFollowReader.searchUserFollows(
+                queryFilter = queryFilter,
+                pagination = pagination,
+                orderTypes = orderTypes
+            )
+        ).thenReturn(dummyUserFollows)
+        `when`(
+            userFollowReader.searchUserFollowsCount(
+                queryFilter = queryFilter,
+            )
+        ).thenReturn(dummyUserFollows.size.toLong())
+        `when`(userFollowConverter.toResponseInBatch(userFollows = dummyUserFollows)).thenReturn(dummyUserFollowResponses)
+
+        // when
+        val result: PaginationResponse = service.getUserFollows(
+            queryFilter = queryFilter,
+            pagination = pagination,
+            orderTypes = orderTypes
+        )
+
+        // then
+        assertThat(result.page).isEqualTo(pagination.page)
+        assertThat(result.size).isEqualTo(pagination.size)
+        assertThat(result.data).isEqualTo(dummyUserFollowResponses)
+        assertThat(result.totalCount).isEqualTo(dummyUserFollowResponses.size.toLong())
     }
 }

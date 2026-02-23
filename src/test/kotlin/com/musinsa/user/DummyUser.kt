@@ -39,7 +39,7 @@ object DummyUser {
     private val socialUserPhone: String = "01012345678"
     private val socialUserGender: UserGender = UserGender.FEMALE
     private val socialUserBirthDate: LocalDate = LocalDate.of(1995, 4, 9)
-    private val socialUserStatue: UserStatus = UserStatus.ACTIVATE
+    private val socialUserStatus: UserStatus = UserStatus.ACTIVATE
     private val socialUserGrade: UserGrade = UserGrade.DIAMOND
     private val socialUserRole: UserRole = UserRole.ROLE_USER
     private val socialUserPointBalance: Int = 10000
@@ -85,7 +85,7 @@ object DummyUser {
         phone = socialUserPhone,
         gender = socialUserGender,
         birthDate = socialUserBirthDate,
-        status = socialUserStatue,
+        status = socialUserStatus,
         grade = socialUserGrade,
         role = socialUserRole,
         pointBalance = socialUserPointBalance
@@ -110,6 +110,28 @@ object DummyUser {
         createdAt = createdAt,
         updatedAt = updatedAt,
     )
+
+    private val dummySocialUserResponse: UserResponse by lazy {
+        UserResponse(
+            id = socialUserId,
+            signUpType = socialUserSignUpType,
+            signUpTypeName = socialUserSignUpType.desc,
+            email = socialUserEmail,
+            name = socialUserName,
+            phone = socialUserPhone,
+            gender = socialUserGender,
+            genderName = socialUserGender.desc,
+            birthDate = socialUserBirthDate,
+            status = socialUserStatus,
+            grade = socialUserGrade,
+            gradeName = socialUserGrade.desc,
+            role = socialUserRole,
+            pointBalance = socialUserPointBalance,
+            isDeleted = isDeleted,
+            createdAt = createdAt,
+            updatedAt = updatedAt,
+        )
+    }
 
     private val dummyUpdateRequest: UpdateUserRequest = UpdateUserRequest(
         email = null,
@@ -140,6 +162,8 @@ object DummyUser {
     fun toResponse(): UserResponse {
         return dummyResponse
     }
+
+    fun toSocialUserResponse(): UserResponse = dummySocialUserResponse
 
     fun toUpdateRequest(): UpdateUserRequest {
         return dummyUpdateRequest
