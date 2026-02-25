@@ -48,6 +48,9 @@ dependencies {
     // spring doc(register of doc)
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13")
 
+    // actuator
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
     // query dsl
     val queryDslVersion = "5.0.0"
     implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
