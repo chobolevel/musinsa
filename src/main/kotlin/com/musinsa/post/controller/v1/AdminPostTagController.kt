@@ -6,6 +6,8 @@ import com.musinsa.post.dto.CreatePostTagRequest
 import com.musinsa.post.dto.UpdatePostTagRequest
 import com.musinsa.post.service.PostTagService
 import com.musinsa.post.validator.PostTagParameterValidator
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+@Tag(name = "PostTag(게시글 태그)", description = "게시글 태그 관리 API")
 @RestController
 @RequestMapping("/api/v1/admin")
 class AdminPostTagController(
@@ -24,6 +27,7 @@ class AdminPostTagController(
     private val postTagParameterValidator: PostTagParameterValidator,
 ) {
 
+    @Operation(summary = "게시글 태그 등록 API")
     @PostMapping("/post-tags")
     @HasAuthorityAdmin
     fun createPostTag(
@@ -34,6 +38,7 @@ class AdminPostTagController(
         return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse(data = result))
     }
 
+    @Operation(summary = "게시글 태그 수정 API")
     @PutMapping("/post-tags/{postTagId}")
     @HasAuthorityAdmin
     fun updatePostTag(
@@ -49,6 +54,7 @@ class AdminPostTagController(
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 
+    @Operation(summary = "게시글 태그 삭제 API")
     @DeleteMapping("/post-tags/{postTagId}")
     @HasAuthorityAdmin
     fun deletePostTag(@PathVariable postTagId: Long): ResponseEntity<CommonResponse> {

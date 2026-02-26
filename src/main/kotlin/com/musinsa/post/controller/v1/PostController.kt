@@ -13,6 +13,8 @@ import com.musinsa.post.dto.UpdatePostRequest
 import com.musinsa.post.reader.PostQueryFilter
 import com.musinsa.post.service.PostService
 import com.musinsa.post.validator.PostParameterValidator
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
+@Tag(name = "Post(게시글)", description = "게시글 관리 API")
 @RestController
 @RequestMapping("/api/v1")
 class PostController(
@@ -33,6 +36,7 @@ class PostController(
     private val postParameterValidator: PostParameterValidator,
 ) {
 
+    @Operation(summary = "게시글 등록 API")
     @PostMapping("/posts")
     @HasAuthorityUser
     fun createPost(
@@ -49,6 +53,7 @@ class PostController(
 
     // 요청 DTO는 IS A 관계가 아니므로 상속보다는 합성(composition)이 적합
     // 의미 관계 명확하고 확장/유지보수 측면에서도 안전
+    @Operation(summary = "게시글 목록 조회 API")
     @GetMapping("/posts")
     fun getPosts(
         request: PostSearchRequest,
@@ -68,12 +73,14 @@ class PostController(
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 
+    @Operation(summary = "게시글 단건 조회 API")
     @GetMapping("/posts/{postId}")
     fun getPost(@PathVariable postId: Long): ResponseEntity<CommonResponse> {
         val result: PostResponse = service.getPost(postId = postId)
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 
+    @Operation(summary = "게시글 수정 API")
     @PutMapping("/posts/{postId}")
     @HasAuthorityUser
     fun updatePost(
@@ -91,6 +98,7 @@ class PostController(
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 
+    @Operation(summary = "게시글 삭제 API")
     @DeleteMapping("/posts/{postId}")
     @HasAuthorityUser
     fun deletePost(

@@ -12,6 +12,8 @@ import com.musinsa.post.dto.SearchPostCommentRequest
 import com.musinsa.post.dto.UpdatePostCommentRequest
 import com.musinsa.post.reader.PostCommentQueryFilter
 import com.musinsa.post.service.PostCommentService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -25,13 +27,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
+@Tag(name = "PostComment(게시글 댓글)", description = "게시글 댓글 관리 API")
 @RestController
 @RequestMapping("/api/v1")
 class PostCommentController(
     private val postCommentService: PostCommentService,
-    commentService: PostCommentService
 ) {
 
+    @Operation(summary = "게시글 댓글 등록 API")
     @PostMapping("/posts/{postId}/comments")
     @HasAuthorityUser
     fun createPostComment(
@@ -48,6 +51,7 @@ class PostCommentController(
         return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse(data = result))
     }
 
+    @Operation(summary = "게시글 댓글 목록 조회 API")
     @GetMapping("/posts/comments")
     fun getPostComments(
         request: SearchPostCommentRequest,
@@ -70,12 +74,14 @@ class PostCommentController(
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 
+    @Operation(summary = "게시글 댓글 단건 조회 API")
     @GetMapping("/posts/comments/{postCommentId}")
     fun getPostComment(@PathVariable postCommentId: Long): ResponseEntity<CommonResponse> {
         val result: PostCommentResponse = postCommentService.getPostComment(postCommentId = postCommentId)
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 
+    @Operation(summary = "게시글 댓글 수정 API")
     @PutMapping("/posts/comments/{postCommentId}")
     @HasAuthorityUser
     fun updatePostComment(
@@ -92,6 +98,7 @@ class PostCommentController(
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 
+    @Operation(summary = "게시글 댓글 삭제 API")
     @DeleteMapping("/posts/comments/{postCommentId}")
     @HasAuthorityUser
     fun deletePostComment(
