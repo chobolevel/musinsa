@@ -15,6 +15,8 @@ import com.musinsa.user.vo.UserOrderType
 import com.musinsa.user.vo.UserRole
 import com.musinsa.user.vo.UserSignUpType
 import com.musinsa.user.vo.UserStatus
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+@Tag(name = "User(회원)", description = "회원 관리 API")
 @RestController
 @RequestMapping("/api/v1/admin")
 class AdminUserController(
@@ -33,6 +36,7 @@ class AdminUserController(
     private val validator: UserParameterValidator
 ) {
 
+    @Operation(summary = "회원 목록 조회 API")
     @HasAuthorityAdmin
     @GetMapping("/users")
     fun getUsers(
@@ -70,6 +74,7 @@ class AdminUserController(
         return ResponseEntity.ok(CommonResponse(result))
     }
 
+    @Operation(summary = "회원 단건 조회 API")
     @HasAuthorityAdmin
     @GetMapping("/users/{id}")
     fun getUser(@PathVariable("id") userId: Long): ResponseEntity<CommonResponse> {
@@ -77,6 +82,7 @@ class AdminUserController(
         return ResponseEntity.ok(CommonResponse(result))
     }
 
+    @Operation(summary = "회원 수정 API")
     @HasAuthorityAdmin
     @PutMapping("/users/{id}")
     fun updateUser(
@@ -92,6 +98,7 @@ class AdminUserController(
         return ResponseEntity.ok(CommonResponse(result))
     }
 
+    @Operation(summary = "회원 탈퇴 API")
     @HasAuthorityAdmin
     @DeleteMapping("/users/{id}")
     fun resignUser(@PathVariable("id") userId: Long): ResponseEntity<CommonResponse> {
