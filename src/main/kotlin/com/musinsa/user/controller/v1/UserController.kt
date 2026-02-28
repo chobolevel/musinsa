@@ -32,7 +32,6 @@ class UserController(
 ) {
 
     @PostMapping("/users")
-    // swagger best practice
     @Operation(
         summary = "회원 가입",
         description = "새로운 회원을 등록",
@@ -57,6 +56,7 @@ class UserController(
         return ResponseEntity.ok().body(CommonResponse(data = result))
     }
 
+    @Operation(summary = "회원(본인) 정보 수정")
     @HasAuthorityUser
     @PutMapping("/user/me")
     fun updateMe(
@@ -68,6 +68,7 @@ class UserController(
         return ResponseEntity.ok().body(CommonResponse(data = result))
     }
 
+    @Operation(summary = "회원 탈퇴 API")
     @HasAuthorityUser
     @DeleteMapping("/user/resign")
     fun resign(principal: Principal): ResponseEntity<CommonResponse> {
@@ -75,6 +76,7 @@ class UserController(
         return ResponseEntity.ok().body(CommonResponse(data = result))
     }
 
+    @Operation(summary = "비밀번호 변경 API")
     @HasAuthorityUser
     @PostMapping("/user/change-password")
     fun changePassword(
