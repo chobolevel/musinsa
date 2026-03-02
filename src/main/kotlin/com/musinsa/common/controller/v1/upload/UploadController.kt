@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1")
-@Tag(name = "파일 업로드 API", description = "파일 업로드를 위한 API 제공")
+@Tag(name = "Upload(업로드)", description = "업로드 관리 API")
 class UploadController(
     private val service: UploadService,
     private val validator: UploadParameterValidator
