@@ -6,6 +6,8 @@ import com.musinsa.product.dto.CreateProductCategoryRequest
 import com.musinsa.product.dto.UpdateProductCategoryRequest
 import com.musinsa.product.service.ProductCategoryService
 import com.musinsa.product.validator.ProductCategoryParameterValidator
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+@Tag(name = "ProductCategory(상품 카테고리)", description = "상품 카테고리 관리 API")
 @RestController
 @RequestMapping("/api/v1/admin")
 class AdminProductCategoryController(
@@ -24,6 +27,7 @@ class AdminProductCategoryController(
     private val validator: ProductCategoryParameterValidator
 ) {
 
+    @Operation(summary = "상품 카테고리 등록 API")
     @PostMapping("/product-categories")
     @HasAuthorityAdmin
     fun createProductCategory(
@@ -34,10 +38,11 @@ class AdminProductCategoryController(
         return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse(data = result))
     }
 
+    @Operation(summary = "상품 카테고리 수정 API")
     @PutMapping("/product-categories/{productCategoryId}")
     @HasAuthorityAdmin
     fun updateProductCategory(
-        @PathVariable("productCategoryId") productCategoryId: Long,
+        @PathVariable productCategoryId: Long,
         @Valid @RequestBody
         request: UpdateProductCategoryRequest
     ): ResponseEntity<CommonResponse> {
@@ -49,9 +54,10 @@ class AdminProductCategoryController(
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 
+    @Operation(summary = "상품 카테고리 삭제 API")
     @DeleteMapping("/product-categories/{productCategoryId}")
     @HasAuthorityAdmin
-    fun deleteProductCategory(@PathVariable("productCategoryId") productCategoryId: Long): ResponseEntity<CommonResponse> {
+    fun deleteProductCategory(@PathVariable productCategoryId: Long): ResponseEntity<CommonResponse> {
         val result: Boolean = service.deleteProductCategory(productCategoryId = productCategoryId)
         return ResponseEntity.ok(CommonResponse(data = result))
     }

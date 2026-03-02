@@ -6,6 +6,8 @@ import com.musinsa.product.dto.CreateProductBrandRequest
 import com.musinsa.product.dto.UpdateProductBrandRequest
 import com.musinsa.product.service.ProductBrandService
 import com.musinsa.product.validator.ProductBrandParameterValidator
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+@Tag(name = "ProductBrand(상품 브랜드)", description = "상품 브랜드 관리 API")
 @RestController
 @RequestMapping("/api/v1/admin")
 class AdminProductBrandController(
@@ -24,6 +27,7 @@ class AdminProductBrandController(
     private val validator: ProductBrandParameterValidator
 ) {
 
+    @Operation(summary = "상품 브랜드 등록 API")
     @PostMapping("/product-brands")
     @HasAuthorityAdmin
     fun createProductBrand(
@@ -34,6 +38,7 @@ class AdminProductBrandController(
         return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse(data = result))
     }
 
+    @Operation(summary = "상품 브랜드 수정 API")
     @PutMapping("/product-brands/{id}")
     @HasAuthorityAdmin
     fun updateProductBrand(
@@ -49,6 +54,7 @@ class AdminProductBrandController(
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 
+    @Operation(summary = "상품 브랜드 삭제 API")
     @DeleteMapping("/product-brands/{id}")
     @HasAuthorityAdmin
     fun deleteProductBrand(
