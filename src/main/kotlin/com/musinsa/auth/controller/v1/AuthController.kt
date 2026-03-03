@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@Tag(name = "인증 API", description = "인증을 위한 API를 제공합니다.")
+@Tag(name = "Auth(인증)", description = "인증 관리 API")
 @RestController
 @RequestMapping("/api/v1")
 class AuthController(
@@ -25,10 +25,7 @@ class AuthController(
 ) {
 
     @PostMapping("/login")
-    @Operation(
-        summary = "로그인",
-        description = "회원 로그인을 통해 access token/refresh token 발급",
-    )
+    @Operation(summary = "로그인 API")
     fun login(
         @Valid @RequestBody
         request: LoginRequest
@@ -38,10 +35,7 @@ class AuthController(
     }
 
     @PostMapping("/reissue")
-    @Operation(
-        summary = "토큰 갱신",
-        description = "refresh token 통해 access token 갱신",
-    )
+    @Operation(summary = "토큰 갱신 API")
     fun reissue(request: HttpServletRequest): ResponseEntity<CommonResponse> {
         val refreshToken: String = request.getHeader("X-Refresh-Token") ?: throw InvalidParameterException(
             errorCode = ErrorCode.INVALID_PARAMETER,
@@ -52,10 +46,7 @@ class AuthController(
     }
 
     @PostMapping("/logout")
-    @Operation(
-        summary = "로그아웃",
-        description = "로그아웃을 합니다.",
-    )
+    @Operation(summary = "로그아웃(토큰 제거) API")
     fun logout(request: HttpServletRequest): ResponseEntity<CommonResponse> {
         val refreshToken: String = request.getHeader("X-Refresh-Token") ?: throw InvalidParameterException(
             errorCode = ErrorCode.INVALID_PARAMETER,
