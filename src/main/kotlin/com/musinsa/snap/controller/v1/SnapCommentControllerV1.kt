@@ -12,6 +12,8 @@ import com.musinsa.snap.reader.SnapCommentQueryFilter
 import com.musinsa.snap.service.SnapCommentService
 import com.musinsa.snap.validator.SnapCommentParameterValidator
 import com.musinsa.snap.vo.SnapCommentOrderType
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
+@Tag(name = "SnapComment(스냅 댓글)", description = "스냅 댓글 관리 API")
 @RestController
 @RequestMapping("/api/v1")
 class SnapCommentControllerV1(
@@ -33,6 +36,7 @@ class SnapCommentControllerV1(
     private val validator: SnapCommentParameterValidator
 ) {
 
+    @Operation(summary = "스냅 댓글 등록 API")
     @PostMapping("/snaps/{snapId}/comments")
     @HasAuthorityUser
     fun createSnapComment(
@@ -49,6 +53,7 @@ class SnapCommentControllerV1(
         return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse(data = result))
     }
 
+    @Operation(summary = "스냅 댓글 목록 조회 API")
     @GetMapping("/snaps/comments")
     fun getSnapComments(
         @RequestParam(required = false) snapId: Long?,
@@ -73,12 +78,14 @@ class SnapCommentControllerV1(
         return ResponseEntity.ok(result)
     }
 
+    @Operation(summary = "스냅 댓글 단건 조회 API")
     @GetMapping("/snaps/comments/{snapCommentId}")
     fun getSnapComment(@PathVariable snapCommentId: Long): ResponseEntity<CommonResponse> {
         val result: SnapCommentResponse = service.getSnapComment(snapCommentId = snapCommentId)
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 
+    @Operation(summary = "스냅 댓글 수정 API")
     @PutMapping("/snaps/comments/{snapCommentId}")
     @HasAuthorityUser
     fun updateSnapComment(
@@ -96,6 +103,7 @@ class SnapCommentControllerV1(
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 
+    @Operation(summary = "스냅 댓글 삭제 API")
     @DeleteMapping("/snaps/comments/{snapCommentId}")
     @HasAuthorityUser
     fun deleteSnapComment(

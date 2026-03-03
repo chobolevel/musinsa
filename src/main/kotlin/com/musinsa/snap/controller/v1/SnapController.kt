@@ -12,6 +12,8 @@ import com.musinsa.snap.reader.SnapQueryFilter
 import com.musinsa.snap.service.SnapService
 import com.musinsa.snap.validator.SnapParameterValidator
 import com.musinsa.snap.vo.SnapOrderType
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
+@Tag(name = "Snap(스냅)", description = "스냅 관리 API")
 @RestController
 @RequestMapping("/api/v1")
 class SnapController(
@@ -33,6 +36,7 @@ class SnapController(
     private val validator: SnapParameterValidator
 ) {
 
+    @Operation(summary = "스냅 등록 API")
     @HasAuthorityUser
     @PostMapping("/snaps")
     fun createSnap(
@@ -47,6 +51,7 @@ class SnapController(
         return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse(data = result))
     }
 
+    @Operation(summary = "스냅 목록 조회 API")
     @GetMapping("/snaps")
     fun getSnaps(
         @RequestParam(required = false) writerId: Long?,
@@ -71,12 +76,14 @@ class SnapController(
         return ResponseEntity.ok(result)
     }
 
+    @Operation(summary = "스냅 단건 조회 API")
     @GetMapping("/snaps/{snapId}")
     fun getSnap(@PathVariable("snapId") snapId: Long): ResponseEntity<CommonResponse> {
         val result: SnapResponse = service.getSnap(id = snapId)
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 
+    @Operation(summary = "스냅 수정 API")
     @HasAuthorityUser
     @PutMapping("/snaps/{snapId}")
     fun updateSnap(
@@ -94,6 +101,7 @@ class SnapController(
         return ResponseEntity.ok(CommonResponse(data = result))
     }
 
+    @Operation(summary = "스냅 삭제 API")
     @HasAuthorityUser
     @DeleteMapping("/snaps/{snapId}")
     fun deleteSnap(
