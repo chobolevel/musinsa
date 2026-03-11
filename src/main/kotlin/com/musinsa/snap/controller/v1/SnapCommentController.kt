@@ -31,7 +31,7 @@ import java.security.Principal
 @Tag(name = "SnapComment(스냅 댓글)", description = "스냅 댓글 관리 API")
 @RestController
 @RequestMapping("/api/v1")
-class SnapCommentControllerV1(
+class SnapCommentController(
     private val service: SnapCommentService,
     private val validator: SnapCommentParameterValidator
 ) {

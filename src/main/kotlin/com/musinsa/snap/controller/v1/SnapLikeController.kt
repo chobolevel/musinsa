@@ -23,7 +23,7 @@ import java.security.Principal
 @Tag(name = "SnapLike(스냅 좋아요)", description = "스냅 좋아요 관리 API")
 @RestController
 @RequestMapping("/api/v1")
-class SnapLikeControllerV1(
+class SnapLikeController(
     private val service: SnapLikeService
 ) {
 
