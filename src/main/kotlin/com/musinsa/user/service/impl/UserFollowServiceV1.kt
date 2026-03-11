@@ -1,4 +1,4 @@
-package com.musinsa.user.serivce.impl
+package com.musinsa.user.service.impl
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
@@ -9,7 +9,7 @@ import com.musinsa.user.entity.UserFollow
 import com.musinsa.user.reader.UserFollowQueryFilter
 import com.musinsa.user.reader.UserFollowReader
 import com.musinsa.user.reader.UserReader
-import com.musinsa.user.serivce.UserFollowService
+import com.musinsa.user.service.UserFollowService
 import com.musinsa.user.store.UserFollowStore
 import com.musinsa.user.vo.UserFollowOrderType
 import org.springframework.stereotype.Service

@@ -10,7 +10,7 @@ import com.musinsa.user.entity.UserFollow
 import com.musinsa.user.reader.UserFollowQueryFilter
 import com.musinsa.user.reader.UserFollowReader
 import com.musinsa.user.reader.UserReader
-import com.musinsa.user.serivce.impl.UserFollowServiceV1
+import com.musinsa.user.service.impl.UserFollowServiceV1
 import com.musinsa.user.store.UserFollowStore
 import com.musinsa.user.vo.UserFollowOrderType
 import org.assertj.core.api.Assertions.assertThat

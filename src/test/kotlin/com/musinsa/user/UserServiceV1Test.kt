@@ -10,7 +10,7 @@ import com.musinsa.user.dto.UserResponse
 import com.musinsa.user.entity.User
 import com.musinsa.user.reader.UserQueryFilter
 import com.musinsa.user.reader.UserReader
-import com.musinsa.user.serivce.impl.UserServiceV1
+import com.musinsa.user.service.impl.UserServiceV1
 import com.musinsa.user.store.UserStore
 import com.musinsa.user.updater.UserUpdater
 import com.musinsa.user.validator.UserBusinessValidator

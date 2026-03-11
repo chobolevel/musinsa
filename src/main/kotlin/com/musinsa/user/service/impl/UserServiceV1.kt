@@ -1,4 +1,4 @@
-package com.musinsa.user.serivce.impl
+package com.musinsa.user.service.impl
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
@@ -12,7 +12,7 @@ import com.musinsa.user.dto.UserResponse
 import com.musinsa.user.entity.User
 import com.musinsa.user.reader.UserQueryFilter
 import com.musinsa.user.reader.UserReader
-import com.musinsa.user.serivce.UserService
+import com.musinsa.user.service.UserService
 import com.musinsa.user.store.UserStore
 import com.musinsa.user.updater.UserUpdater
 import com.musinsa.user.validator.UserBusinessValidator

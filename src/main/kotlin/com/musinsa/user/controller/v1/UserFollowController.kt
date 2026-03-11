@@ -7,7 +7,7 @@ import com.musinsa.common.dto.PaginationRequest
 import com.musinsa.common.dto.PaginationResponse
 import com.musinsa.common.extension.getUserId
 import com.musinsa.user.reader.UserFollowQueryFilter
-import com.musinsa.user.serivce.UserFollowService
+import com.musinsa.user.service.UserFollowService
 import com.musinsa.user.vo.UserFollowOrderType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag

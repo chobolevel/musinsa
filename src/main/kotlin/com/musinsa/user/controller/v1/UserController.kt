@@ -7,7 +7,7 @@ import com.musinsa.user.dto.ChangeUserPasswordRequest
 import com.musinsa.user.dto.CreateUserRequest
 import com.musinsa.user.dto.UpdateUserRequest
 import com.musinsa.user.dto.UserResponse
-import com.musinsa.user.serivce.UserService
+import com.musinsa.user.service.UserService
 import com.musinsa.user.validator.UserParameterValidator
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag

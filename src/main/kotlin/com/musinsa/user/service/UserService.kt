@@ -1,4 +1,4 @@
-package com.musinsa.user.serivce
+package com.musinsa.user.service
 
 import com.musinsa.common.dto.Pagination
 import com.musinsa.common.dto.PaginationResponse
